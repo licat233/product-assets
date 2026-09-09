@@ -1,38 +1,19 @@
-schema_version: 2
+# AUTO-GENERATED FILE — DO NOT EDIT MANUALLY.
+# Product manifests are maintained by scripts/sync-manifest.sh.
+
+schema_version: 3
 
 product_id: <product-slug>
 product_name: <Product Name>
-category: <category>
 language: en
 market: international-b2b
-canonical_product_url: <url>
 
-# All paths below are relative to products/<product-slug>/ unless noted.
 summary_file: product.md
 assets_base_url: https://assets.licat.xyz/products/<product-slug>/images
 
-# Add only source files that actually exist in this product directory.
 documents: []
-
-# Example document entry:
-# documents:
-#   - id: user-manual
-#     type: user_manual
-#     path: docs/user-manual.pdf
-#     authority: authoritative
-#     notes: Primary operating and specification source.
-
 images: []
 
-# Example image entry:
-# images:
-#   - id: hero-01
-#     role: primary_product_reference
-#     path: images/hero-01.jpg
-#     public_url: https://assets.licat.xyz/products/<product-slug>/images/hero-01.jpg
-#     notes: Primary full-product reference.
-
-# Evidence priority when sources disagree.
 evidence_priority:
   - user_confirmed_override
   - authoritative_document
