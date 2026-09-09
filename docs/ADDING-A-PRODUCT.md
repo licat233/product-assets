@@ -1,21 +1,47 @@
 # Adding a Product
 
-Use one product slug everywhere. Prefer the canonical website slug when practical.
+Every product must be self-contained under one canonical slug.
 
-## 1. Create metadata
+```text
+products/<product-slug>/
+├── product.md
+├── manifest.yaml
+├── docs/
+└── images/
+```
+
+Prefer the canonical website slug when practical.
+
+## 1. Create the product directory
+
+Create:
+
+```text
+products/<product-slug>/
+products/<product-slug>/docs/
+products/<product-slug>/images/
+```
 
 Copy:
 
 - `templates/product.md` -> `products/<product-slug>/product.md`
 - `templates/manifest.yaml` -> `products/<product-slug>/manifest.yaml`
 
-Fill `product.md` first. Treat it as the factual source of truth.
+## 2. Add original source documents first
 
-## 2. Add product photos
+Place the available authoritative documents in `docs/`, for example:
 
-Place images in:
+- `user-manual.pdf`
+- `datasheet.pdf`
+- `installation-guide.pdf`
+- `test-report.pdf`
+- certification documents
 
-`public/products/<product-slug>/`
+Do not rewrite an original manual merely to make it easier for AI to read. Preserve the source document and summarize it separately in `product.md`.
+
+## 3. Add authoritative real product images
+
+Place source photos in `images/`.
 
 Use semantic lowercase kebab-case filenames such as:
 
@@ -28,29 +54,60 @@ Use semantic lowercase kebab-case filenames such as:
 - `sensor-detail.jpg`
 - `rear-markings-closeup.jpg`
 
-Do not rename a file based on an unverified feature. For example, do not call an unknown circular area `pir-sensor.jpg` unless PIR is confirmed.
+Do not name an image after an unverified feature. For example, do not call an unknown circular component `pir-sensor.jpg` unless PIR is supported by evidence.
 
-## 3. Update the manifest
+Do not place AI-generated marketing renders in the authoritative `images/` source set.
 
-For every image, record:
+## 4. Build `product.md`
 
-- stable id
+Read the manuals and datasheets, then create the LLM-friendly summary.
+
+Keep these categories separate:
+
+1. User-confirmed corrections or overrides.
+2. Confirmed specifications from authoritative documents.
+3. Directly observed facts from product images.
+4. Reasonable creative inferences.
+5. Unknown / do-not-claim information.
+
+For exact specifications, record the source filename and page/section when practical.
+
+## 5. Complete `manifest.yaml`
+
+Inventory every source document and every authoritative reference image.
+
+For each document record:
+
+- id
+- type
+- path
+- authority
+- notes
+
+For each image record:
+
+- id
 - role
-- repository path
+- source path
 - public Cloudflare URL
-- concise notes about what the image proves visually
+- concise notes describing what the image proves visually
 
-## 4. Fact classification
+## 6. Validate before use
 
-Every statement should fit one of these groups:
+A product is DetailFlow-ready when:
 
-1. Confirmed fact — explicitly supported by authoritative product data.
-2. Directly observed — visible in a supplied product image.
-3. Reasonable inference — usable for creative planning but not a technical claim.
-4. Unknown / do not claim — requires evidence before publication.
+- `product.md` exists and is populated.
+- `manifest.yaml` matches the actual files.
+- at least one authoritative product document is present when technical specifications are required, or the absence is explicitly documented.
+- authoritative product reference images are present.
+- unknown claims are explicitly listed instead of guessed.
 
-## 5. Commit
+## 7. Commit
 
 Recommended commit style:
 
-`product: add <product-slug> source assets`
+```text
+product: add <product-slug> source assets
+```
+
+Cloudflare publishing is handled from the source `images/` directories by `scripts/build-public.sh`; do not duplicate images into another committed public directory.
