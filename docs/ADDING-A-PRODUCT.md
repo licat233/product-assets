@@ -12,20 +12,35 @@ products/<product-slug>/
 
 Prefer the canonical website slug when practical.
 
-## 1. Create the product directory
+## 1. Create the product scaffold
 
-Create:
+Do not create the directory tree manually. Use the repository script:
 
-```text
-products/<product-slug>/
-products/<product-slug>/docs/
-products/<product-slug>/images/
+```bash
+bash scripts/new-product.sh <product-slug> "<Product Name>"
 ```
 
-Copy:
+Example:
 
-- `templates/product.md` -> `products/<product-slug>/product.md`
-- `templates/manifest.yaml` -> `products/<product-slug>/manifest.yaml`
+```bash
+bash scripts/new-product.sh led-sensor-light "LED Sensor Light"
+```
+
+The script creates:
+
+```text
+products/led-sensor-light/
+├── product.md
+├── manifest.yaml
+├── docs/
+│   └── .gitkeep
+└── images/
+    └── .gitkeep
+```
+
+It also fills the product slug and product name placeholders in `product.md` and `manifest.yaml`.
+
+The script refuses to overwrite an existing product directory.
 
 ## 2. Add original source documents first
 
@@ -74,7 +89,7 @@ For exact specifications, record the source filename and page/section when pract
 
 ## 5. Complete `manifest.yaml`
 
-Inventory every source document and every authoritative reference image.
+The newly created manifest intentionally starts with empty `documents` and `images` lists. Add only files that actually exist.
 
 For each document record:
 
