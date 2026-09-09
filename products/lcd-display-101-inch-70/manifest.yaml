@@ -1,0 +1,62 @@
+schema_version: 2
+
+product_id: lcd-display-101-inch-70
+product_name: 10.1-inch Electronic Price Tag with a 70° Tilt
+category: <category>
+language: en
+market: international-b2b
+canonical_product_url: <url>
+
+# All paths below are relative to products/lcd-display-101-inch-70/ unless noted.
+summary_file: product.md
+assets_base_url: https://assets.licat.xyz/products/lcd-display-101-inch-70/images
+
+# Add only source files that actually exist in this product directory.
+documents: []
+
+# Example document entry:
+# documents:
+#   - id: user-manual
+#     type: user_manual
+#     path: docs/user-manual.pdf
+#     authority: authoritative
+#     notes: Primary operating and specification source.
+
+images: []
+
+# Example image entry:
+# images:
+#   - id: hero-01
+#     role: primary_product_reference
+#     path: images/hero-01.jpg
+#     public_url: https://assets.licat.xyz/products/lcd-display-101-inch-70/images/hero-01.jpg
+#     notes: Primary full-product reference.
+
+# Evidence priority when sources disagree.
+evidence_priority:
+  - user_confirmed_override
+  - authoritative_document
+  - directly_observed_image_fact
+  - derived_product_summary
+  - reasonable_creative_inference
+
+claims_policy:
+  allow_reasonable_creative_inference: true
+  require_source_for_exact_spec: true
+  invent_exact_specs: false
+  invent_certifications: false
+  invent_awards: false
+  invent_test_results: false
+  invent_brand_partnerships: false
+  invent_regulated_claims: false
+
+detailflow:
+  screens: 8
+  final_slice_ratio: "9:21"
+  visible_copy_language: en
+  approval_gates: 2
+  require_input_analysis: true
+  require_source_document_review: true
+  require_blueprint_before_generation: true
+  require_early_two_slice_preview: true
+  require_final_concat_audit: true
