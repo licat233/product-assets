@@ -1,4 +1,4 @@
-schema_version: 2
+schema_version: 3
 
 product_id: <product-slug>
 product_name: <Product Name>
@@ -7,18 +7,24 @@ language: en
 market: international-b2b
 canonical_product_url: <url>
 
-# All paths below are relative to products/<product-slug>/ unless noted.
 summary_file: product.md
-assets_base_url: https://assets.licat.xyz/products/<product-slug>/images
 
-# Add only source files that actually exist in this product directory.
+asset_store:
+  provider: cloudflare_r2
+  bucket: product-assets
+  public_base_url: https://assets.licat.xyz/products/<product-slug>
+
+# Binary files are staged locally under docs/ and images/, but are not committed to Git.
+# After upload, add only entries that actually exist in R2.
 documents: []
 
 # Example document entry:
 # documents:
 #   - id: user-manual
 #     type: user_manual
-#     path: docs/user-manual.pdf
+#     local_path: docs/user-manual.pdf
+#     object_key: products/<product-slug>/docs/user-manual.pdf
+#     url: https://assets.licat.xyz/products/<product-slug>/docs/user-manual.pdf
 #     authority: authoritative
 #     notes: Primary operating and specification source.
 
@@ -28,8 +34,9 @@ images: []
 # images:
 #   - id: hero-01
 #     role: primary_product_reference
-#     path: images/hero-01.jpg
-#     public_url: https://assets.licat.xyz/products/<product-slug>/images/hero-01.jpg
+#     local_path: images/hero-01.jpg
+#     object_key: products/<product-slug>/images/hero-01.jpg
+#     url: https://assets.licat.xyz/products/<product-slug>/images/hero-01.jpg
 #     notes: Primary full-product reference.
 
 # Evidence priority when sources disagree.
