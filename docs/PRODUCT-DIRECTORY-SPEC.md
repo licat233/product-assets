@@ -22,6 +22,16 @@ products/<product-slug>/
 
 The product slug is the stable identifier used by GitHub paths, Cloudflare image URLs, ChatGPT prompts, and DetailFlow.
 
+## Creation rule
+
+Do not recreate this directory tree manually or from memory. Create every new product with:
+
+```bash
+bash scripts/new-product.sh <product-slug> "<Product Name>"
+```
+
+The script is the canonical scaffold mechanism. It creates the required directories, copies the current templates, fills the product slug and name, and refuses to overwrite an existing product directory.
+
 ## `docs/` — original evidence layer
 
 Use `docs/` for the original product evidence supplied by the manufacturer or explicitly approved by the user.
@@ -74,6 +84,8 @@ It should contain:
 - DetailFlow defaults
 
 All paths inside the manifest should be relative to the product directory unless explicitly documented otherwise.
+
+The scaffold template starts `documents` and `images` as empty lists. Add only files that actually exist; do not leave placeholder source entries that could be mistaken for evidence.
 
 ## `images/` — authoritative visual references
 
