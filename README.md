@@ -86,6 +86,14 @@ bash scripts/upload-product-assets.sh led-sensor-light --dry-run
 
 After upload, populate `product.md` and `manifest.yaml`, including the real R2 object keys and URLs, then commit only the metadata.
 
+Before committing, verify the storage boundary:
+
+```bash
+bash scripts/check-storage-boundary.sh
+```
+
+This fails if product binaries under `docs/` or `images/` have accidentally become tracked by Git.
+
 ## Evidence priority
 
 When sources disagree, use this order:
@@ -117,6 +125,7 @@ docs/                              # repository operating rules
 prompts/                           # reusable ChatGPT / DetailFlow bootstrap prompt
 scripts/new-product.sh             # creates canonical product scaffold
 scripts/upload-product-assets.sh   # uploads local docs/images to Cloudflare R2
+scripts/check-storage-boundary.sh  # prevents product binaries from entering Git history
 scripts/build-public.sh            # legacy Pages build; remove after R2 cutover
 static/                            # legacy Pages root files; remove after R2 cutover
 ```
