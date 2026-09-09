@@ -232,7 +232,7 @@ Create an English overseas-market 8-screen ecommerce detail page and follow both
 请分别输出：
 1. 用户明确确认的信息
 2. 权威文档支持的产品参数和功能
-3. 图片中可直接观察到的事实
+3. 图片中可以直接观察到的事实
 4. 合理但尚未确认的推断
 5. 未知 / 禁止擅自声称的信息
 
@@ -343,3 +343,137 @@ static/                            # 静态浏览器 CSS / headers / robots / 40
 核心职责始终只有一个：
 
 > **保存可追溯、可被 ChatGPT 稳定读取的真实产品资料和结构化事实，并尽可能自动完成重复性的文件管理工作。**
+
+---
+
+## 10. 同事协作：轻量 Clone（推荐）
+
+这个仓库会逐渐包含大量 PDF、JPG、PNG、MP4 等二进制产品资料。为了避免同事每次都把所有历史产品资料下载到本地，**不建议直接使用普通 `git clone`**。
+
+推荐组合使用：
+
+```text
+Partial Clone: --filter=blob:none
++
+Sparse Checkout: 只检出当前要处理的产品目录
+```
+
+这样 Git 会保留仓库的提交和目录结构，但不会一开始就下载所有产品的图片、PDF 和视频。只有当前 sparse-checkout 范围内真正需要的文件才会被拉取。
+
+### 场景 A：只处理一款已有产品
+
+例如只需要修改：
+
+```text
+products/lcd-display-101-inch-70/
+```
+
+先执行：
+
+```bash
+git clone --filter=blob:none --sparse https://github.com/licat233/product-assets.git
+cd product-assets
+```
+
+然后只检出脚本、模板和这一款产品：
+
+```bash
+git sparse-checkout set scripts templates products/lcd-display-101-inch-70
+```
+
+此时其它产品目录中的大图片、PDF、视频不会被下载到本地。
+
+完成修改后：
+
+```bash
+bash scripts/sync-manifest.sh lcd-display-101-inch-70
+
+git add products/lcd-display-101-inch-70
+git commit -m "product: update lcd-display-101-inch-70"
+git pull --rebase
+git push
+```
+
+### 场景 B：新增一款产品
+
+第一次 clone：
+
+```bash
+git clone --filter=blob:none --sparse https://github.com/licat233/product-assets.git
+cd product-assets
+git sparse-checkout set scripts templates
+```
+
+创建新产品：
+
+```bash
+bash scripts/new-product.sh <product-slug> "<Product Name>"
+```
+
+创建完成后，把这个新目录加入 sparse-checkout：
+
+```bash
+git sparse-checkout add products/<product-slug>
+```
+
+然后把真实文件放入：
+
+```text
+products/<product-slug>/docs/
+products/<product-slug>/images/
+```
+
+整理 / 确认 `product.md` 后，同步机器索引：
+
+```bash
+bash scripts/sync-manifest.sh <product-slug>
+```
+
+最后提交：
+
+```bash
+git add products/<product-slug>
+git commit -m "product: add <product-slug> source assets"
+git pull --rebase
+git push
+```
+
+### 场景 C：后来需要再处理另一款产品
+
+不用重新 clone 仓库，只需要把目标产品加入当前工作区：
+
+```bash
+git sparse-checkout add products/<another-product-slug>
+```
+
+Git 只会按需获取这款产品需要的文件。
+
+查看当前 sparse-checkout 范围：
+
+```bash
+git sparse-checkout list
+```
+
+如果想把工作区切换成只保留另一款产品，可以重新设置：
+
+```bash
+git sparse-checkout set scripts templates products/<another-product-slug>
+```
+
+### 为什么推荐这种方式
+
+普通 clone 随着产品越来越多，会让每位同事都下载大量与自己当前工作无关的历史产品文件。
+
+本仓库推荐的协作方式是：
+
+```text
+Git 仓库保存完整产品资产
+        ↓
+同事使用 blobless partial clone
+        ↓
+Sparse Checkout 只选择当前产品
+        ↓
+只下载真正需要修改的资料
+```
+
+因此，即使未来仓库包含数百款产品，同事也不需要为了新增或修改一款产品，把整个产品资产库全部下载到电脑。
