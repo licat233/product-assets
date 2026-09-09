@@ -1,0 +1,37 @@
+schema_version: 1
+
+product_id: <product-slug>
+product_name: <Product Name>
+category: <category>
+language: en
+market: international-b2b
+canonical_product_url: <url>
+
+facts_source: product.md
+assets_base_url: https://assets.licat.xyz/products/<product-slug>
+
+images:
+  - id: hero-01
+    role: primary_product_reference
+    path: public/products/<product-slug>/hero-01.jpg
+    url: https://assets.licat.xyz/products/<product-slug>/hero-01.jpg
+    notes: Primary full-product reference.
+
+detailflow:
+  screens: 8
+  final_slice_ratio: "9:21"
+  visible_copy_language: en
+  approval_gates: 2
+  require_input_analysis: true
+  require_blueprint_before_generation: true
+  require_early_two_slice_preview: true
+  require_final_concat_audit: true
+
+claims_policy:
+  confirmed_facts_source: product.md
+  allow_reasonable_creative_inference: true
+  invent_exact_specs: false
+  invent_certifications: false
+  invent_awards: false
+  invent_test_results: false
+  invent_brand_partnerships: false
