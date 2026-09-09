@@ -1,42 +1,89 @@
 # Cloudflare Deployment
 
-## Initial architecture
+## Purpose
 
-Use **Cloudflare Pages** as a static asset origin. Keep the first stage deliberately simple: no R2, Cloudflare Images, database, Worker application, or image-processing pipeline.
+Cloudflare Pages is only the public image origin for product reference images.
 
-GitHub remains the source of truth; Cloudflare publishes only the `public/` directory and provides stable image URLs for ChatGPT / DetailFlow.
+GitHub remains the source of truth for product directories, manuals, datasheets, metadata, prompts, and repository documentation.
 
-## Target
+## Target configuration
 
 - Repository: `licat233/product-assets`
 - Cloudflare account: Licat personal account
+- Zone: `licat.xyz`
 - Pages project: `product-assets`
 - Production branch: `main`
 - Framework preset: None
-- Build command: none
-- Output directory: `public`
+- Build command: `sh scripts/build-public.sh`
+- Output directory: `dist`
 - Custom domain: `assets.licat.xyz`
 
-## Expected URL
+## Source-to-public mapping
 
-`https://assets.licat.xyz/products/rechargeable-led-sensor-light/hero-01.jpg`
+Source:
 
-## Public/private boundary
+```text
+products/<product-slug>/images/<filename>
+```
 
-Only `public/` should be served by the Pages deployment. Product metadata under `products/`, prompts, docs, and repository rules are repository content and must not accidentally become paths on `assets.licat.xyz`.
+Published URL:
 
-The repository's GitHub visibility is managed separately from the Cloudflare deployment and is not changed by this setup.
+```text
+https://assets.licat.xyz/products/<product-slug>/images/<filename>
+```
 
-## Headers
+The build script copies only product image files into `dist/`. It does not publish:
 
-`public/_headers` configures permissive CORS for product images and asks search engines not to index the asset origin.
+- `product.md`
+- `manifest.yaml`
+- `docs/`
+- manuals or datasheets
+- repository documentation
+- prompts
+- agent rules
+
+## Why a build step exists
+
+Every product must remain self-contained in GitHub. Maintaining a second committed `public/products/...` copy would duplicate source images and eventually create drift.
+
+`scripts/build-public.sh` generates the public image tree during deployment instead.
+
+This keeps the architecture simple while preserving a single authoritative image source.
+
+## Scope limits
+
+Do not add the following unless a real need appears later and is explicitly approved:
+
+- R2
+- Cloudflare Images
+- Workers application code
+- database
+- CMS
+- image transformation pipeline
+- framework dependencies
+
+## Headers and indexing
+
+Files under `static/` are copied to the root of the generated `dist/` output.
+
+`static/_headers` should:
+
+- allow cross-origin image retrieval
+- discourage indexing of the asset origin
+
+`static/robots.txt` should disallow crawling.
 
 ## Acceptance tests
 
-1. `https://assets.licat.xyz/` returns the asset-origin landing page.
-2. A JPG URL returns HTTP 200 with an image content type.
-3. A PNG/JPG detail-reference URL returns HTTP 200 with an image content type.
-4. `Access-Control-Allow-Origin: *` is present for `/products/*`.
-5. `https://assets.licat.xyz/products/rechargeable-led-sensor-light/product.md` does not expose repository metadata.
+After deployment:
+
+1. `https://assets.licat.xyz/` returns HTTP 200.
+2. At least one published product image returns HTTP 200 with the correct image content type.
+3. `Access-Control-Allow-Origin: *` is present for `/products/*`.
+4. A source metadata path such as `/products/<slug>/product.md` is not published.
+5. A source document path such as `/products/<slug>/docs/user-manual.pdf` is not published.
 6. `robots.txt` is reachable and disallows crawling.
 7. Existing services under `licat.xyz` remain unchanged.
+8. Native Git auto-deploy is enabled for `main`.
+
+Before binding `assets.licat.xyz`, check that the hostname is not already used by another service. Never overwrite an existing DNS/service binding without explicit approval.
