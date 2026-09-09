@@ -7,7 +7,6 @@ const distRoot = path.join(repoRoot, 'dist');
 
 const imageExtensions = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.svg', '.avif']);
 const videoExtensions = new Set(['.mp4', '.webm', '.mov']);
-const publicExtensions = new Set([...imageExtensions, ...videoExtensions]);
 
 function escapeHtml(value) {
   return String(value)
@@ -55,31 +54,35 @@ function encodePathSegment(value) {
   return encodeURIComponent(value).replaceAll('%2F', '/');
 }
 
-function assetUrl(slug, filename) {
-  return `/products/${encodePathSegment(slug)}/images/${encodePathSegment(filename)}`;
+function publicUrl(slug, folder, filename) {
+  return `/products/${encodePathSegment(slug)}/${folder}/${encodePathSegment(filename)}`;
 }
 
-function collectMedia(slug, productDir) {
-  const imageDir = path.join(productDir, 'images');
-  if (!fs.existsSync(imageDir)) return [];
+function collectFiles(slug, productDir, folder) {
+  const dir = path.join(productDir, folder);
+  if (!fs.existsSync(dir)) return [];
 
-  return fs.readdirSync(imageDir, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && entry.name !== '.gitkeep')
+  return fs.readdirSync(dir, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && entry.name !== '.gitkeep' && entry.name !== '.DS_Store')
     .map((entry) => {
       const extension = path.extname(entry.name).toLowerCase();
-      if (!publicExtensions.has(extension)) return null;
-      const sourcePath = path.join(imageDir, entry.name);
+      const sourcePath = path.join(dir, entry.name);
       const stat = fs.statSync(sourcePath);
+      const type = imageExtensions.has(extension)
+        ? 'image'
+        : videoExtensions.has(extension)
+          ? 'video'
+          : 'document';
       return {
         name: entry.name,
         extension,
-        type: imageExtensions.has(extension) ? 'image' : 'video',
+        type,
+        folder,
         size: stat.size,
-        url: assetUrl(slug, entry.name),
+        url: publicUrl(slug, folder, entry.name),
         sourcePath,
       };
     })
-    .filter(Boolean)
     .sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'));
 }
 
@@ -91,14 +94,20 @@ function preferredCover(media) {
     ?? null;
 }
 
-function renderMediaCard(item) {
+function renderFileCard(item) {
   const name = escapeHtml(item.name);
   const url = escapeHtml(item.url);
-  const extension = escapeHtml(item.extension.slice(1).toUpperCase());
+  const extension = escapeHtml((item.extension || '').slice(1).toUpperCase() || 'FILE');
   const size = escapeHtml(formatBytes(item.size));
-  const preview = item.type === 'image'
-    ? `<img src="${url}" alt="${name}" loading="lazy" />`
-    : `<video src="${url}" controls preload="metadata"></video>`;
+
+  let preview;
+  if (item.type === 'image') {
+    preview = `<img src="${url}" alt="${name}" loading="lazy" />`;
+  } else if (item.type === 'video') {
+    preview = `<video src="${url}" controls preload="metadata"></video>`;
+  } else {
+    preview = `<div class="document-preview"><strong>${extension}</strong><span>Source document</span></div>`;
+  }
 
   return `
         <article class="file-card">
@@ -111,13 +120,30 @@ function renderMediaCard(item) {
         </article>`;
 }
 
+function renderSection(title, note, items) {
+  const cards = items.length > 0
+    ? items.map(renderFileCard).join('\n')
+    : '<div class="empty-state">No files are available in this section yet.</div>';
+
+  return `
+    <section class="asset-section">
+      <div class="section-heading">
+        <div>
+          <h2>${escapeHtml(title)}</h2>
+          <p>${escapeHtml(note)}</p>
+        </div>
+        <span>${items.length} ${items.length === 1 ? 'file' : 'files'}</span>
+      </div>
+      <div class="file-grid">${cards}
+      </div>
+    </section>`;
+}
+
 function renderProductPage(product) {
   const title = escapeHtml(product.name);
   const slug = escapeHtml(product.slug);
-  const fileCards = product.media.length > 0
-    ? product.media.map(renderMediaCard).join('\n')
-    : '<div class="empty-state">No public media files are available for this product yet.</div>';
   const githubUrl = `https://github.com/licat233/product-assets/tree/main/products/${encodePathSegment(product.slug)}`;
+  const total = product.documents.length + product.media.length;
 
   return `<!doctype html>
 <html lang="en">
@@ -141,11 +167,11 @@ function renderProductPage(product) {
         <h1>${title}</h1>
         <p class="slug">${slug}</p>
       </div>
-      <div class="count-badge">${product.media.length} public ${product.media.length === 1 ? 'file' : 'files'}</div>
+      <div class="count-badge">${total} public ${total === 1 ? 'file' : 'files'}</div>
     </section>
-    <p class="scope-note">This browser exposes published visual assets from <code>images/</code>. Product metadata and source documents remain outside the public asset origin.</p>
-    <section class="file-grid">${fileCards}
-    </section>
+    <p class="scope-note">This browser exposes original source documents from <code>docs/</code> and authoritative visual references from <code>images/</code> so ChatGPT and other approved tools can retrieve binary evidence directly. Product metadata files remain available from GitHub only.</p>
+    ${renderSection('Source documents', 'Manuals, datasheets, drawings and other original evidence.', product.documents)}
+    ${renderSection('Visual references', 'Authoritative product images and reference videos.', product.media)}
   </main>
 </body>
 </html>`;
@@ -156,6 +182,7 @@ function renderProductCard(product) {
   const slug = escapeHtml(product.slug);
   const href = `/products/${encodePathSegment(product.slug)}/`;
   const cover = preferredCover(product.media);
+  const total = product.documents.length + product.media.length;
   const preview = cover
     ? `<img src="${escapeHtml(cover.url)}" alt="${title}" loading="lazy" />`
     : '<div class="folder-icon" aria-hidden="true">▱</div>';
@@ -166,7 +193,7 @@ function renderProductCard(product) {
         <div class="product-info">
           <h2>${title}</h2>
           <p>${slug}</p>
-          <span>${product.media.length} ${product.media.length === 1 ? 'file' : 'files'}</span>
+          <span>${product.documents.length} docs · ${product.media.length} media · ${total} total</span>
         </div>
       </a>`;
 }
@@ -195,7 +222,7 @@ function renderIndex(products) {
       <div>
         <p class="eyebrow">Asset browser</p>
         <h1>Products</h1>
-        <p class="intro">Browse the public visual reference files published from the product source repository.</p>
+        <p class="intro">Browse source documents and authoritative visual references published from the product source repository.</p>
       </div>
       <div class="count-badge">${products.length} ${products.length === 1 ? 'product' : 'products'}</div>
     </section>
@@ -239,7 +266,8 @@ const products = fs.existsSync(productsRoot)
           slug: entry.name,
           name: readProductName(productDir, entry.name),
           productDir,
-          media: collectMedia(entry.name, productDir),
+          documents: collectFiles(entry.name, productDir, 'docs'),
+          media: collectFiles(entry.name, productDir, 'images'),
         };
       })
       .sort((a, b) => a.name.localeCompare(b.name, 'en'))
@@ -247,11 +275,15 @@ const products = fs.existsSync(productsRoot)
 
 for (const product of products) {
   const productDist = path.join(distRoot, 'products', product.slug);
-  const mediaDist = path.join(productDist, 'images');
-  fs.mkdirSync(mediaDist, { recursive: true });
+  fs.mkdirSync(productDist, { recursive: true });
 
-  for (const item of product.media) {
-    fs.copyFileSync(item.sourcePath, path.join(mediaDist, item.name));
+  for (const folder of ['docs', 'images']) {
+    const items = folder === 'docs' ? product.documents : product.media;
+    const targetDir = path.join(productDist, folder);
+    fs.mkdirSync(targetDir, { recursive: true });
+    for (const item of items) {
+      fs.copyFileSync(item.sourcePath, path.join(targetDir, item.name));
+    }
   }
 
   fs.writeFileSync(path.join(productDist, 'index.html'), renderProductPage(product), 'utf8');
@@ -265,7 +297,13 @@ fs.writeFileSync(
       slug: product.slug,
       name: product.name,
       url: `/products/${encodePathSegment(product.slug)}/`,
-      files: product.media.map((item) => ({
+      documents: product.documents.map((item) => ({
+        name: item.name,
+        type: item.type,
+        size: item.size,
+        url: item.url,
+      })),
+      media: product.media.map((item) => ({
         name: item.name,
         type: item.type,
         size: item.size,
