@@ -1,0 +1,91 @@
+schema_version: 1
+
+product_id: rechargeable-led-sensor-light
+product_name: Rechargeable LED Sensor Light
+category: cabinet-furniture-lighting
+language: en
+market: international-b2b
+canonical_product_url: https://www.armorlighting.com/product/rechargeable-led-sensor-light-for-cabinets-and-furniture/
+
+facts_source: product.md
+assets_base_url: https://assets.licat.xyz/products/rechargeable-led-sensor-light
+
+images:
+  - id: hero-01
+    role: primary_product_reference
+    path: public/products/rechargeable-led-sensor-light/hero-01.jpg
+    url: https://assets.licat.xyz/products/rechargeable-led-sensor-light/hero-01.jpg
+    notes: Three-quarter full product view.
+
+  - id: hero-02
+    role: alternate_product_reference
+    path: public/products/rechargeable-led-sensor-light/hero-02.jpg
+    url: https://assets.licat.xyz/products/rechargeable-led-sensor-light/hero-02.jpg
+    notes: Alternate three-quarter view with control end visible.
+
+  - id: front-view
+    role: front_reference
+    path: public/products/rechargeable-led-sensor-light/front-view.jpg
+    url: https://assets.licat.xyz/products/rechargeable-led-sensor-light/front-view.jpg
+    notes: Front diffuser and overall face.
+
+  - id: rear-view
+    role: rear_reference
+    path: public/products/rechargeable-led-sensor-light/rear-view.jpg
+    url: https://assets.licat.xyz/products/rechargeable-led-sensor-light/rear-view.jpg
+    notes: Rear housing and printed marking placement.
+
+  - id: side-profile
+    role: side_reference
+    path: public/products/rechargeable-led-sensor-light/side-profile.jpg
+    url: https://assets.licat.xyz/products/rechargeable-led-sensor-light/side-profile.jpg
+    notes: Side profile reference.
+
+  - id: thickness-profile
+    role: thickness_reference
+    path: public/products/rechargeable-led-sensor-light/thickness-profile.jpg
+    url: https://assets.licat.xyz/products/rechargeable-led-sensor-light/thickness-profile.jpg
+    notes: Visual thickness/profile reference; no numeric dimension is confirmed.
+
+  - id: usb-c-switch
+    role: control_port_reference
+    path: public/products/rechargeable-led-sensor-light/usb-c-switch.png
+    url: https://assets.licat.xyz/products/rechargeable-led-sensor-light/usb-c-switch.png
+    notes: Auto / ON / OFF slider and USB Type-C port; high-priority structural reference.
+
+  - id: sensor-control
+    role: front_control_reference
+    path: public/products/rechargeable-led-sensor-light/sensor-control.jpg
+    url: https://assets.licat.xyz/products/rechargeable-led-sensor-light/sensor-control.jpg
+    notes: Circular marked area near front end.
+
+  - id: rear-markings-closeup
+    role: markings_reference
+    path: public/products/rechargeable-led-sensor-light/rear-markings-closeup.jpg
+    url: https://assets.licat.xyz/products/rechargeable-led-sensor-light/rear-markings-closeup.jpg
+    notes: CCT, charging current, rated power, and visible compliance symbols.
+
+  - id: frameless-detail
+    role: construction_detail_reference
+    path: public/products/rechargeable-led-sensor-light/frameless-detail.jpg
+    url: https://assets.licat.xyz/products/rechargeable-led-sensor-light/frameless-detail.jpg
+    notes: Close-up of diffuser edge / frameless appearance.
+
+detailflow:
+  screens: 8
+  final_slice_ratio: "9:21"
+  visible_copy_language: en
+  approval_gates: 2
+  require_input_analysis: true
+  require_blueprint_before_generation: true
+  require_early_two_slice_preview: true
+  require_final_concat_audit: true
+
+claims_policy:
+  confirmed_facts_source: product.md
+  allow_reasonable_creative_inference: true
+  invent_exact_specs: false
+  invent_certifications: false
+  invent_awards: false
+  invent_test_results: false
+  invent_brand_partnerships: false
