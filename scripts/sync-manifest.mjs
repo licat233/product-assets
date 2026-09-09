@@ -8,7 +8,6 @@ const githubRawBase = 'https://raw.githubusercontent.com/licat233/product-assets
 
 const imageExtensions = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.svg', '.avif']);
 const videoExtensions = new Set(['.mp4', '.webm', '.mov']);
-const publicExtensions = new Set([...imageExtensions, ...videoExtensions]);
 
 function yamlString(value) {
   return JSON.stringify(String(value));
@@ -69,6 +68,10 @@ function imageRole(file) {
   return 'product_reference';
 }
 
+function publicAssetUrl(slug, folder, filename) {
+  return `${assetOrigin}/products/${encodeURIComponent(slug)}/${folder}/${encodeURIComponent(filename)}`;
+}
+
 function renderManifest(slug, productDir) {
   const identity = readProductIdentity(productDir, slug);
   const documents = listFiles(path.join(productDir, 'docs'));
@@ -78,7 +81,7 @@ function renderManifest(slug, productDir) {
     '# AUTO-GENERATED FILE — DO NOT EDIT MANUALLY.',
     `# Run: bash scripts/sync-manifest.sh ${slug}`,
     '',
-    'schema_version: 3',
+    'schema_version: 4',
     '',
     `product_id: ${yamlString(slug)}`,
     `product_name: ${yamlString(identity.name)}`,
@@ -92,6 +95,8 @@ function renderManifest(slug, productDir) {
   lines.push(
     '',
     'summary_file: product.md',
+    `public_product_base_url: ${yamlString(`${assetOrigin}/products/${encodeURIComponent(slug)}`)}`,
+    `documents_base_url: ${yamlString(`${assetOrigin}/products/${encodeURIComponent(slug)}/docs`)}`,
     `assets_base_url: ${yamlString(`${assetOrigin}/products/${encodeURIComponent(slug)}/images`)}`,
     '',
   );
@@ -106,6 +111,7 @@ function renderManifest(slug, productDir) {
       lines.push(`    file_type: ${yamlString(file.extension ? file.extension.slice(1) : 'file')}`);
       lines.push('    authority: authoritative');
       lines.push(`    source_url: ${yamlString(`${githubRawBase}/products/${encodeRepoPath(slug)}/${encodeRepoPath(relativePath)}`)}`);
+      lines.push(`    public_url: ${yamlString(publicAssetUrl(slug, 'docs', file.name))}`);
     }
   }
 
@@ -127,10 +133,7 @@ function renderManifest(slug, productDir) {
       lines.push(`    media_type: ${yamlString(mediaType)}`);
       lines.push(`    role: ${yamlString(imageRole(file))}`);
       lines.push(`    source_url: ${yamlString(`${githubRawBase}/products/${encodeRepoPath(slug)}/${encodeRepoPath(relativePath)}`)}`);
-
-      if (publicExtensions.has(file.extension)) {
-        lines.push(`    public_url: ${yamlString(`${assetOrigin}/products/${encodeURIComponent(slug)}/images/${encodeURIComponent(file.name)}`)}`);
-      }
+      lines.push(`    public_url: ${yamlString(publicAssetUrl(slug, 'images', file.name))}`);
     }
   }
 
@@ -158,6 +161,7 @@ function renderManifest(slug, productDir) {
     '  final_slice_ratio: "9:21"',
     '  visible_copy_language: en',
     '  approval_gates: 2',
+    '  require_capability_preflight: true',
     '  require_input_analysis: true',
     '  require_source_document_review: true',
     '  require_blueprint_before_generation: true',
