@@ -2,11 +2,54 @@
 
 这份文档解决一个最常见的问题：
 
-> 以后新开一个 ChatGPT 会话时，到底应该发什么指令，才能让 ChatGPT 正确读取 `licat233/product-assets` 中的产品资料？
+> 新开一个 ChatGPT 会话时，怎样让它真正读取 `licat233/product-assets` 中的产品资料，并且能够继续完成 DetailFlow 图像生成，而不是做到 Gate 1 后才发现二进制资料或图像生成能力不可用？
 
 ---
 
-## 1. 最推荐的 DetailFlow 启动指令
+## 1. 先理解两条读取通道
+
+这个仓库现在刻意把“文本 metadata”和“二进制证据”分开读取。
+
+```text
+GitHub
+→ product.md
+→ manifest.yaml
+→ 文本 metadata
+
+assets.licat.xyz
+→ PDF / Datasheet / 尺寸图
+→ JPG / PNG / WebP
+→ 产品参考视频
+→ 其它二进制证据
+```
+
+原因是：GitHub 连接器虽然可以发现仓库里的 PDF / JPG，但有些 ChatGPT 会话只能拿到 base64 或文件索引，无法把这些二进制内容完整送入文档 / 视觉检查链路。
+
+因此，`manifest.yaml` 会给 `docs/` 和 `images/` 中的文件自动生成 `public_url`，ChatGPT 对二进制证据应优先使用这些 `assets.licat.xyz` URL。
+
+---
+
+## 2. Approval Gate 1 之前必须做 Capability Preflight
+
+**不要一上来就做 8-screen Blueprint。**
+
+先确认当前会话真的能走完整个 DetailFlow：
+
+1. 当前会话具备图像生成能力。
+2. 能从 GitHub 读取 `product.md`。
+3. 能从 GitHub 读取 `manifest.yaml`。
+4. 能通过 manifest 中的 `assets.licat.xyz` `public_url` 检查至少一份原始文档。
+5. 能通过 manifest 中的 `assets.licat.xyz` `public_url` 视觉检查至少一张真实产品图。
+
+如果任意一项失败：
+
+> **立即停止，不输出 Blueprint，不进入 Approval Gate 1。**
+
+这样可以避免 Blueprint 已经确认，才发现 Visual Master / Screen 01–02 根本无法生成。
+
+---
+
+## 3. 最推荐的 DetailFlow 启动指令
 
 把下面这段复制到新的 ChatGPT 会话，只需要把 `<product-slug>` 替换成真实产品 slug。
 
@@ -19,64 +62,47 @@ https://github.com/AJbeckliy/detail-flow
 Product repository：
 https://github.com/licat233/product-assets
 
-开始任务前：
+在 Approval Gate 1 之前，先做 capability preflight：
+
+1. 确认当前会话具备图像生成能力。
+2. 从 GitHub 读取 products/<product-slug>/product.md。
+3. 从 GitHub 读取 products/<product-slug>/manifest.yaml。
+4. 对 PDF / 图片 / 视频等二进制文件，不要依赖 GitHub connector/base64；优先使用 manifest 中 assets.licat.xyz 的 public_url。
+5. 至少成功检查一份原始文档。
+6. 至少成功视觉检查一张真实产品图片。
+
+如果以上任意一项失败，请立即停止，不要先输出 Blueprint，也不要进入 Approval Gate 1，直接告诉我当前会话缺少什么能力。
+
+如果 preflight 通过：
+
 1. 先读取并遵循 DetailFlow Skill，尤其是 ecommerce 8-screen product detail page 工作流和两个 approval gates。
-2. 读取 products/<product-slug>/product.md。
-3. 读取 products/<product-slug>/manifest.yaml。
-4. 根据 manifest 阅读与当前任务相关的说明书、Datasheet 和其它权威原始资料。
-5. 检查 manifest 中列出的所有真实产品参考图片。
-6. 必须区分：
+2. 阅读与当前 claim 相关的原始说明书、Datasheet 和其它权威原始资料。
+3. 检查所有权威真实产品参考图片。
+4. 必须区分：
    - 用户明确确认的事实
    - 权威文档支持的事实
    - 图片中可以直接观察到的事实
    - AI 合理推断
    - 未知且不能擅自编造的信息
-7. 精确参数必须回到原始说明书 / Datasheet 核对，不能只依赖 product.md 摘要。
-8. 不得编造参数、认证状态、测试结果、奖项、折扣、合作品牌或其它没有证据支持的商业声明。
-9. 所有面向海外客户的可见商业文案默认使用英文。
-10. 不要收到资料后立即生成最终详情图。
-11. 第一阶段先输出完整的 8-screen Detail Page Blueprint，等待我确认后再继续。
-12. 严格遵守 DetailFlow 的两个 approval gates。
+5. 精确参数必须回到原始说明书 / Datasheet 核对，不能只依赖 product.md 摘要。
+6. 不得编造参数、认证状态、测试结果、奖项、折扣、合作品牌或其它没有证据支持的商业声明。
+7. 所有面向海外客户的可见商业文案默认使用英文。
+8. 第一阶段先输出完整的 8-screen Detail Page Blueprint。
+9. 严格遵守 DetailFlow 的两个 approval gates。
 ```
 
 ---
 
-## 2. 简短版
-
-当 ChatGPT 已经熟悉 DetailFlow 和这个仓库时，可以使用：
+## 4. 简短版
 
 ```text
 Use DetailFlow for `<product-slug>` from `licat233/product-assets`.
-Read product.md, manifest.yaml, the relevant original source documents, and all authoritative product images before planning.
-Create an English overseas-market 8-screen ecommerce detail page and follow both DetailFlow approval gates strictly.
+Run the capability preflight before Gate 1. Use GitHub for product.md/manifest and assets.licat.xyz public_url links for binary evidence. If document/image inspection or image generation is unavailable, stop before the blueprint. Otherwise follow both DetailFlow approval gates strictly.
 ```
 
 ---
 
-## 3. 只做产品资料分析
-
-如果当前目的不是出详情页，而只是先理解产品，可以发：
-
-```text
-请分析 `licat233/product-assets` 中的产品 `<product-slug>`。
-
-先读取 product.md 和 manifest.yaml，再阅读 manifest 中相关的原始说明书 / Datasheet，并检查所有真实产品参考图。
-
-请分别输出：
-1. 用户明确确认的信息
-2. 权威文档支持的产品参数和功能
-3. 图片中可直接观察到的事实
-4. 合理但尚未确认的推断
-5. 未知 / 禁止擅自声称的信息
-
-精确技术参数必须注明来源，不要编造缺失信息。
-```
-
----
-
-## 4. ChatGPT 正确的读取顺序
-
-对于产品 `<product-slug>`：
+## 5. ChatGPT 正确的读取顺序
 
 ```text
 GitHub product directory
@@ -85,9 +111,9 @@ product.md
         ↓
 manifest.yaml
         ↓
-原始说明书 / Datasheet / 权威资料
+manifest public_url
         ↓
-真实产品图片
+assets.licat.xyz 原始 PDF / 图片 / 视频
         ↓
 证据分类
         ↓
@@ -96,23 +122,17 @@ DetailFlow Blueprint
 
 ChatGPT 不应该直接把 `product.md` 当成唯一事实来源。
 
-`product.md` 是为了快速理解产品，而精确参数必须在需要时核对原始证据。
+精确参数必须在需要时核对原始文档。
 
 ---
 
-## 5. 证据分类
+## 6. 证据分类
 
 任何最终用于详情页的产品信息，都应该落入以下类别之一。
 
 ### A. 用户明确确认 / 修正
 
-例如：
-
-```text
-用户确认该产品工作电压为 DC24V，而旧资料中的 12V 已过时。
-```
-
-这类明确修正的优先级最高，但最好在 `product.md` 中记录来源和日期。
+优先级最高，但最好在 `product.md` 中记录来源和日期。
 
 ### B. 权威文档支持的事实
 
@@ -123,8 +143,6 @@ Rated power: 2W MAX
 Source: user-manual.pdf, p.3
 ```
 
-这类事实可以作为技术型商业文案依据。
-
 ### C. 图片中直接可观察事实
 
 例如：
@@ -133,41 +151,23 @@ Source: user-manual.pdf, p.3
 产品具有银色长条形外壳。
 ```
 
-但不能仅凭外观看到一个圆形结构，就直接声称它一定是 PIR Sensor。
+不能仅凭外观看到一个圆形结构，就声称它一定是 PIR Sensor。
 
 ### D. 合理推断
 
 可以用于创意策划，但不能包装成精确事实。
 
-例如：
-
-```text
-纤薄外形适合在柜体或货架空间中进行视觉整合。
-```
-
 ### E. Unknown / Do not claim
 
-没有证据的参数必须明确保持未知。
-
-例如：
-
-```text
-battery capacity: unknown
-sensor range: unknown
-IP rating: unknown
-```
-
-DetailFlow 不得擅自补全这些参数。
+没有证据的参数必须保持未知。
 
 ---
 
-## 6. DetailFlow 固定流程
-
-DetailFlow 的详情页任务不是“拿到产品图以后马上生成八张图”。
-
-标准流程是：
+## 7. DetailFlow 固定流程
 
 ```text
+Capability Preflight
+        ↓
 读取输入资料
         ↓
 事实与证据分析
@@ -193,69 +193,43 @@ Approval Gate 2
 
 ---
 
-## 7. 如果资料缺失怎么办
+## 8. 如果资料无法访问怎么办
 
-如果 manifest 中列出的文件：
+如果 manifest 中的 `public_url`：
 
 - 404
-- 无法访问
-- 文件缺失
+- 无法打开
+- 文件类型错误
 - 内容和 manifest 不匹配
 
-ChatGPT 应该把对应证据视为不可用。
+ChatGPT 应把对应证据视为不可用。
 
-禁止：
+禁止仅凭文件名推断文件内容。
 
-```text
-因为 manifest 中有文件名 user-manual.pdf
-→ 就假设说明书一定支持某个参数
-```
-
-文件名不是事实证据。
+如果是 GitHub connector 只能返回 base64，但 `public_url` 可以访问，则应改用 `assets.licat.xyz`，而不是要求用户重新上传同一份资料。
 
 ---
 
-## 8. 新产品入库后推荐操作
+## 9. 如果当前会话没有图像生成能力
 
-产品资料准备完成后，建议先让 ChatGPT 做一次“Evidence Audit”，再进入 DetailFlow。
+这不是产品仓库能够修复的问题。
 
-例如：
+DetailFlow 的 Visual Master、Screen 01–08 都依赖当前 ChatGPT 会话实际具备图像生成能力。
+
+因此正确行为是：
 
 ```text
-请先对 `licat233/product-assets` 中的 `<product-slug>` 做一次 DetailFlow readiness audit。
-
-读取 product.md、manifest.yaml、相关原始说明书 / Datasheet 和所有真实产品图。
-
-检查：
-- manifest 是否和真实文件一致
-- product.md 是否有无来源的精确参数
-- 是否存在冲突参数
-- 是否存在不应声称的认证或功能
-- 是否有足够图片支持 8-screen DetailFlow
-- 哪些 claim seeds 最可靠
-
-暂时不要生成详情图。
+Preflight 检查到无法生成图片
+→ 立即停止
+→ 不做 Blueprint
+→ 不进入 Gate 1
+→ 换到具备图像生成能力的 ChatGPT 会话重新开始
 ```
 
-这一步很适合第一款新产品正式入库时使用。
-
----
-
-## 9. 仓库访问失败时
-
-如果 ChatGPT 无法读取 GitHub 内容，先确认：
-
-1. 仓库 URL 是否正确：`https://github.com/licat233/product-assets`
-2. 产品 slug 是否正确。
-3. `products/<slug>/product.md` 是否实际存在。
-4. ChatGPT 当前环境是否具有访问该 GitHub 仓库的能力。
-
-不要因为访问失败就要求用户重新上传所有资料；先检查仓库路径和连接状态。
+不要用文字、占位图或脚本假装完成 DetailFlow 图像阶段。
 
 ---
 
 ## 10. 一句话记忆
 
-以后只需要记住：
-
-> **告诉 ChatGPT 产品 slug，让它先读 GitHub 的 product.md + manifest，再读原始资料和真实图片，最后才进入 DetailFlow。**
+> **先检查当前会话能不能生成图、能不能读原始 PDF、能不能看真实产品图；全部通过后，再进入 DetailFlow。GitHub 读 metadata，assets.licat.xyz 读二进制原件。**
