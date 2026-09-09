@@ -81,8 +81,8 @@ It inventories:
 - actual files present in `docs/`
 - actual files present in `images/`
 - file/media types
-- source URLs
-- public `assets.licat.xyz` URLs for supported visual media
+- GitHub source URLs
+- stable `assets.licat.xyz` `public_url` values for documents and visual references
 - evidence priority
 - claims policy
 - DetailFlow defaults
@@ -142,35 +142,37 @@ When evidence conflicts, resolve it in this order:
 5. Reasonable creative inference.
 6. Unknown information remains unknown.
 
-## DetailFlow readiness
+## DetailFlow readiness and capability preflight
 
-Before DetailFlow planning starts, ChatGPT should:
+Before DetailFlow produces the 8-screen blueprint, the ChatGPT session should first verify that it can:
 
-1. Read `product.md`.
-2. Read the generated `manifest.yaml`.
-3. Read the authoritative source documents listed in the manifest that are relevant to the requested claims.
-4. Inspect the authoritative source media.
-5. Classify facts by evidence level.
-6. Build the 8-screen blueprint only after the evidence review.
+1. read `product.md`;
+2. read the generated `manifest.yaml`;
+3. inspect at least one original source document through an `assets.licat.xyz` `public_url`;
+4. visually inspect at least one authoritative product image through an `assets.licat.xyz` `public_url`;
+5. generate images in the current session.
 
-The presence of a product folder does not mean every possible claim is approved. Unsupported values must remain in the unknown/do-not-claim category.
+If any capability is unavailable, stop before Approval Gate 1 rather than producing a blueprint that cannot proceed to the Visual Master stage.
 
-## Public visual-asset publishing
+After the preflight passes, ChatGPT should read the authoritative source documents relevant to the requested claims, inspect the authoritative source media, classify facts by evidence level, and only then build the 8-screen blueprint.
 
-Source media stay in `products/<slug>/images/`.
+## Public binary publishing
 
-Cloudflare Pages publishes supported visual media at:
+Cloudflare Pages publishes original binary evidence at stable URLs:
 
 ```text
+https://assets.licat.xyz/products/<slug>/docs/<filename>
 https://assets.licat.xyz/products/<slug>/images/<filename>
 ```
 
-It also generates a static browser at:
+The repository itself is public, so these URLs provide a stable retrieval path for already-public source files. Do not place confidential or customer-private files in this repository.
+
+The static browser is generated at:
 
 ```text
 https://assets.licat.xyz/
 ```
 
-Product metadata and `docs/` source files remain outside the public asset origin.
+Product metadata (`product.md`, `manifest.yaml`) remains available from GitHub rather than the public asset origin.
 
-Do not commit a duplicated public copy of the same media.
+Do not commit a duplicated public copy of the same binary asset; `dist/` is generated at build time.
