@@ -5,6 +5,7 @@ rm -rf dist
 mkdir -p dist/products
 
 cp static/index.html dist/index.html
+cp static/404.html dist/404.html
 cp static/robots.txt dist/robots.txt
 cp static/_headers dist/_headers
 
