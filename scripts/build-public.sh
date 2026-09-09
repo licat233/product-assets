@@ -4,25 +4,16 @@ set -eu
 rm -rf dist
 mkdir -p dist/products
 
-cp static/index.html dist/index.html
 cp static/404.html dist/404.html
 cp static/robots.txt dist/robots.txt
 cp static/_headers dist/_headers
+cp static/browser.css dist/browser.css
 
-for image_dir in products/*/images; do
-  [ -d "$image_dir" ] || continue
+if ! command -v node >/dev/null 2>&1; then
+  echo 'Error: Node.js is required to generate the static asset browser.' >&2
+  exit 1
+fi
 
-  product_dir=$(dirname "$image_dir")
-  slug=$(basename "$product_dir")
-  target="dist/products/$slug/images"
-  mkdir -p "$target"
+node scripts/generate-asset-browser.mjs
 
-  find "$image_dir" -maxdepth 1 -type f \( \
-    -iname '*.jpg' -o \
-    -iname '*.jpeg' -o \
-    -iname '*.png' -o \
-    -iname '*.webp' \
-  \) -exec cp {} "$target"/ \;
-done
-
-printf '%s\n' 'Public product-image output generated in dist/'
+printf '%s\n' 'Public product asset browser generated in dist/'
