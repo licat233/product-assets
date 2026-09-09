@@ -106,8 +106,8 @@ The script scans the actual product directory and generates:
 - document inventory
 - image/video inventory
 - media/file types
-- source URLs
-- public `assets.licat.xyz` URLs for supported visual media
+- GitHub source URLs
+- stable `assets.licat.xyz` `public_url` values for source documents and visual references
 - product identity copied from `product.md`
 - DetailFlow defaults and claims policy
 
@@ -121,13 +121,22 @@ If Codex or another Agent is onboarding the product, `AGENTS.md` requires the Ag
 
 ## 6. Validate before use
 
-A product is DetailFlow-ready when:
+A product is source-ready when:
 
 - `product.md` exists and reflects the available evidence.
 - `manifest.yaml` has been regenerated after the latest file changes.
 - source documents required for exact technical claims are present, or their absence is explicitly documented.
 - authoritative product reference media are present.
 - unknown claims are listed instead of guessed.
+
+A ChatGPT session is DetailFlow-ready only after a capability preflight confirms that the session can:
+
+- read `product.md` and `manifest.yaml`;
+- inspect an original source document through an `assets.licat.xyz` `public_url`;
+- visually inspect an authoritative product image through an `assets.licat.xyz` `public_url`;
+- generate images in the current session.
+
+If the session fails this preflight, stop before Approval Gate 1.
 
 ## 7. Commit
 
@@ -139,4 +148,4 @@ product: add <product-slug> source assets
 
 Commit the generated `manifest.yaml` together with the source files and `product.md`.
 
-Cloudflare publishing is generated from the source `images/` directory by the repository build scripts. Do not duplicate media into another committed public directory.
+Cloudflare publishing is generated from the source `docs/` and `images/` directories by the repository build scripts. Do not duplicate binaries into another committed public directory.
