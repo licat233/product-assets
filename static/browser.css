@@ -103,9 +103,7 @@ h1 {
   font-size: 13px;
 }
 
-.toolbar {
-  margin: 0 0 24px;
-}
+.toolbar { margin: 0 0 24px; }
 
 .search-box {
   display: flex;
@@ -182,9 +180,7 @@ h1 {
   transform: rotate(90deg);
 }
 
-.product-info {
-  padding: 16px;
-}
+.product-info { padding: 16px; }
 
 .product-info h2 {
   margin: 0 0 7px;
@@ -215,7 +211,7 @@ h1 {
 .breadcrumb a { text-decoration: none; }
 
 .scope-note {
-  margin: -8px 0 24px;
+  margin: -8px 0 28px;
   padding: 12px 14px;
   border-left: 3px solid #c9c9c3;
   background: #efefec;
@@ -225,6 +221,29 @@ h1 {
 .scope-note code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   color: #333;
+}
+
+.asset-section { margin-top: 34px; }
+
+.section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+
+.section-heading h2 {
+  margin: 0 0 5px;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+
+.section-heading p,
+.section-heading span {
+  margin: 0;
+  color: #777;
+  font-size: 13px;
 }
 
 .file-grid {
@@ -238,7 +257,27 @@ h1 {
 .preview {
   aspect-ratio: 4 / 3;
   border-bottom: 1px solid #ecece8;
+  text-decoration: none;
 }
+
+.document-preview {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #666;
+}
+
+.document-preview strong {
+  font-size: 28px;
+  letter-spacing: -0.03em;
+  color: #333;
+}
+
+.document-preview span { font-size: 12px; }
 
 .file-meta { padding: 14px; }
 
@@ -273,22 +312,20 @@ h1 {
 .hidden { display: none !important; }
 
 @media (max-width: 680px) {
-  .topbar {
-    padding: 0 18px;
-  }
+  .topbar { padding: 0 18px; }
 
   .shell {
     width: min(100% - 28px, 1180px);
     padding-top: 28px;
   }
 
-  .page-heading {
+  .page-heading,
+  .section-heading {
     flex-direction: column;
+    align-items: flex-start;
   }
 
-  .count-badge {
-    align-self: flex-start;
-  }
+  .count-badge { align-self: flex-start; }
 
   .repo-link {
     max-width: 46vw;
