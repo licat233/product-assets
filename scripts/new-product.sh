@@ -74,6 +74,8 @@ for file in "$target/product.md" "$target/manifest.yaml"; do
   mv "$tmp" "$file"
 done
 
+bash "$repo_root/scripts/sync-manifest.sh" "$slug"
+
 cat <<EOF
 Created product scaffold:
   products/$slug/
@@ -84,7 +86,9 @@ Created product scaffold:
 
 Next:
   1. Put manuals, datasheets, and other source documents in docs/.
-  2. Put authoritative real product photos in images/.
+  2. Put authoritative real product photos/videos in images/.
   3. Fill product.md from the source evidence.
-  4. Update manifest.yaml so it lists the files that actually exist.
+  4. Do not edit manifest.yaml manually. Run:
+       bash scripts/sync-manifest.sh $slug
+     after files or product.md change. Agents should do this automatically before commit.
 EOF
