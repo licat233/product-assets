@@ -74,13 +74,13 @@ products/led-sensor-light/
 
 ### 第二步：放入真实资料
 
-把说明书、规格书等放到：
+说明书、规格书等放到：
 
 ```text
 products/led-sensor-light/docs/
 ```
 
-把真实产品图 / 产品参考视频放到：
+真实产品图 / 产品参考视频放到：
 
 ```text
 products/led-sensor-light/images/
@@ -102,7 +102,7 @@ bash scripts/sync-manifest.sh led-sensor-light
 - 图片 / 视频清单
 - 文件类型
 - GitHub 原始文件 URL
-- `assets.licat.xyz` 公开媒体 URL
+- `assets.licat.xyz` 的文档 / 图片 / 视频公开 URL
 - DetailFlow 默认规则
 
 如果同时修改了多款产品，可以直接运行：
@@ -111,55 +111,90 @@ bash scripts/sync-manifest.sh led-sensor-light
 bash scripts/sync-manifest.sh
 ```
 
-它会同步全部产品。
-
-如果由 Codex / Agent 负责入库，仓库根目录的 `AGENTS.md` 已要求 Agent 在提交前自动运行这个同步步骤，因此**用户不应该被要求手工维护 YAML**。
-
-详细流程见：[`docs/ADDING-A-PRODUCT.md`](./docs/ADDING-A-PRODUCT.md)
+如果由 Codex / Agent 负责入库，`AGENTS.md` 已要求 Agent 在提交前自动运行同步，因此**用户不应该被要求手工维护 YAML**。
 
 ---
 
-## 3. assets.licat.xyz 静态资产浏览器
+## 3. assets.licat.xyz：静态产品文件浏览器
 
-Cloudflare Pages 会根据仓库内容自动生成静态产品浏览器：
+Cloudflare Pages 会根据仓库内容自动生成：
 
 ```text
 https://assets.licat.xyz/
 ```
 
-首页显示产品列表；点击产品后可以浏览该产品公开的图片 / 视频文件。
+首页显示产品列表；点击产品后可以看到两类文件：
 
-公开范围只包括 `images/` 中支持的视觉媒体，不会公开：
+```text
+Source documents
+→ docs/ 中的 PDF、规格书、尺寸图等原始资料
 
-- `product.md`
-- `manifest.yaml`
-- `docs/`
-- PDF / Datasheet
-- README / AGENTS 等仓库文件
+Visual references
+→ images/ 中的真实产品图片和参考视频
+```
 
-机器可读公开索引：
+例如：
+
+```text
+https://assets.licat.xyz/products/<product-slug>/
+```
+
+机器可读索引：
 
 ```text
 https://assets.licat.xyz/catalog.json
 ```
 
+### 为什么现在 docs 也发布到 assets.licat.xyz？
+
+这个 GitHub 仓库本身就是 Public，所以 `docs/` 中提交的说明书 / Datasheet 本来已经可以从 GitHub 公开读取。
+
+把同一份二进制文件发布到 `assets.licat.xyz` 的目的不是改变隐私级别，而是给 ChatGPT 一个**稳定、直接的二进制文件 URL**，避免 GitHub 连接器把 PDF / JPG 作为 base64 返回后无法进入文档或视觉检查链路。
+
+仍然不会公开到 asset origin 的内容：
+
+- `product.md`
+- `manifest.yaml`
+- README / AGENTS
+- 仓库内部文档和 prompts
+
+> 不要把客户私有、NDA、密码、凭证或其它机密文件放进这个 Public 仓库。
+
 ---
 
-## 4. ChatGPT 应该怎么读取一款产品
+## 4. ChatGPT 的正确读取方式
 
-对于产品 `<product-slug>`，ChatGPT 应按以下顺序处理：
+不要让 ChatGPT 通过 GitHub 连接器硬读所有二进制文件。
 
-1. 读取 `products/<product-slug>/product.md`。
-2. 读取 `products/<product-slug>/manifest.yaml`。
-3. 根据 manifest 打开与当前任务相关的原始说明书 / Datasheet / 其它权威文档。
-4. 检查 manifest 中列出的真实产品参考图片。
-5. 把信息严格区分为：
-   - 用户明确确认 / 修正的信息
-   - 权威文档明确支持的事实
-   - 产品图片中可直接观察到的事实
+推荐职责分工：
+
+```text
+GitHub
+→ product.md
+→ manifest.yaml
+→ 文本 metadata
+
+assets.licat.xyz
+→ PDF / Datasheet / 尺寸图
+→ JPG / PNG / WebP
+→ 产品参考视频
+→ 其它二进制证据
+```
+
+对于产品 `<product-slug>`，ChatGPT 应该：
+
+1. 从 GitHub 读取 `product.md`。
+2. 从 GitHub 读取 `manifest.yaml`。
+3. 对 PDF / 图片 / 视频等二进制证据，优先使用 manifest 中的 `public_url`。
+4. 核对与当前 claim 相关的原始说明书 / Datasheet。
+5. 检查所有权威产品参考图片。
+6. 将信息区分为：
+   - 用户明确确认 / 修正
+   - 权威文档支持
+   - 图片中直接可观察
    - AI 合理推断
-   - 未知 / 禁止擅自声称的信息
-6. 完成证据审查后，才能开始详情页策划或生成。
+   - Unknown / Do not claim
+7. 完成证据审查后才进入 DetailFlow。
 
 证据优先级：
 
@@ -179,11 +214,37 @@ AI 合理推断
 
 ---
 
-## 5. 最常用：给 ChatGPT 发什么指令？
+## 5. DetailFlow 开始前必须做 Capability Preflight
 
-### 制作 DetailFlow 产品详情页
+我们实际测试发现：有些 ChatGPT 会话可以读取 GitHub 文本，但不能正确检查二进制原件；还有些会话没有图像生成能力。
 
-新开 ChatGPT 会话后，替换 `<product-slug>` 即可：
+因此 **不要先做完 Blueprint 再发现后面无法生成图片**。
+
+在 Approval Gate 1 之前，ChatGPT 必须先确认：
+
+```text
+1. 当前会话具备图像生成能力
+2. 能读取 product.md
+3. 能读取 manifest.yaml
+4. 能通过 assets.licat.xyz public_url 检查至少一份原始文档
+5. 能通过 assets.licat.xyz public_url 视觉检查至少一张真实产品图
+```
+
+如果任意一项失败：
+
+> **立即停止，不进入 Blueprint，不到 Gate 1。**
+
+这样不会浪费用户时间。
+
+仓库已经提供完整启动提示词：
+
+[`prompts/detailflow-session-bootstrap.md`](./prompts/detailflow-session-bootstrap.md)
+
+---
+
+## 6. 最推荐：给 ChatGPT 发什么指令？
+
+新开 ChatGPT 会话后，替换 `<product-slug>`：
 
 ```text
 接下来请使用 DetailFlow 工作流，为产品 <product-slug> 制作英文海外市场电商产品详情页。
@@ -194,56 +255,45 @@ https://github.com/AJbeckliy/detail-flow
 Product repository：
 https://github.com/licat233/product-assets
 
-开始任务前：
-1. 先读取并遵循 DetailFlow Skill，尤其是 ecommerce 8-screen product detail page 工作流和两个 approval gates。
-2. 读取 products/<product-slug>/product.md。
-3. 读取 products/<product-slug>/manifest.yaml。
-4. 根据 manifest 阅读与当前产品相关的说明书、Datasheet 和其它权威原始资料。
-5. 检查 manifest 中列出的所有真实产品参考图片。
-6. 必须区分：
+在 Approval Gate 1 之前，先做 capability preflight：
+
+1. 确认当前会话具备图像生成能力。
+2. 从 GitHub 读取 products/<product-slug>/product.md。
+3. 从 GitHub 读取 products/<product-slug>/manifest.yaml。
+4. 对 PDF / 图片 / 视频等二进制文件，不要依赖 GitHub connector/base64；优先使用 manifest 中 assets.licat.xyz 的 public_url。
+5. 至少成功检查一份原始文档。
+6. 至少成功视觉检查一张真实产品图片。
+
+如果以上任意一项失败，请立即停止，不要先输出 Blueprint，也不要进入 Approval Gate 1，直接告诉我当前会话缺少什么能力。
+
+如果 preflight 通过：
+
+1. 读取并遵循 DetailFlow Skill，尤其是 ecommerce 8-screen product detail page 工作流和两个 approval gates。
+2. 阅读与当前 claim 相关的所有原始说明书 / Datasheet。
+3. 检查所有权威真实产品参考图。
+4. 严格区分：
    - 用户明确确认的事实
    - 权威文档支持的事实
    - 图片中可以直接观察到的事实
    - AI 合理推断
    - 未知且不能擅自编造的信息
-7. 精确参数必须回到原始说明书 / Datasheet 核对，不能只依赖 product.md 摘要。
-8. 不得编造参数、认证状态、测试结果、奖项、折扣、合作品牌或其它没有证据支持的商业声明。
-9. 所有面向海外客户的可见商业文案默认使用英文。
-10. 不要收到资料后立即生成最终详情图。
-11. 第一阶段先输出完整的 8-screen Detail Page Blueprint，等待我确认后再继续。
-12. 严格遵守 DetailFlow 的两个 approval gates。
+5. 精确参数必须回到原始文档核对。
+6. 不得编造参数、认证状态、测试结果、奖项、折扣、合作品牌或其它没有证据支持的声明。
+7. 所有面向海外客户的可见商业文案默认使用英文。
+8. 第一阶段先输出完整 8-screen Detail Page Blueprint。
+9. 严格遵守 DetailFlow 的两个 approval gates。
 ```
 
-### 简短指令
+### 简短版
 
 ```text
 Use DetailFlow for `<product-slug>` from `licat233/product-assets`.
-Read product.md, manifest.yaml, the relevant original source documents, and all authoritative product images before planning.
-Create an English overseas-market 8-screen ecommerce detail page and follow both DetailFlow approval gates strictly.
+Run the capability preflight before Gate 1. Use GitHub for product.md/manifest and assets.licat.xyz public_url links for binary evidence. If document/image inspection or image generation is unavailable, stop before the blueprint. Otherwise follow both DetailFlow approval gates strictly.
 ```
-
-### 只分析产品，不做详情页
-
-```text
-请分析 `licat233/product-assets` 中的产品 `<product-slug>`。
-
-先读取 product.md 和 manifest.yaml，再阅读 manifest 中相关的原始说明书 / Datasheet，并检查所有真实产品参考图。
-
-请分别输出：
-1. 用户明确确认的信息
-2. 权威文档支持的产品参数和功能
-3. 图片中可以直接观察到的事实
-4. 合理但尚未确认的推断
-5. 未知 / 禁止擅自声称的信息
-
-精确技术参数必须注明来源，不要编造缺失信息。
-```
-
-更完整说明：[`docs/CHATGPT-USAGE.zh-CN.md`](./docs/CHATGPT-USAGE.zh-CN.md)
 
 ---
 
-## 6. product.md 与 manifest.yaml 的分工
+## 7. product.md 与 manifest.yaml 的分工
 
 ### product.md
 
@@ -259,53 +309,63 @@ Create an English overseas-market 8-screen ecommerce detail page and follow both
 - Unknown / Do not claim
 - DetailFlow claim seeds
 
-例如：
-
-```markdown
-| Specification | Value | Source |
-| --- | --- | --- |
-| Rated power | 2W MAX | user-manual.pdf, p.3 |
-| Input | DC 5V 1A | datasheet.pdf, Electrical Specifications |
-```
-
 ### manifest.yaml
 
-`manifest.yaml` 只是机器索引，不是需要用户维护的资料表。
+`manifest.yaml` 是机器索引，**不是需要用户维护的资料表**。
 
-它由：
+通过：
 
 ```bash
 bash scripts/sync-manifest.sh <product-slug>
 ```
 
-自动根据 `product.md`、`docs/` 和 `images/` 生成。
+自动生成。
 
-文件顶部会明确标记：
+它会包含类似：
 
 ```yaml
-# AUTO-GENERATED FILE — DO NOT EDIT MANUALLY.
+documents:
+  - path: docs/datasheet.pdf
+    public_url: https://assets.licat.xyz/products/<slug>/docs/datasheet.pdf
+
+images:
+  - path: images/front-view.jpg
+    public_url: https://assets.licat.xyz/products/<slug>/images/front-view.jpg
 ```
 
-因此，如果目录和 manifest 不一致，正确做法是**重新运行同步脚本，而不是人工修改 YAML**。
+如果目录和 manifest 不一致，应重新运行同步脚本，而不是人工改 YAML。
 
 ---
 
-## 7. DetailFlow 固定原则
+## 8. DetailFlow 固定流程
 
-- 先分析输入资料。
-- 先输出完整 8-screen Blueprint。
-- Approval Gate 1。
-- 建立 Visual Master / Text Master 后先生成前两屏。
-- 审查连续性、产品一致性和文字。
-- Approval Gate 2。
-- 再生成 Screen 03–08。
-- 最后完整拼接与审查。
+```text
+Capability Preflight
+        ↓
+读取并核验输入资料
+        ↓
+完整 8-screen Blueprint
+        ↓
+Approval Gate 1
+        ↓
+Text Master / Visual Master
+        ↓
+先生成 Screen 01–02
+        ↓
+连续性 / 产品一致性 / 文案审查
+        ↓
+Approval Gate 2
+        ↓
+生成 Screen 03–08
+        ↓
+完整拼接与最终 Audit
+```
 
-八屏是一张连续产品详情长页的八个片段，不是八张互不相关的海报。
+八屏是一张连续 ecommerce detail page 的八个切片，不是八张互不相关的海报。
 
 ---
 
-## 8. 仓库地图
+## 9. 仓库地图
 
 ```text
 products/                          # 每款产品一个目录
@@ -314,35 +374,10 @@ docs/                              # 使用规范和操作文档
 prompts/                           # ChatGPT / DetailFlow 提示词
 scripts/new-product.sh             # 自动创建产品目录
 scripts/sync-manifest.sh           # 自动同步 manifest；用户无需编辑 YAML
-scripts/generate-asset-browser.mjs # 生成 assets.licat.xyz 静态浏览器
+scripts/generate-asset-browser.mjs # 生成 assets.licat.xyz 文件浏览器
 scripts/build-public.sh            # Cloudflare Pages 构建入口
-static/                            # 静态浏览器 CSS / headers / robots / 404
+static/                            # 浏览器 CSS / headers / robots / 404
 ```
-
-重要文档：
-
-- [`docs/PRODUCT-DIRECTORY-SPEC.md`](./docs/PRODUCT-DIRECTORY-SPEC.md)
-- [`docs/ADDING-A-PRODUCT.md`](./docs/ADDING-A-PRODUCT.md)
-- [`docs/CHATGPT-USAGE.zh-CN.md`](./docs/CHATGPT-USAGE.zh-CN.md)
-- [`prompts/detailflow-session-bootstrap.md`](./prompts/detailflow-session-bootstrap.md)
-
----
-
-## 9. 当前项目边界
-
-为了避免过度设计，本仓库目前不负责：
-
-- AI 营销图成品归档
-- CMS
-- ERP / PIM
-- 电商订单
-- 复杂数据库
-- 自动发布社媒
-- 自动修改未经证据支持的产品事实
-
-核心职责始终只有一个：
-
-> **保存可追溯、可被 ChatGPT 稳定读取的真实产品资料和结构化事实，并尽可能自动完成重复性的文件管理工作。**
 
 ---
 
@@ -350,7 +385,7 @@ static/                            # 静态浏览器 CSS / headers / robots / 40
 
 这个仓库会逐渐包含大量 PDF、JPG、PNG、MP4 等二进制产品资料。为了避免同事每次都把所有历史产品资料下载到本地，**不建议直接使用普通 `git clone`**。
 
-推荐组合使用：
+推荐：
 
 ```text
 Partial Clone: --filter=blob:none
@@ -358,30 +393,19 @@ Partial Clone: --filter=blob:none
 Sparse Checkout: 只检出当前要处理的产品目录
 ```
 
-这样 Git 会保留仓库的提交和目录结构，但不会一开始就下载所有产品的图片、PDF 和视频。只有当前 sparse-checkout 范围内真正需要的文件才会被拉取。
-
 ### 场景 A：只处理一款已有产品
-
-例如只需要修改：
-
-```text
-products/lcd-display-101-inch-70/
-```
-
-先执行：
 
 ```bash
 git clone --filter=blob:none --sparse https://github.com/licat233/product-assets.git
 cd product-assets
+
+git sparse-checkout set \
+  scripts \
+  templates \
+  products/lcd-display-101-inch-70
 ```
 
-然后只检出脚本、模板和这一款产品：
-
-```bash
-git sparse-checkout set scripts templates products/lcd-display-101-inch-70
-```
-
-此时其它产品目录中的大图片、PDF、视频不会被下载到本地。
+这样其它产品的大图片、PDF 和视频不会一开始就下载到本地。
 
 完成修改后：
 
@@ -396,84 +420,63 @@ git push
 
 ### 场景 B：新增一款产品
 
-第一次 clone：
-
 ```bash
 git clone --filter=blob:none --sparse https://github.com/licat233/product-assets.git
 cd product-assets
+
 git sparse-checkout set scripts templates
-```
 
-创建新产品：
-
-```bash
 bash scripts/new-product.sh <product-slug> "<Product Name>"
-```
 
-创建完成后，把这个新目录加入 sparse-checkout：
-
-```bash
 git sparse-checkout add products/<product-slug>
 ```
 
-然后把真实文件放入：
+然后把真实资料放进：
 
 ```text
 products/<product-slug>/docs/
 products/<product-slug>/images/
 ```
 
-整理 / 确认 `product.md` 后，同步机器索引：
+整理 / 确认 `product.md`，再执行：
 
 ```bash
 bash scripts/sync-manifest.sh <product-slug>
-```
 
-最后提交：
-
-```bash
 git add products/<product-slug>
 git commit -m "product: add <product-slug> source assets"
 git pull --rebase
 git push
 ```
 
-### 场景 C：后来需要再处理另一款产品
+### 后来需要处理第二款产品
 
-不用重新 clone 仓库，只需要把目标产品加入当前工作区：
+无需重新 clone：
 
 ```bash
 git sparse-checkout add products/<another-product-slug>
 ```
 
-Git 只会按需获取这款产品需要的文件。
-
-查看当前 sparse-checkout 范围：
+如果以后确实需要完整仓库：
 
 ```bash
-git sparse-checkout list
+git sparse-checkout disable
 ```
 
-如果想把工作区切换成只保留另一款产品，可以重新设置：
+---
 
-```bash
-git sparse-checkout set scripts templates products/<another-product-slug>
-```
+## 11. 当前项目边界
 
-### 为什么推荐这种方式
+为了避免过度设计，本仓库目前不负责：
 
-普通 clone 随着产品越来越多，会让每位同事都下载大量与自己当前工作无关的历史产品文件。
+- AI 营销图成品归档
+- CMS
+- ERP / PIM
+- 电商订单
+- 复杂数据库
+- 自动发布社媒
+- 自动修改未经证据支持的产品事实
 
-本仓库推荐的协作方式是：
+核心职责始终只有一个：
 
-```text
-Git 仓库保存完整产品资产
-        ↓
-同事使用 blobless partial clone
-        ↓
-Sparse Checkout 只选择当前产品
-        ↓
-只下载真正需要修改的资料
-```
-
-因此，即使未来仓库包含数百款产品，同事也不需要为了新增或修改一款产品，把整个产品资产库全部下载到电脑。
+> **保存可追溯、可被 ChatGPT 稳定读取的真实产品资料和结构化事实，并尽可能自动完成重复性的文件管理工作。**
