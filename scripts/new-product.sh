@@ -79,12 +79,14 @@ Created product scaffold:
   products/$slug/
   ├── product.md
   ├── manifest.yaml
-  ├── docs/
-  └── images/
+  ├── docs/      # local binary staging; ignored by Git except .gitkeep
+  └── images/    # local binary staging; ignored by Git except .gitkeep
 
 Next:
   1. Put manuals, datasheets, and other source documents in docs/.
   2. Put authoritative real product photos in images/.
-  3. Fill product.md from the source evidence.
-  4. Update manifest.yaml so it lists the files that actually exist.
+  3. Upload binaries to R2 with: bash scripts/upload-product-assets.sh $slug
+  4. Fill product.md from the source evidence.
+  5. Update manifest.yaml with the R2 object keys and URLs that actually exist.
+  6. Commit only the metadata files and .gitkeep placeholders; do not force-add binaries.
 EOF
