@@ -1,7 +1,0 @@
-/*
-  X-Robots-Tag: noindex, nofollow
-  X-Content-Type-Options: nosniff
-
-/products/*
-  Access-Control-Allow-Origin: *
-  Cache-Control: public, max-age=86400
