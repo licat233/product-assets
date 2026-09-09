@@ -2,80 +2,90 @@
 
 [中文](./CHATGPT-USAGE.zh-CN.md)
 
-This document answers the most common question for a new conversation:
+This document explains how a new ChatGPT session should read a product from `licat233/product-assets` and verify that it can actually complete DetailFlow before reaching Approval Gate 1.
 
-> What should I send to ChatGPT so it correctly reads a product from `licat233/product-assets` before using DetailFlow?
-
-## Recommended DetailFlow bootstrap prompt
-
-Replace `<product-slug>` and send this in a new ChatGPT conversation:
+## 1. Use two retrieval paths
 
 ```text
-Use DetailFlow to create an 8-screen English ecommerce detail page for product:
-<product-slug>
+GitHub
+→ product.md
+→ manifest.yaml
+→ text metadata
 
-DetailFlow Skill:
-https://github.com/AJbeckliy/detail-flow
-
-Product repository:
-https://github.com/licat233/product-assets
-
-Before planning:
-1. Read and follow the DetailFlow Skill, especially the ecommerce 8-screen product detail page workflow and both approval gates.
-2. Read products/<product-slug>/product.md.
-3. Read products/<product-slug>/manifest.yaml.
-4. Open the relevant original manuals, datasheets, and other authoritative sources referenced by the manifest.
-5. Inspect all authoritative real product images referenced by the manifest.
-6. Separate user-confirmed facts, authoritative-document facts, directly observed image facts, reasonable inference, and unknown/do-not-claim information.
-7. Verify exact specifications against the original manual/datasheet rather than relying only on product.md.
-8. Do not invent specifications, certification status, test results, awards, discounts, partnerships, or unsupported commercial claims.
-9. Use English visible commercial copy by default for the overseas market.
-10. Do not generate final detail-page images immediately.
-11. First produce the complete 8-screen Detail Page Blueprint and wait for my approval.
-12. Follow both DetailFlow approval gates strictly.
+assets.licat.xyz
+→ PDF / datasheet / drawing
+→ JPG / PNG / WebP
+→ reference video
+→ other binary evidence
 ```
 
-## Short form
+The GitHub connector may discover binary files but, in some sessions, return them as base64 or otherwise fail to place them into the document/image inspection path. Therefore binary evidence should use the manifest `public_url` values under `assets.licat.xyz` whenever available.
 
-Once ChatGPT is already familiar with DetailFlow and this repository:
+## 2. Mandatory capability preflight before Gate 1
+
+Before producing the 8-screen blueprint, verify that the current session can:
+
+1. generate images;
+2. read `product.md` from GitHub;
+3. read `manifest.yaml` from GitHub;
+4. inspect at least one original source document through an `assets.licat.xyz` `public_url`;
+5. visually inspect at least one authoritative product image through an `assets.licat.xyz` `public_url`.
+
+If any capability is unavailable, stop before the blueprint and report the missing capability immediately.
+
+Do not complete Gate 1 and only then discover that Visual Master or final image generation cannot continue.
+
+## 3. Recommended DetailFlow bootstrap prompt
 
 ```text
 Use DetailFlow for `<product-slug>` from `licat233/product-assets`.
-Read product.md, manifest.yaml, the relevant original source documents, and all authoritative product images before planning.
-Create an English overseas-market 8-screen ecommerce detail page and follow both DetailFlow approval gates strictly.
+
+Before Approval Gate 1, run a capability preflight:
+- confirm this session can generate images;
+- read product.md and manifest.yaml from GitHub;
+- use manifest public_url links on assets.licat.xyz for binary documents and visual references;
+- verify that at least one original document can be inspected;
+- visually inspect at least one authoritative product image.
+
+If any of those capabilities are unavailable, stop before the blueprint and tell me immediately.
+
+If the preflight passes:
+1. read and follow the DetailFlow Skill;
+2. inspect the original documents relevant to exact claims;
+3. inspect all authoritative real product images;
+4. separate user-confirmed facts, authoritative-document facts, directly observed image facts, reasonable inference, and unknown/do-not-claim information;
+5. do not invent unsupported technical or commercial claims;
+6. create the English overseas-market 8-screen blueprint;
+7. follow both DetailFlow approval gates strictly.
 ```
 
-## Product-analysis-only prompt
+DetailFlow Skill:
 
-If you only want ChatGPT to understand and audit the product first:
+`https://github.com/AJbeckliy/detail-flow`
+
+Product repository:
+
+`https://github.com/licat233/product-assets`
+
+## 4. Short form
 
 ```text
-Analyze product `<product-slug>` from `licat233/product-assets`.
-
-Read product.md and manifest.yaml first, then open the relevant original manuals/datasheets referenced by the manifest and inspect all authoritative real product images.
-
-Return separate sections for:
-1. user-confirmed information
-2. authoritative-document specifications and functions
-3. directly observed image facts
-4. reasonable but unconfirmed inference
-5. unknown / do-not-claim information
-
-Cite the source for exact technical specifications and do not invent missing information.
+Use DetailFlow for `<product-slug>` from `licat233/product-assets`.
+Run the capability preflight before Gate 1. Use GitHub for product.md/manifest and assets.licat.xyz public_url links for binary evidence. If document/image inspection or image generation is unavailable, stop before the blueprint. Otherwise follow both DetailFlow approval gates strictly.
 ```
 
-## Correct reading order
-
-For product `<product-slug>`:
+## 5. Correct reading order
 
 ```text
+GitHub product directory
+    ↓
 product.md
     ↓
 manifest.yaml
     ↓
-original manuals / datasheets / authoritative documents
+manifest public_url
     ↓
-authoritative product images
+assets.licat.xyz original binary evidence
     ↓
 evidence classification
     ↓
@@ -84,21 +94,21 @@ DetailFlow Blueprint
 
 `product.md` is a useful structured summary, but it is not a substitute for the original source document when an exact technical value matters.
 
-## Evidence classes
+## 6. Evidence classes
 
 Every product claim should belong to one of these groups:
 
 1. **User-confirmed correction or override** — highest priority when explicitly recorded.
-2. **Authoritative-document fact** — supported by a manual, datasheet, test report, certification document, or other approved source.
+2. **Authoritative-document fact** — supported by a manual, datasheet, drawing, test report, certification document, or other approved source.
 3. **Directly observed image fact** — visible in an authoritative product image without inferring hidden technology.
 4. **Reasonable creative inference** — may guide scene design or non-technical marketing language, but is not a verified specification.
 5. **Unknown / do not claim** — missing evidence must remain missing.
 
-## DetailFlow workflow expectation
-
-The normal DetailFlow sequence is:
+## 7. DetailFlow workflow expectation
 
 ```text
+Capability Preflight
+    ↓
 Source review
     ↓
 Evidence classification
@@ -122,29 +132,26 @@ Full concatenation + final audit
 
 The eight screens should behave as sequential slices of one continuous ecommerce detail page, not eight unrelated posters.
 
-## DetailFlow readiness audit
+## 8. Missing or inaccessible sources
 
-For a newly ingested product, a useful first request is:
-
-```text
-Run a DetailFlow readiness audit for `<product-slug>` in `licat233/product-assets`.
-
-Read product.md, manifest.yaml, the relevant original source documents, and all authoritative real product images.
-
-Check:
-- whether the manifest matches the actual sources
-- whether product.md contains exact values without evidence
-- whether any specifications conflict
-- whether certification/function claims are adequately supported
-- whether there are enough useful images for an 8-screen DetailFlow page
-- which 2–4 claim seeds are the strongest
-
-Do not generate final detail-page images yet.
-```
-
-## Missing or inaccessible sources
-
-If a source referenced by the manifest returns 404, is inaccessible, or does not match the manifest entry, treat that evidence as unavailable.
+If a manifest `public_url` returns 404, is inaccessible, or does not match the manifest entry, treat that evidence as unavailable.
 
 A filename or manifest entry alone is not proof of a product claim.
 
+If GitHub binary retrieval only returns base64 but the `assets.licat.xyz` `public_url` works, use the public URL instead of asking the user to re-upload the same source.
+
+## 9. Sessions without image-generation capability
+
+The repository cannot add image-generation capability to a ChatGPT session that does not have it.
+
+Correct behavior is:
+
+```text
+preflight detects no image generation
+→ stop immediately
+→ do not build the blueprint
+→ do not enter Gate 1
+→ restart in a ChatGPT session with image generation available
+```
+
+Do not use text, placeholders, or scripts to pretend the DetailFlow image stages were completed.
