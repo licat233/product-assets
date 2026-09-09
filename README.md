@@ -31,6 +31,24 @@ products/<product-slug>/
 
 `images/` contains authoritative real product reference images. AI-generated marketing outputs do not belong in this source directory.
 
+## Create a new product
+
+Do not recreate the directory structure from memory. Use the repository scaffold command:
+
+```bash
+bash scripts/new-product.sh <product-slug> "<Product Name>"
+```
+
+Example:
+
+```bash
+bash scripts/new-product.sh led-sensor-light "LED Sensor Light"
+```
+
+This creates `product.md`, `manifest.yaml`, `docs/`, and `images/` from the canonical repository templates. It refuses to overwrite an existing product.
+
+Then place the product's original manuals/datasheets in `docs/`, real reference photos in `images/`, and fill the generated metadata files from those sources.
+
 ## Evidence priority
 
 When sources disagree, use this order:
@@ -63,6 +81,7 @@ products/                      # one self-contained directory per product
 templates/                     # product.md and manifest.yaml templates
 docs/                          # repository operating rules
 prompts/                       # reusable ChatGPT / DetailFlow bootstrap prompt
+scripts/new-product.sh         # creates a canonical product directory
 scripts/build-public.sh        # creates Cloudflare Pages output
 static/                        # root files copied to the generated asset site
 ```
