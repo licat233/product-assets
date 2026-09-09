@@ -12,6 +12,18 @@ products/<product-slug>/
 └── images/
 ```
 
+Do not create this structure manually. From the repository root, run:
+
+```bash
+bash scripts/new-product.sh <product-slug> "<Product Name>"
+```
+
+Example:
+
+```bash
+bash scripts/new-product.sh led-sensor-light "LED Sensor Light"
+```
+
 Do not mix assets from different products in the same directory.
 
 The product slug is the stable identifier used in prompts, manifests, GitHub paths, and Cloudflare image URLs.
