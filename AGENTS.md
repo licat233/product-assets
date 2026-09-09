@@ -6,7 +6,7 @@ This repository is a controlled product source-of-truth for product documents, p
 
 - One product must live entirely under `products/<product-slug>/`.
 - Do not place product-specific source files outside that product directory.
-- Do not duplicate source images into a second committed publishing directory.
+- Do not duplicate source assets into a second committed publishing directory.
 - `dist/` is generated output and must not be committed.
 
 ## Manifest automation
@@ -22,6 +22,7 @@ This repository is a controlled product source-of-truth for product documents, p
 - Commit the resulting `manifest.yaml` changes together with the product files.
 - The manifest is derived from the actual directory contents plus product identity fields in `product.md`.
 - If the manifest and directory contents disagree, regenerate the manifest instead of hand-editing its file lists.
+- Every source document and image/reference media file should receive a stable `public_url` under `https://assets.licat.xyz/products/<slug>/...` so ChatGPT can retrieve binary evidence without relying on GitHub connector base64 output.
 
 ## Evidence rules
 
@@ -40,8 +41,35 @@ This repository is a controlled product source-of-truth for product documents, p
 - Prefer semantic lowercase kebab-case filenames when practical.
 - Do not name an image after an unverified feature.
 
+## DetailFlow capability preflight
+
+Before a DetailFlow session reaches Approval Gate 1, the session should verify that it can:
+
+1. read `product.md` and `manifest.yaml`;
+2. inspect an original source document through an `assets.licat.xyz` `public_url`;
+3. visually inspect an authoritative product image through an `assets.licat.xyz` `public_url`;
+4. generate images in the current ChatGPT session.
+
+If any of these are unavailable, report the missing capability before producing the blueprint. Do not let the workflow reach Gate 1 and then discover that Visual Master or final image generation cannot continue.
+
+## Public publishing boundary
+
+Cloudflare Pages may publish:
+
+- original source documents under `products/<slug>/docs/`;
+- authoritative visual references under `products/<slug>/images/`;
+- generated static browsing/index pages.
+
+It must not publish:
+
+- `product.md`;
+- `manifest.yaml`;
+- repository README/docs/prompts;
+- agent rules.
+
+The repository itself is public, so publishing product source binaries through `assets.licat.xyz` provides a stable retrieval path rather than changing private data into public data. Do not add confidential or customer-private files to this repository.
+
 ## Scope control
 
 - Prefer the smallest change that satisfies the task.
 - Do not add frameworks, databases, R2, Cloudflare Images, image-processing services, CMS layers, or build dependencies unless explicitly approved.
-- Cloudflare publishing should expose only generated public visual assets, not product source documents or metadata.
