@@ -147,3 +147,4 @@ Do not generate final detail-page images yet.
 If a source referenced by the manifest returns 404, is inaccessible, or does not match the manifest entry, treat that evidence as unavailable.
 
 A filename or manifest entry alone is not proof of a product claim.
+

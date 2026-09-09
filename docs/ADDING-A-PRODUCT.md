@@ -1,10 +1,20 @@
 # Adding a Product
 
-Every product uses one stable slug and one canonical scaffold.
+Every product must be self-contained under one canonical slug.
 
-## 1. Create the scaffold
+```text
+products/<product-slug>/
+├── product.md
+├── manifest.yaml
+├── docs/
+└── images/
+```
 
-Do not create the directory tree manually. Run:
+Prefer the canonical website slug when practical.
+
+## 1. Create the product scaffold
+
+Do not create the directory tree manually. Use the repository script:
 
 ```bash
 bash scripts/new-product.sh <product-slug> "<Product Name>"
@@ -16,7 +26,7 @@ Example:
 bash scripts/new-product.sh led-sensor-light "LED Sensor Light"
 ```
 
-This creates:
+The script creates:
 
 ```text
 products/led-sensor-light/
@@ -28,27 +38,25 @@ products/led-sensor-light/
     └── .gitkeep
 ```
 
-The script fills the product slug and product name in the templates and refuses to overwrite an existing product.
+It also fills the product slug and product name placeholders in `product.md` and `manifest.yaml`.
 
-## 2. Stage original source documents locally
+The script refuses to overwrite an existing product directory.
 
-Place manuals, datasheets, certification documents, installation guides, test reports, and similar evidence in:
+## 2. Add original source documents first
 
-```text
-products/<slug>/docs/
-```
+Place the available authoritative documents in `docs/`, for example:
 
-These binary files are intentionally ignored by Git.
+- `user-manual.pdf`
+- `datasheet.pdf`
+- `installation-guide.pdf`
+- `test-report.pdf`
+- certification documents
 
-Do not rewrite an original source just to make it easier for AI to read. Preserve the original and summarize it separately in `product.md`.
+Do not rewrite an original manual merely to make it easier for AI to read. Preserve the source document and summarize it separately in `product.md`.
 
-## 3. Stage authoritative product images locally
+## 3. Add authoritative real product images
 
-Place real product source images in:
-
-```text
-products/<slug>/images/
-```
+Place source photos in `images/`.
 
 Use semantic lowercase kebab-case filenames such as:
 
@@ -57,48 +65,17 @@ Use semantic lowercase kebab-case filenames such as:
 - `front-view.jpg`
 - `rear-view.jpg`
 - `side-profile.jpg`
-- `connector-detail.jpg`
-- `label-markings.jpg`
+- `usb-c-switch.jpg`
+- `sensor-detail.jpg`
+- `rear-markings-closeup.jpg`
 
-Do not name an image after an unverified feature. Do not put AI-generated marketing renders into the authoritative source set.
+Do not name an image after an unverified feature. For example, do not call an unknown circular component `pir-sensor.jpg` unless PIR is supported by evidence.
 
-## 4. Upload binary assets to Cloudflare R2
+Do not place AI-generated marketing renders in the authoritative `images/` source set.
 
-Preview first if useful:
+## 4. Build `product.md`
 
-```bash
-bash scripts/upload-product-assets.sh <product-slug> --dry-run
-```
-
-Then upload:
-
-```bash
-bash scripts/upload-product-assets.sh <product-slug>
-```
-
-Default target:
-
-```text
-R2 bucket: product-assets
-Object keys:
-products/<slug>/docs/<filename>
-products/<slug>/images/<filename>
-```
-
-Public URLs follow:
-
-```text
-https://assets.licat.xyz/products/<slug>/docs/<filename>
-https://assets.licat.xyz/products/<slug>/images/<filename>
-```
-
-The upload script uses an installed `wrangler` command when available, otherwise `npx wrangler`.
-
-For an individual file larger than Wrangler's 315 MB object-upload limit, use rclone or another S3-compatible client instead.
-
-## 5. Build `product.md`
-
-Read the original source evidence, then create the LLM-friendly summary.
+Read the manuals and datasheets, then create the LLM-friendly summary.
 
 Keep these categories separate:
 
@@ -110,19 +87,15 @@ Keep these categories separate:
 
 For exact specifications, record the source filename and page/section when practical.
 
-## 6. Complete `manifest.yaml`
+## 5. Complete `manifest.yaml`
 
-The scaffold intentionally starts with empty `documents` and `images` lists.
-
-Add only objects that actually exist in R2.
+The newly created manifest intentionally starts with empty `documents` and `images` lists. Add only files that actually exist.
 
 For each document record:
 
 - id
 - type
-- local staging path
-- R2 object key
-- URL
+- path
 - authority
 - notes
 
@@ -130,44 +103,26 @@ For each image record:
 
 - id
 - role
-- local staging path
-- R2 object key
-- URL
-- evidence notes
+- source path
+- public Cloudflare URL
+- concise notes describing what the image proves visually
 
-## 7. Commit metadata only
+## 6. Validate before use
 
-Before committing, check:
+A product is DetailFlow-ready when:
 
-```bash
-git status
-```
+- `product.md` exists and is populated.
+- `manifest.yaml` matches the actual files.
+- at least one authoritative product document is present when technical specifications are required, or the absence is explicitly documented.
+- authoritative product reference images are present.
+- unknown claims are explicitly listed instead of guessed.
 
-Expected tracked product files are primarily:
-
-```text
-products/<slug>/product.md
-products/<slug>/manifest.yaml
-products/<slug>/docs/.gitkeep
-products/<slug>/images/.gitkeep
-```
-
-The actual manuals, PDFs, JPGs, PNGs, and other binary files should not appear as tracked files.
-
-Never use `git add -f` to force product binaries into Git.
+## 7. Commit
 
 Recommended commit style:
 
 ```text
-product: add <product-slug> metadata
+product: add <product-slug> source assets
 ```
 
-## 8. DetailFlow readiness
-
-A product is ready when:
-
-- `product.md` is populated.
-- `manifest.yaml` matches the real R2 objects.
-- relevant authoritative documents are retrievable from the manifest URLs.
-- authoritative product images are retrievable from the manifest URLs.
-- unknown claims are explicitly listed rather than guessed.
+Cloudflare publishing is handled from the source `images/` directories by `scripts/build-public.sh`; do not duplicate images into another committed public directory.

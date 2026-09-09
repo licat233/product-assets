@@ -32,3 +32,4 @@ Use DetailFlow for `<product-slug>` from `licat233/product-assets`.
 Read product.md, manifest.yaml, the relevant original source documents, and all authoritative product images before planning.
 Create an English overseas-market 8-screen ecommerce detail page and follow both DetailFlow approval gates strictly.
 ```
+
