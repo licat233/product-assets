@@ -14,7 +14,7 @@ Prefer the canonical website slug when practical.
 
 ## 1. Create the product scaffold
 
-Do not create the directory tree manually. Use the repository script:
+Do not create the directory tree manually. Use:
 
 ```bash
 bash scripts/new-product.sh <product-slug> "<Product Name>"
@@ -38,44 +38,42 @@ products/led-sensor-light/
     └── .gitkeep
 ```
 
-It also fills the product slug and product name placeholders in `product.md` and `manifest.yaml`.
+It also fills the product identity and generates the initial manifest automatically.
 
 The script refuses to overwrite an existing product directory.
 
-## 2. Add original source documents first
+## 2. Add original source documents
 
-Place the available authoritative documents in `docs/`, for example:
+Place authoritative source files in `docs/`, for example:
 
-- `user-manual.pdf`
-- `datasheet.pdf`
-- `installation-guide.pdf`
-- `test-report.pdf`
-- certification documents
+- user manual
+- datasheet
+- installation guide
+- dimension drawing
+- test report
+- certification document
+- manufacturer brochure
 
-Do not rewrite an original manual merely to make it easier for AI to read. Preserve the source document and summarize it separately in `product.md`.
+Preserve original source files. Do not rewrite an original manual merely to make it easier for AI to read.
 
-## 3. Add authoritative real product images
+## 3. Add authoritative real product media
 
-Place source photos in `images/`.
+Place real product photos and reference videos in `images/`.
 
-Use semantic lowercase kebab-case filenames such as:
+Prefer semantic filenames when practical, for example:
 
 - `hero-01.jpg`
-- `hero-02.jpg`
 - `front-view.jpg`
 - `rear-view.jpg`
 - `side-profile.jpg`
-- `usb-c-switch.jpg`
-- `sensor-detail.jpg`
-- `rear-markings-closeup.jpg`
+- `connector-detail.jpg`
+- `product-demo.mp4`
 
-Do not name an image after an unverified feature. For example, do not call an unknown circular component `pir-sensor.jpg` unless PIR is supported by evidence.
-
-Do not place AI-generated marketing renders in the authoritative `images/` source set.
+Do not name an image after an unverified feature. Do not place AI-generated marketing renders in the authoritative source set.
 
 ## 4. Build `product.md`
 
-Read the manuals and datasheets, then create the LLM-friendly summary.
+Read the source documents and inspect the product media, then maintain the LLM-friendly product summary.
 
 Keep these categories separate:
 
@@ -87,35 +85,49 @@ Keep these categories separate:
 
 For exact specifications, record the source filename and page/section when practical.
 
-## 5. Complete `manifest.yaml`
+## 5. Sync `manifest.yaml` automatically
 
-The newly created manifest intentionally starts with empty `documents` and `images` lists. Add only files that actually exist.
+**Do not edit `manifest.yaml` manually.**
 
-For each document record:
+After adding, deleting, or renaming files in `docs/` or `images/`, or after changing product identity fields in `product.md`, run:
 
-- id
-- type
-- path
-- authority
-- notes
+```bash
+bash scripts/sync-manifest.sh <product-slug>
+```
 
-For each image record:
+To sync every product:
 
-- id
-- role
-- source path
-- public Cloudflare URL
-- concise notes describing what the image proves visually
+```bash
+bash scripts/sync-manifest.sh
+```
+
+The script scans the actual product directory and generates:
+
+- document inventory
+- image/video inventory
+- media/file types
+- source URLs
+- public `assets.licat.xyz` URLs for supported visual media
+- product identity copied from `product.md`
+- DetailFlow defaults and claims policy
+
+Generated manifests begin with:
+
+```yaml
+# AUTO-GENERATED FILE — DO NOT EDIT MANUALLY.
+```
+
+If Codex or another Agent is onboarding the product, `AGENTS.md` requires the Agent to run this command before commit. The user should not be asked to maintain YAML file lists.
 
 ## 6. Validate before use
 
 A product is DetailFlow-ready when:
 
-- `product.md` exists and is populated.
-- `manifest.yaml` matches the actual files.
-- at least one authoritative product document is present when technical specifications are required, or the absence is explicitly documented.
-- authoritative product reference images are present.
-- unknown claims are explicitly listed instead of guessed.
+- `product.md` exists and reflects the available evidence.
+- `manifest.yaml` has been regenerated after the latest file changes.
+- source documents required for exact technical claims are present, or their absence is explicitly documented.
+- authoritative product reference media are present.
+- unknown claims are listed instead of guessed.
 
 ## 7. Commit
 
@@ -125,4 +137,6 @@ Recommended commit style:
 product: add <product-slug> source assets
 ```
 
-Cloudflare publishing is handled from the source `images/` directories by `scripts/build-public.sh`; do not duplicate images into another committed public directory.
+Commit the generated `manifest.yaml` together with the source files and `product.md`.
+
+Cloudflare publishing is generated from the source `images/` directory by the repository build scripts. Do not duplicate media into another committed public directory.
