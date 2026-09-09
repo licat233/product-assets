@@ -11,11 +11,15 @@
 
 ## Source register
 
-List the source files used to establish product facts.
+List the authoritative sources used to establish product facts.
 
-- `docs/user-manual.pdf` — authoritative user manual
-- `docs/datasheet.pdf` — authoritative datasheet
-- `images/...` — authoritative product photos
+Binary source files are staged locally in `docs/` and `images/`, uploaded to Cloudflare R2, and then referenced by URL in `manifest.yaml`. They are not committed to Git.
+
+Examples:
+
+- `docs/user-manual.pdf` — authoritative user manual; see manifest URL
+- `docs/datasheet.pdf` — authoritative datasheet; see manifest URL
+- `images/hero-01.jpg` — authoritative product photo; see manifest URL
 
 Remove entries that do not exist and add other source documents as needed.
 
@@ -74,4 +78,4 @@ Default: English.
 
 ## Notes
 
-`product.md` is a structured summary for LLM use. Original files in `docs/` remain the authoritative evidence layer.
+`product.md` is a structured summary for LLM use. Original source binaries stored in R2 remain the authoritative evidence layer when they are listed as authoritative in the manifest.
