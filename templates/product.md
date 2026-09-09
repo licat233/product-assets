@@ -3,7 +3,7 @@
 ## Product identity
 
 - Product slug: `<product-slug>`
-- Product name:
+- Product name: <Product Name>
 - Product type:
 - Category:
 - Target market: International B2B
