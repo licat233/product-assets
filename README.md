@@ -4,19 +4,13 @@
 
 这是一个面向 **ChatGPT / DetailFlow / Codex** 的产品资料仓库。
 
-它的目标不是单纯保存图片，而是让每一款产品都拥有一套长期可复用的、结构化的 **Product Source of Truth**：产品说明书、规格资料、真实产品图片、经过整理的产品事实，以及 DetailFlow 所需的输入信息。
+目标很简单：把每款产品的说明书、规格资料、真实图片和结构化产品事实保存成一套长期可复用的 **Product Source of Truth**，让新的 ChatGPT 会话不需要反复重新上传同一套资料。
 
-这样以后打开一个全新的 ChatGPT 会话时，不需要重新上传同一套产品说明书和产品图片，只需要告诉 ChatGPT：
-
-> 去 `licat233/product-assets` 读取某个产品。
+> 这个项目的原则是减少工作量，不把文件管理工作转嫁给用户。
 
 ---
 
-## 1. 核心原则
-
-**一款产品 = 一个独立目录。**
-
-标准结构：
+## 1. 一款产品 = 一个独立目录
 
 ```text
 products/<product-slug>/
@@ -35,20 +29,28 @@ products/<product-slug>/
 
 其中：
 
-- `product.md`：给 ChatGPT 快速理解产品使用的结构化摘要和证据索引。
-- `manifest.yaml`：机器可读的产品资料清单，记录文档、图片、URL、DetailFlow 设置等。
-- `docs/`：原始证据层，包括说明书、Datasheet、安装说明、测试报告、认证资料等。
-- `images/`：真实产品参考图。AI 生成的营销图不应作为产品事实来源放在这里。
+- `product.md`：给人和 ChatGPT 读的产品事实摘要、证据说明和 Do-not-claim 信息。
+- `manifest.yaml`：给程序和 ChatGPT 使用的机器可读文件索引，**由脚本自动生成，不需要人工编辑**。
+- `docs/`：说明书、Datasheet、安装说明、测试报告、认证资料等原始证据。
+- `images/`：真实产品参考图和产品参考视频。
 
-`product.md` **不能替代说明书**。当详情页要使用精确参数时，应回到原始说明书 / Datasheet 核对。
+精确技术参数应以原始说明书 / Datasheet 为准，`product.md` 不能替代原始证据。
 
 ---
 
-## 2. 新建一款产品
+## 2. 你真正需要做什么
 
-不要手工回忆目录结构，也不要自己一个个创建子目录。
+日常新增产品时，你只需要处理三件事：
 
-从仓库根目录运行：
+```text
+1. 创建产品目录
+2. 把原始资料放进 docs/ 和 images/
+3. 整理 / 确认 product.md
+```
+
+`manifest.yaml` 的文件清单、URL、媒体类型等由脚本自动扫描生成。
+
+### 第一步：创建产品
 
 ```bash
 bash scripts/new-product.sh <product-slug> "<Product Name>"
@@ -60,7 +62,7 @@ bash scripts/new-product.sh <product-slug> "<Product Name>"
 bash scripts/new-product.sh led-sensor-light "LED Sensor Light"
 ```
 
-脚本会自动创建：
+脚本会创建：
 
 ```text
 products/led-sensor-light/
@@ -70,23 +72,80 @@ products/led-sensor-light/
 └── images/
 ```
 
-并自动把产品 slug 和产品名称填入模板。
+### 第二步：放入真实资料
 
-产品 slug 建议使用稳定的、小写 kebab-case，例如：
+把说明书、规格书等放到：
 
 ```text
-led-sensor-light
-wireless-shelf-light
-24v-power-track
+products/led-sensor-light/docs/
 ```
 
-创建后，再把真实资料放入对应产品目录，并根据原始资料完善 `product.md` 和 `manifest.yaml`。
+把真实产品图 / 产品参考视频放到：
 
-详细步骤见：[`docs/ADDING-A-PRODUCT.md`](./docs/ADDING-A-PRODUCT.md)
+```text
+products/led-sensor-light/images/
+```
+
+### 第三步：同步 manifest
+
+**不要手工编辑 `manifest.yaml`。**
+
+运行：
+
+```bash
+bash scripts/sync-manifest.sh led-sensor-light
+```
+
+它会自动扫描真实目录并生成：
+
+- 文档清单
+- 图片 / 视频清单
+- 文件类型
+- GitHub 原始文件 URL
+- `assets.licat.xyz` 公开媒体 URL
+- DetailFlow 默认规则
+
+如果同时修改了多款产品，可以直接运行：
+
+```bash
+bash scripts/sync-manifest.sh
+```
+
+它会同步全部产品。
+
+如果由 Codex / Agent 负责入库，仓库根目录的 `AGENTS.md` 已要求 Agent 在提交前自动运行这个同步步骤，因此**用户不应该被要求手工维护 YAML**。
+
+详细流程见：[`docs/ADDING-A-PRODUCT.md`](./docs/ADDING-A-PRODUCT.md)
 
 ---
 
-## 3. ChatGPT 应该怎么读取一款产品
+## 3. assets.licat.xyz 静态资产浏览器
+
+Cloudflare Pages 会根据仓库内容自动生成静态产品浏览器：
+
+```text
+https://assets.licat.xyz/
+```
+
+首页显示产品列表；点击产品后可以浏览该产品公开的图片 / 视频文件。
+
+公开范围只包括 `images/` 中支持的视觉媒体，不会公开：
+
+- `product.md`
+- `manifest.yaml`
+- `docs/`
+- PDF / Datasheet
+- README / AGENTS 等仓库文件
+
+机器可读公开索引：
+
+```text
+https://assets.licat.xyz/catalog.json
+```
+
+---
+
+## 4. ChatGPT 应该怎么读取一款产品
 
 对于产品 `<product-slug>`，ChatGPT 应按以下顺序处理：
 
@@ -94,13 +153,13 @@ wireless-shelf-light
 2. 读取 `products/<product-slug>/manifest.yaml`。
 3. 根据 manifest 打开与当前任务相关的原始说明书 / Datasheet / 其它权威文档。
 4. 检查 manifest 中列出的真实产品参考图片。
-5. 把获取的信息严格分为：
+5. 把信息严格区分为：
    - 用户明确确认 / 修正的信息
    - 权威文档明确支持的事实
-   - 产品图片中可以直接观察到的事实
+   - 产品图片中可直接观察到的事实
    - AI 合理推断
    - 未知 / 禁止擅自声称的信息
-6. 只有完成证据审查后，才能开始详情页策划或生成。
+6. 完成证据审查后，才能开始详情页策划或生成。
 
 证据优先级：
 
@@ -111,7 +170,7 @@ wireless-shelf-light
         ↓
 真实产品图片中可直接观察到的事实
         ↓
-product.md 中的结构化摘要
+product.md 结构化摘要
         ↓
 AI 合理推断
         ↓
@@ -120,11 +179,11 @@ AI 合理推断
 
 ---
 
-## 4. 最常用：把什么指令发给 ChatGPT？
+## 5. 最常用：给 ChatGPT 发什么指令？
 
-### 方式 A：制作 DetailFlow 产品详情页
+### 制作 DetailFlow 产品详情页
 
-新开一个 ChatGPT 会话后，可以直接发送下面这段，只需要替换 `<product-slug>`：
+新开 ChatGPT 会话后，替换 `<product-slug>` 即可：
 
 ```text
 接下来请使用 DetailFlow 工作流，为产品 <product-slug> 制作英文海外市场电商产品详情页。
@@ -155,9 +214,7 @@ https://github.com/licat233/product-assets
 12. 严格遵守 DetailFlow 的两个 approval gates。
 ```
 
-### 方式 B：简短指令
-
-当 ChatGPT 已经知道 DetailFlow 和本仓库规则时，可以只发送：
+### 简短指令
 
 ```text
 Use DetailFlow for `<product-slug>` from `licat233/product-assets`.
@@ -165,7 +222,7 @@ Read product.md, manifest.yaml, the relevant original source documents, and all 
 Create an English overseas-market 8-screen ecommerce detail page and follow both DetailFlow approval gates strictly.
 ```
 
-### 方式 C：只分析产品，不做详情页
+### 只分析产品，不做详情页
 
 ```text
 请分析 `licat233/product-assets` 中的产品 `<product-slug>`。
@@ -182,28 +239,27 @@ Create an English overseas-market 8-screen ecommerce detail page and follow both
 精确技术参数必须注明来源，不要编造缺失信息。
 ```
 
-更完整说明见：[`docs/CHATGPT-USAGE.zh-CN.md`](./docs/CHATGPT-USAGE.zh-CN.md)
+更完整说明：[`docs/CHATGPT-USAGE.zh-CN.md`](./docs/CHATGPT-USAGE.zh-CN.md)
 
 ---
 
-## 5. product.md 的作用
+## 6. product.md 与 manifest.yaml 的分工
 
-`product.md` 是给 LLM 使用的产品摘要，不是营销文案，也不是随意填写的产品介绍。
+### product.md
 
-它应该整理：
+`product.md` 是产品事实层，主要记录：
 
 - 产品身份
-- 原始资料来源
 - 用户确认的修正
 - 有来源的技术参数
 - 产品功能与工作方式
 - 图片中可观察到的事实
-- 已支持的应用场景
+- 应用场景
 - 合理创意推断
 - Unknown / Do not claim
 - DetailFlow claim seeds
 
-例如一个精确参数应该尽量记录来源：
+例如：
 
 ```markdown
 | Specification | Value | Source |
@@ -212,79 +268,78 @@ Create an English overseas-market 8-screen ecommerce detail page and follow both
 | Input | DC 5V 1A | datasheet.pdf, Electrical Specifications |
 ```
 
-这样半年后再打开新会话，也可以快速知道“这个参数是从哪里来的”。
+### manifest.yaml
+
+`manifest.yaml` 只是机器索引，不是需要用户维护的资料表。
+
+它由：
+
+```bash
+bash scripts/sync-manifest.sh <product-slug>
+```
+
+自动根据 `product.md`、`docs/` 和 `images/` 生成。
+
+文件顶部会明确标记：
+
+```yaml
+# AUTO-GENERATED FILE — DO NOT EDIT MANUALLY.
+```
+
+因此，如果目录和 manifest 不一致，正确做法是**重新运行同步脚本，而不是人工修改 YAML**。
 
 ---
 
-## 6. manifest.yaml 的作用
+## 7. DetailFlow 固定原则
 
-`manifest.yaml` 是机器可读索引。
-
-ChatGPT / Codex 不应该靠猜测目录里有哪些文件，而应该优先通过 manifest 获取：
-
-- 产品身份
-- 原始文档清单
-- 图片清单
-- 文件 / 公开 URL
-- 图片用途
-- 证据等级
-- DetailFlow 默认参数
-- claim policy
-
-如果 manifest 声明某个文件存在，但实际无法访问，应把该证据视为 **不可用**，不能仅凭文件名推断其内容。
-
----
-
-## 7. DetailFlow 的固定原则
-
-使用 DetailFlow 制作产品详情页时：
-
-- 必须先分析输入资料。
-- 必须先输出完整 8-screen Blueprint。
-- 必须经过 Approval Gate 1。
-- 建立 Visual Master / Text Master 后，先生成前两屏。
-- 审查前两屏的连续性、产品一致性和文字后，经过 Approval Gate 2。
+- 先分析输入资料。
+- 先输出完整 8-screen Blueprint。
+- Approval Gate 1。
+- 建立 Visual Master / Text Master 后先生成前两屏。
+- 审查连续性、产品一致性和文字。
+- Approval Gate 2。
 - 再生成 Screen 03–08。
-- 最后进行完整长图拼接与审查。
+- 最后完整拼接与审查。
 
-八屏应当是一张连续产品详情长页的八个片段，而不是八张互不相关的海报。
+八屏是一张连续产品详情长页的八个片段，不是八张互不相关的海报。
 
 ---
 
 ## 8. 仓库地图
 
 ```text
-products/                      # 每款产品一个目录
-templates/                     # product.md / manifest.yaml 模板
-docs/                          # 使用规范和操作文档
-prompts/                       # 可复用的 ChatGPT / DetailFlow 提示词
-scripts/new-product.sh         # 自动创建产品目录
-scripts/                       # 其它资产和部署辅助脚本
-static/                        # 静态资源发布相关文件
+products/                          # 每款产品一个目录
+templates/                         # product.md / manifest 默认结构
+docs/                              # 使用规范和操作文档
+prompts/                           # ChatGPT / DetailFlow 提示词
+scripts/new-product.sh             # 自动创建产品目录
+scripts/sync-manifest.sh           # 自动同步 manifest；用户无需编辑 YAML
+scripts/generate-asset-browser.mjs # 生成 assets.licat.xyz 静态浏览器
+scripts/build-public.sh            # Cloudflare Pages 构建入口
+static/                            # 静态浏览器 CSS / headers / robots / 404
 ```
 
 重要文档：
 
-- [`docs/PRODUCT-DIRECTORY-SPEC.md`](./docs/PRODUCT-DIRECTORY-SPEC.md) — 产品目录标准
-- [`docs/ADDING-A-PRODUCT.md`](./docs/ADDING-A-PRODUCT.md) — 新产品入库流程
-- [`docs/CHATGPT-USAGE.zh-CN.md`](./docs/CHATGPT-USAGE.zh-CN.md) — ChatGPT 中文使用指南
-- [`prompts/detailflow-session-bootstrap.md`](./prompts/detailflow-session-bootstrap.md) — DetailFlow 会话启动提示词
+- [`docs/PRODUCT-DIRECTORY-SPEC.md`](./docs/PRODUCT-DIRECTORY-SPEC.md)
+- [`docs/ADDING-A-PRODUCT.md`](./docs/ADDING-A-PRODUCT.md)
+- [`docs/CHATGPT-USAGE.zh-CN.md`](./docs/CHATGPT-USAGE.zh-CN.md)
+- [`prompts/detailflow-session-bootstrap.md`](./prompts/detailflow-session-bootstrap.md)
 
 ---
 
-## 9. 这个项目不解决什么
+## 9. 当前项目边界
 
-为了避免项目失控，本仓库目前不负责：
+为了避免过度设计，本仓库目前不负责：
 
-- 生成后的营销图片归档
+- AI 营销图成品归档
 - CMS
-- 产品 ERP / PIM
+- ERP / PIM
 - 电商订单
 - 复杂数据库
 - 自动发布社媒
-- 自动修改产品事实
+- 自动修改未经证据支持的产品事实
 
 核心职责始终只有一个：
 
-> **为每一款产品保存可追溯、可被 ChatGPT 稳定读取的真实资料和结构化事实，使产品详情页、内容生产和其它 AI 工作流可以可靠复用这些信息。**
-
+> **保存可追溯、可被 ChatGPT 稳定读取的真实产品资料和结构化事实，并尽可能自动完成重复性的文件管理工作。**
