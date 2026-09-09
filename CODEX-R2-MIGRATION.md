@@ -29,6 +29,7 @@ Before changing anything, read:
 - `docs/ADDING-A-PRODUCT.md`
 - `scripts/new-product.sh`
 - `scripts/upload-product-assets.sh`
+- `scripts/check-storage-boundary.sh`
 
 Check:
 
@@ -46,6 +47,8 @@ Run at minimum:
 ```bash
 sh -n scripts/new-product.sh
 sh -n scripts/upload-product-assets.sh
+sh -n scripts/check-storage-boundary.sh
+bash scripts/check-storage-boundary.sh
 ```
 
 Use a temporary local product scaffold if needed to test `--dry-run`, but remove it afterward and do not commit a fake product.
@@ -189,6 +192,8 @@ git status
 git diff --check
 sh -n scripts/new-product.sh
 sh -n scripts/upload-product-assets.sh
+sh -n scripts/check-storage-boundary.sh
+bash scripts/check-storage-boundary.sh
 ```
 
 If repository cleanup was required, commit and push it to `main`.
