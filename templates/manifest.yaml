@@ -11,25 +11,26 @@ canonical_product_url: <url>
 summary_file: product.md
 assets_base_url: https://assets.licat.xyz/products/<product-slug>/images
 
-documents:
-  - id: user-manual
-    type: user_manual
-    path: docs/user-manual.pdf
-    authority: authoritative
-    notes: Primary operating and specification source.
+# Add only source files that actually exist in this product directory.
+documents: []
 
-  - id: datasheet
-    type: datasheet
-    path: docs/datasheet.pdf
-    authority: authoritative
-    notes: Remove this entry if no datasheet exists.
+# Example document entry:
+# documents:
+#   - id: user-manual
+#     type: user_manual
+#     path: docs/user-manual.pdf
+#     authority: authoritative
+#     notes: Primary operating and specification source.
 
-images:
-  - id: hero-01
-    role: primary_product_reference
-    path: images/hero-01.jpg
-    public_url: https://assets.licat.xyz/products/<product-slug>/images/hero-01.jpg
-    notes: Primary full-product reference.
+images: []
+
+# Example image entry:
+# images:
+#   - id: hero-01
+#     role: primary_product_reference
+#     path: images/hero-01.jpg
+#     public_url: https://assets.licat.xyz/products/<product-slug>/images/hero-01.jpg
+#     notes: Primary full-product reference.
 
 # Evidence priority when sources disagree.
 evidence_priority:
