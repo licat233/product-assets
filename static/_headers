@@ -1,0 +1,6 @@
+/*
+  X-Robots-Tag: noindex, nofollow
+
+/products/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=3600
