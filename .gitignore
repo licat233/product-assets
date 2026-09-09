@@ -2,3 +2,10 @@
 Thumbs.db
 *.tmp
 dist/
+
+# Product binary source files live in Cloudflare R2, not Git history.
+# Keep the canonical local directory shape, but only track .gitkeep placeholders.
+products/*/docs/*
+!products/*/docs/.gitkeep
+products/*/images/*
+!products/*/images/.gitkeep
