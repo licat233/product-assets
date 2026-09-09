@@ -4,7 +4,7 @@
 
 This repository is a reusable product source-of-truth for **ChatGPT, DetailFlow, Codex, and other AI content workflows**.
 
-Its purpose is not merely to store images. Each product should have a durable package of original product evidence, structured facts, authoritative reference images, and machine-readable metadata so a new ChatGPT session can understand the product without asking the user to upload the same files again.
+Its purpose is to preserve original product evidence, structured facts, authoritative visual references, and machine-readable metadata so a new ChatGPT session can understand a product without asking the user to upload the same files again.
 
 ## Core rule
 
@@ -25,118 +25,122 @@ products/<product-slug>/
     └── ...
 ```
 
-- `product.md` is the LLM-friendly product summary and evidence index.
-- `manifest.yaml` is the machine-readable inventory of documents, images, URLs, and DetailFlow defaults.
-- `docs/` contains original authoritative evidence such as manuals, datasheets, test reports, and certification documents.
-- `images/` contains authoritative real product reference images.
+- `product.md` is the human/LLM-friendly product summary and evidence index.
+- `manifest.yaml` is an **auto-generated** machine inventory. Users should not maintain it manually.
+- `docs/` contains original authoritative evidence such as manuals, datasheets, drawings, test reports, and certification documents.
+- `images/` contains authoritative real product reference images and reference videos.
 
-`product.md` does **not** replace the original manual or datasheet. Exact technical values should be verified against the authoritative source document before being used in commercial copy.
+Exact technical values should be verified against original source documents.
 
 ## Create a product
-
-Do not recreate the structure from memory. Run:
 
 ```bash
 bash scripts/new-product.sh <product-slug> "<Product Name>"
 ```
 
-Example:
+Then add source documents to `docs/`, real product media to `images/`, and maintain `product.md`.
+
+Regenerate the machine inventory with:
 
 ```bash
-bash scripts/new-product.sh led-sensor-light "LED Sensor Light"
+bash scripts/sync-manifest.sh <product-slug>
 ```
 
-Then add the real product documents and reference images, and complete `product.md` and `manifest.yaml` from those sources.
+Agents are required by `AGENTS.md` to do this automatically before committing product changes.
 
-See [`docs/ADDING-A-PRODUCT.md`](./docs/ADDING-A-PRODUCT.md).
+## Public binary evidence origin
 
-## How ChatGPT should read a product
-
-For `<product-slug>`, ChatGPT should:
-
-1. Read `products/<product-slug>/product.md`.
-2. Read `products/<product-slug>/manifest.yaml`.
-3. Open the relevant authoritative source documents referenced by the manifest.
-4. Inspect all authoritative product images referenced by the manifest.
-5. Separate information into:
-   - user-confirmed corrections
-   - authoritative-document facts
-   - directly observed image facts
-   - reasonable inference
-   - unknown / do-not-claim
-6. Start planning or generation only after the evidence review is complete.
-
-Evidence priority:
+Cloudflare Pages generates:
 
 ```text
-User-confirmed correction
-        ↓
-Manual / Datasheet / authoritative source
-        ↓
-Directly observable product-image fact
-        ↓
-Structured summary in product.md
-        ↓
-Reasonable creative inference
-        ↓
-Unknown: do not invent
+https://assets.licat.xyz/
 ```
 
-## Recommended ChatGPT prompt for DetailFlow
+Each product page lists:
 
-Replace `<product-slug>` and send this in a new ChatGPT conversation:
+- source documents from `docs/`
+- authoritative visual references from `images/`
+
+Stable binary URLs follow these patterns:
 
 ```text
-Use DetailFlow to create an 8-screen English ecommerce detail page for product:
-<product-slug>
-
-DetailFlow Skill:
-https://github.com/AJbeckliy/detail-flow
-
-Product repository:
-https://github.com/licat233/product-assets
-
-Before planning:
-1. Read and follow the DetailFlow Skill, especially the ecommerce 8-screen product detail page workflow and both approval gates.
-2. Read products/<product-slug>/product.md.
-3. Read products/<product-slug>/manifest.yaml.
-4. Open the relevant original manuals, datasheets, and other authoritative sources referenced by the manifest.
-5. Inspect all authoritative real product images referenced by the manifest.
-6. Separate user-confirmed facts, authoritative-document facts, directly observed image facts, reasonable inference, and unknown/do-not-claim information.
-7. Verify exact specifications against the original manual/datasheet rather than relying only on product.md.
-8. Do not invent specifications, certification status, test results, awards, discounts, partnerships, or unsupported commercial claims.
-9. Use English visible commercial copy by default for the overseas market.
-10. Do not generate final detail-page images immediately.
-11. First produce the complete 8-screen Detail Page Blueprint and wait for my approval.
-12. Follow both DetailFlow approval gates strictly.
+https://assets.licat.xyz/products/<slug>/docs/<filename>
+https://assets.licat.xyz/products/<slug>/images/<filename>
 ```
 
-Short form:
+The GitHub repository is already public. The asset origin provides a stable direct binary retrieval path so ChatGPT does not have to depend on GitHub connector/base64 handling for PDFs, images, or videos.
+
+Product metadata files (`product.md`, `manifest.yaml`) remain read from GitHub.
+
+## ChatGPT reading rule
+
+```text
+GitHub
+→ product.md / manifest.yaml / text metadata
+
+assets.licat.xyz
+→ PDFs / datasheets / drawings / images / videos / binary evidence
+```
+
+The manifest records both source URLs and stable `public_url` values.
+
+## Mandatory DetailFlow capability preflight
+
+Before Approval Gate 1, a ChatGPT session must verify that it can:
+
+1. generate images in the current session;
+2. read `product.md`;
+3. read `manifest.yaml`;
+4. inspect at least one original document through an `assets.licat.xyz` `public_url`;
+5. visually inspect at least one authoritative product image through an `assets.licat.xyz` `public_url`.
+
+If any capability is unavailable, stop **before** the 8-screen blueprint. Do not reach Gate 1 and only then discover that Visual Master or final image generation cannot continue.
+
+## Recommended DetailFlow prompt
 
 ```text
 Use DetailFlow for `<product-slug>` from `licat233/product-assets`.
-Read product.md, manifest.yaml, the relevant original source documents, and all authoritative product images before planning.
-Create an English overseas-market 8-screen ecommerce detail page and follow both DetailFlow approval gates strictly.
+
+Before Approval Gate 1, run a capability preflight:
+- confirm this session can generate images;
+- read product.md and manifest.yaml from GitHub;
+- use manifest public_url links on assets.licat.xyz for binary documents and visual references;
+- verify that at least one original document can be inspected;
+- visually inspect at least one authoritative product image.
+
+If any of those capabilities are unavailable, stop before the blueprint and tell me immediately.
+
+If the preflight passes, review the relevant original sources, create the English overseas-market 8-screen DetailFlow blueprint, and follow both approval gates strictly.
 ```
 
-See [`docs/CHATGPT-USAGE.md`](./docs/CHATGPT-USAGE.md) for more examples.
+See [`docs/CHATGPT-USAGE.md`](./docs/CHATGPT-USAGE.md) and [`prompts/detailflow-session-bootstrap.md`](./prompts/detailflow-session-bootstrap.md).
 
-## Repository map
+## Lightweight clone for collaborators
 
-```text
-products/                      # one product directory per product
-templates/                     # product.md and manifest.yaml templates
-docs/                          # operating documentation
-prompts/                       # reusable ChatGPT / DetailFlow prompts
-scripts/new-product.sh         # creates the canonical product scaffold
-scripts/                       # asset and deployment helper scripts
-static/                        # static publishing support files
+Avoid a full clone as the binary catalog grows.
+
+```bash
+git clone --filter=blob:none --sparse https://github.com/licat233/product-assets.git
+cd product-assets
+
+git sparse-checkout set \
+  scripts \
+  templates \
+  products/<product-slug>
+```
+
+This keeps the repository history and structure while downloading only the files needed for the selected product.
+
+To add another product later:
+
+```bash
+git sparse-checkout add products/<another-product-slug>
 ```
 
 ## Scope
 
 This repository is intentionally focused. It is not a CMS, ERP, PIM, ecommerce backend, social publishing system, or marketing-output archive.
 
-Its core responsibility is:
+Its responsibility is:
 
-> Preserve traceable, reusable product evidence and structured facts so ChatGPT and other AI workflows can reliably understand the product later.
+> Preserve traceable, reusable product evidence and structured facts while automating repetitive file-management work.
