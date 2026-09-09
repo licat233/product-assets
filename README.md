@@ -1,12 +1,16 @@
 # Product Assets
 
-Structured source-of-truth repository for product documentation, product facts, authoritative reference images, and DetailFlow inputs.
+Structured source-of-truth repository for product facts, evidence indexes, DetailFlow inputs, and references to product binary assets.
 
 The repository is designed so ChatGPT, Codex, and other approved tools can understand a product without requiring the user to re-upload the same manual, specifications, and reference images in every new session.
 
-## Core rule
+## Core architecture
 
-**One product = one self-contained directory.**
+**GitHub stores metadata. Cloudflare R2 stores binaries.**
+
+Git history must remain lightweight as the catalog grows.
+
+For every product, the local working tree keeps the familiar structure:
 
 ```text
 products/<product-slug>/
@@ -19,21 +23,35 @@ products/<product-slug>/
 └── images/
     ├── hero-01.jpg
     ├── front-view.jpg
-    ├── rear-view.jpg
     └── ...
 ```
 
-`docs/` is the original evidence layer. Manuals, datasheets, certification documents, test reports, and other authoritative product documents belong here.
+But there is an important storage boundary:
 
-`product.md` is the LLM-friendly product summary and evidence index. It does not replace the original source documents.
+- `product.md` and `manifest.yaml` are committed to Git.
+- Binary contents of `docs/` and `images/` are ignored by Git and used only as local staging files.
+- After upload, the binary files live in Cloudflare R2 under the same logical paths.
+- `.gitkeep` files preserve the empty local staging directories in a fresh clone.
 
-`manifest.yaml` is the machine-readable inventory of the product's documents, images, publishing URLs, and DetailFlow defaults.
+R2 object layout:
 
-`images/` contains authoritative real product reference images. AI-generated marketing outputs do not belong in this source directory.
+```text
+products/<product-slug>/docs/<filename>
+products/<product-slug>/images/<filename>
+```
+
+Public asset URLs:
+
+```text
+https://assets.licat.xyz/products/<product-slug>/docs/<filename>
+https://assets.licat.xyz/products/<product-slug>/images/<filename>
+```
+
+This prevents product photos, manuals, and their historical revisions from making normal Git clone/pull operations progressively heavier.
 
 ## Create a new product
 
-Do not recreate the directory structure from memory. Use the repository scaffold command:
+Do not recreate the directory structure from memory. Use:
 
 ```bash
 bash scripts/new-product.sh <product-slug> "<Product Name>"
@@ -45,45 +63,66 @@ Example:
 bash scripts/new-product.sh led-sensor-light "LED Sensor Light"
 ```
 
-This creates `product.md`, `manifest.yaml`, `docs/`, and `images/` from the canonical repository templates. It refuses to overwrite an existing product.
+Then place the original files into the generated local staging directories:
 
-Then place the product's original manuals/datasheets in `docs/`, real reference photos in `images/`, and fill the generated metadata files from those sources.
+```text
+products/led-sensor-light/docs/
+products/led-sensor-light/images/
+```
+
+Those binary files are intentionally ignored by Git.
+
+Upload them to R2 with:
+
+```bash
+bash scripts/upload-product-assets.sh led-sensor-light
+```
+
+Preview the upload without changing R2:
+
+```bash
+bash scripts/upload-product-assets.sh led-sensor-light --dry-run
+```
+
+After upload, populate `product.md` and `manifest.yaml`, including the real R2 object keys and URLs, then commit only the metadata.
 
 ## Evidence priority
 
 When sources disagree, use this order:
 
 1. Explicit user-confirmed correction recorded with provenance.
-2. Authoritative product documents in `docs/` such as manuals and datasheets.
+2. Authoritative product documents referenced by the manifest.
 3. Facts directly observable in authoritative product images.
 4. Derived summaries in `product.md`.
 5. Reasonable creative inference.
 6. Unknown information must remain unknown and must not be invented.
 
-## Cloudflare asset publishing
+## DetailFlow
 
-GitHub is the source of truth. Cloudflare Pages is only a public image origin.
+A new ChatGPT session should read:
 
-A small build script copies only product `images/` directories into the generated `dist/` output. Product manuals, metadata, prompts, and repository documentation are not included in the asset deployment.
+1. `products/<slug>/product.md` from GitHub.
+2. `products/<slug>/manifest.yaml` from GitHub.
+3. Authoritative source documents using the R2 URLs in the manifest.
+4. Product reference images using the R2 URLs in the manifest.
 
-Target asset pattern:
-
-```text
-https://assets.licat.xyz/products/<product-slug>/images/<filename>
-```
-
-No framework, database, R2 bucket, Cloudflare Images service, or application server is required.
+Only after reviewing those sources should DetailFlow produce the 8-screen blueprint.
 
 ## Repository map
 
 ```text
-products/                      # one self-contained directory per product
-templates/                     # product.md and manifest.yaml templates
-docs/                          # repository operating rules
-prompts/                       # reusable ChatGPT / DetailFlow bootstrap prompt
-scripts/new-product.sh         # creates a canonical product directory
-scripts/build-public.sh        # creates Cloudflare Pages output
-static/                        # root files copied to the generated asset site
+products/                          # lightweight product metadata + local ignored staging dirs
+templates/                         # product.md and manifest.yaml templates
+docs/                              # repository operating rules
+prompts/                           # reusable ChatGPT / DetailFlow bootstrap prompt
+scripts/new-product.sh             # creates canonical product scaffold
+scripts/upload-product-assets.sh   # uploads local docs/images to Cloudflare R2
+scripts/build-public.sh            # legacy Pages build; remove after R2 cutover
+static/                            # legacy Pages root files; remove after R2 cutover
 ```
 
-Start with `docs/PRODUCT-DIRECTORY-SPEC.md`, then use `docs/ADDING-A-PRODUCT.md` when onboarding a new product.
+See:
+
+- `docs/PRODUCT-DIRECTORY-SPEC.md`
+- `docs/ADDING-A-PRODUCT.md`
+- `docs/CLOUDFLARE.md`
