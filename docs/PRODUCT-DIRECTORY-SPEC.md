@@ -20,7 +20,7 @@ products/<product-slug>/
     └── ...
 ```
 
-The product slug is the stable identifier used by GitHub paths, Cloudflare image URLs, ChatGPT prompts, and DetailFlow.
+The product slug is the stable identifier used by GitHub paths, Cloudflare asset URLs, ChatGPT prompts, and DetailFlow.
 
 ## Creation rule
 
@@ -30,11 +30,11 @@ Do not recreate this directory tree manually or from memory. Create every new pr
 bash scripts/new-product.sh <product-slug> "<Product Name>"
 ```
 
-The script is the canonical scaffold mechanism. It creates the required directories, copies the current templates, fills the product slug and name, and refuses to overwrite an existing product directory.
+The script is the canonical scaffold mechanism. It creates the required directories, fills the product slug and name, generates the initial manifest, and refuses to overwrite an existing product directory.
 
 ## `docs/` — original evidence layer
 
-Use `docs/` for the original product evidence supplied by the manufacturer or explicitly approved by the user.
+Use `docs/` for original product evidence supplied by the manufacturer or explicitly approved by the user.
 
 Typical files:
 
@@ -42,13 +42,15 @@ Typical files:
 - datasheets
 - installation guides
 - wiring diagrams
+- dimension drawings
 - test reports
 - certification documents
 - packaging specifications
+- manufacturer brochures
 
 These files are the primary source for exact technical specifications and operating behavior.
 
-Do not silently rewrite source documents. If an original source is replaced with a newer revision, preserve the filename/version information needed to understand the change.
+Do not silently rewrite source documents. If an original source is replaced with a newer revision, preserve enough filename/version information to understand the change.
 
 ## `product.md` — LLM-friendly summary and evidence index
 
@@ -69,43 +71,63 @@ It should summarize:
 
 `product.md` does not replace the source documents. If a derived summary conflicts with an authoritative document, the source document wins unless an explicit user-confirmed correction is recorded.
 
-## `manifest.yaml` — machine-readable inventory
+## `manifest.yaml` — auto-generated machine inventory
 
-The manifest inventories the files and tells tools how to use them.
+`manifest.yaml` is a generated file. **The user should not maintain it manually.**
 
-It should contain:
+It inventories:
 
-- product identity
-- source document inventory
-- source image inventory
-- public image URLs
+- product identity derived from `product.md`
+- actual files present in `docs/`
+- actual files present in `images/`
+- file/media types
+- source URLs
+- public `assets.licat.xyz` URLs for supported visual media
 - evidence priority
 - claims policy
 - DetailFlow defaults
 
-All paths inside the manifest should be relative to the product directory unless explicitly documented otherwise.
+Regenerate one product with:
 
-The scaffold template starts `documents` and `images` as empty lists. Add only files that actually exist; do not leave placeholder source entries that could be mistaken for evidence.
+```bash
+bash scripts/sync-manifest.sh <product-slug>
+```
+
+Or regenerate all products with:
+
+```bash
+bash scripts/sync-manifest.sh
+```
+
+Generated manifests start with:
+
+```yaml
+# AUTO-GENERATED FILE — DO NOT EDIT MANUALLY.
+```
+
+If the manifest disagrees with the directory contents, regenerate it. Do not manually repair file lists.
+
+Agents must run the manifest sync before committing changes to `product.md`, `docs/`, or `images/`.
 
 ## `images/` — authoritative visual references
 
-Use `images/` for real product photography or other user-approved source images that accurately represent the physical product.
+Use `images/` for real product photography or other user-approved source media that accurately represent the physical product.
 
-Use semantic lowercase kebab-case filenames.
+Reference videos may also live here when they help establish product appearance or operating behavior.
+
+Prefer semantic filenames when practical.
 
 Good examples:
 
 ```text
 hero-01.jpg
-hero-02.jpg
 front-view.jpg
 rear-view.jpg
 side-profile.jpg
 connector-detail.jpg
 label-markings.jpg
+product-demo.mp4
 ```
-
-Avoid camera filenames such as `IMG_4832.jpg` after ingestion.
 
 Do not use feature names that have not been verified. A filename itself must not turn an inference into a fact.
 
@@ -125,22 +147,30 @@ When evidence conflicts, resolve it in this order:
 Before DetailFlow planning starts, ChatGPT should:
 
 1. Read `product.md`.
-2. Read `manifest.yaml`.
+2. Read the generated `manifest.yaml`.
 3. Read the authoritative source documents listed in the manifest that are relevant to the requested claims.
-4. Inspect the authoritative source images.
+4. Inspect the authoritative source media.
 5. Classify facts by evidence level.
 6. Build the 8-screen blueprint only after the evidence review.
 
 The presence of a product folder does not mean every possible claim is approved. Unsupported values must remain in the unknown/do-not-claim category.
 
-## Public image publishing
+## Public visual-asset publishing
 
-Source images stay in `products/<slug>/images/`.
+Source media stay in `products/<slug>/images/`.
 
-Cloudflare Pages publishes generated copies only at:
+Cloudflare Pages publishes supported visual media at:
 
 ```text
 https://assets.licat.xyz/products/<slug>/images/<filename>
 ```
 
-Do not commit a duplicated public copy of the same image.
+It also generates a static browser at:
+
+```text
+https://assets.licat.xyz/
+```
+
+Product metadata and `docs/` source files remain outside the public asset origin.
+
+Do not commit a duplicated public copy of the same media.
