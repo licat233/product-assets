@@ -50,7 +50,7 @@ products/<product-slug>/
 
 `manifest.yaml` 的文件清单、URL、媒体类型等由脚本自动扫描生成。
 
-### 第一步：创建产品
+### 创建产品
 
 ```bash
 bash scripts/new-product.sh <product-slug> "<Product Name>"
@@ -62,56 +62,35 @@ bash scripts/new-product.sh <product-slug> "<Product Name>"
 bash scripts/new-product.sh led-sensor-light "LED Sensor Light"
 ```
 
-脚本会创建：
-
-```text
-products/led-sensor-light/
-├── product.md
-├── manifest.yaml
-├── docs/
-└── images/
-```
-
-### 第二步：放入真实资料
+### 放入真实资料
 
 说明书、规格书等放到：
 
 ```text
-products/led-sensor-light/docs/
+products/<product-slug>/docs/
 ```
 
 真实产品图 / 产品参考视频放到：
 
 ```text
-products/led-sensor-light/images/
+products/<product-slug>/images/
 ```
 
-### 第三步：同步 manifest
+### 同步 manifest
 
 **不要手工编辑 `manifest.yaml`。**
 
-运行：
-
 ```bash
-bash scripts/sync-manifest.sh led-sensor-light
+bash scripts/sync-manifest.sh <product-slug>
 ```
 
-它会自动扫描真实目录并生成：
-
-- 文档清单
-- 图片 / 视频清单
-- 文件类型
-- GitHub 原始文件 URL
-- `assets.licat.xyz` 的文档 / 图片 / 视频公开 URL
-- DetailFlow 默认规则
-
-如果同时修改了多款产品，可以直接运行：
+同时修改多款产品时：
 
 ```bash
 bash scripts/sync-manifest.sh
 ```
 
-如果由 Codex / Agent 负责入库，`AGENTS.md` 已要求 Agent 在提交前自动运行同步，因此**用户不应该被要求手工维护 YAML**。
+如果由 Codex / Agent 负责入库，`AGENTS.md` 已要求 Agent 在提交前自动运行同步，因此用户不应该被要求维护 YAML。
 
 ---
 
@@ -123,20 +102,14 @@ Cloudflare Pages 会根据仓库内容自动生成：
 https://assets.licat.xyz/
 ```
 
-首页显示产品列表；点击产品后可以看到两类文件：
+首页显示产品列表；点击产品后可以看到：
 
 ```text
 Source documents
-→ docs/ 中的 PDF、规格书、尺寸图等原始资料
+→ docs/ 中的 PDF、规格书、尺寸图、彩页等
 
 Visual references
 → images/ 中的真实产品图片和参考视频
-```
-
-例如：
-
-```text
-https://assets.licat.xyz/products/<product-slug>/
 ```
 
 机器可读索引：
@@ -145,150 +118,162 @@ https://assets.licat.xyz/products/<product-slug>/
 https://assets.licat.xyz/catalog.json
 ```
 
-### 为什么现在 docs 也发布到 assets.licat.xyz？
+这个仓库本身就是 Public。`assets.licat.xyz` 的作用是提供稳定的直接二进制 URL，不是改变资料的隐私级别。
 
-这个 GitHub 仓库本身就是 Public，所以 `docs/` 中提交的说明书 / Datasheet 本来已经可以从 GitHub 公开读取。
-
-把同一份二进制文件发布到 `assets.licat.xyz` 的目的不是改变隐私级别，而是给 ChatGPT 一个**稳定、直接的二进制文件 URL**，避免 GitHub 连接器把 PDF / JPG 作为 base64 返回后无法进入文档或视觉检查链路。
-
-仍然不会公开到 asset origin 的内容：
-
-- `product.md`
-- `manifest.yaml`
-- README / AGENTS
-- 仓库内部文档和 prompts
-
-> 不要把客户私有、NDA、密码、凭证或其它机密文件放进这个 Public 仓库。
+不要把客户私有、NDA、密码、凭证或其它机密文件放进这个 Public 仓库。
 
 ---
 
 ## 4. ChatGPT 的正确读取方式
 
-不要让 ChatGPT 通过 GitHub 连接器硬读所有二进制文件。
-
-推荐职责分工：
+文本 metadata：
 
 ```text
 GitHub
+→ DetailFlow SKILL.md
 → product.md
 → manifest.yaml
-→ 文本 metadata
-
-assets.licat.xyz
-→ PDF / Datasheet / 尺寸图
-→ JPG / PNG / WebP
-→ 产品参考视频
-→ 其它二进制证据
 ```
 
-对于产品 `<product-slug>`，ChatGPT 应该：
-
-1. 从 GitHub 读取 `product.md`。
-2. 从 GitHub 读取 `manifest.yaml`。
-3. 对 PDF / 图片 / 视频等二进制证据，优先使用 manifest 中的 `public_url`。
-4. 核对与当前 claim 相关的原始说明书 / Datasheet。
-5. 检查所有权威产品参考图片。
-6. 将信息区分为：
-   - 用户明确确认 / 修正
-   - 权威文档支持
-   - 图片中直接可观察
-   - AI 合理推断
-   - Unknown / Do not claim
-7. 完成证据审查后才进入 DetailFlow。
-
-证据优先级：
+二进制原件不要只依赖单一路径，按 fallback 顺序尝试：
 
 ```text
-用户明确确认的修正
-        ↓
-说明书 / Datasheet / 权威原始文件
-        ↓
-真实产品图片中可直接观察到的事实
-        ↓
-product.md 结构化摘要
-        ↓
-AI 合理推断
-        ↓
-未知：禁止编造
+1. manifest public_url
+   → assets.licat.xyz
+
+失败
+   ↓
+2. manifest source_url
+   → raw.githubusercontent.com
+
+仍失败
+   ↓
+3. 如果 GitHub connector 返回完整 binary base64，
+   且当前会话能 decode 还原成原始文件，
+   则还原后真正打开 / 检查。
 ```
+
+关键规则：
+
+> **base64 本身不算证据检查。只有还原后的原始 PDF / 图片 / 视频被真正打开并检查，才算 PASS。**
 
 ---
 
 ## 5. DetailFlow 开始前必须做 Capability Preflight
 
-我们实际测试发现：有些 ChatGPT 会话可以读取 GitHub 文本，但不能正确检查二进制原件；还有些会话没有图像生成能力。
+不同 ChatGPT 会话暴露的工具能力可能不同，所以必须在 Blueprint 前检查。
 
-因此 **不要先做完 Blueprint 再发现后面无法生成图片**。
+### Stage 0 — 先检查图像生成能力
 
-在 Approval Gate 1 之前，ChatGPT 必须先确认：
+第一件事不是读 PDF，而是确认当前会话有**真正可调用的图像生成 / 编辑能力**，能完成：
+
+- Visual Master
+- 1:3 continuity master（需要时）
+- Screen 01–02
+- Screen 03–08
+
+如果没有：
 
 ```text
-1. 当前会话具备图像生成能力
-2. 能读取 product.md
-3. 能读取 manifest.yaml
-4. 能通过 assets.licat.xyz public_url 检查至少一份原始文档
-5. 能通过 assets.licat.xyz public_url 视觉检查至少一张真实产品图
+立即停止
+→ 不读取剩余产品证据
+→ 不做 Blueprint
+→ 不进入 Approval Gate 1
 ```
 
-如果任意一项失败：
+不要根据模型名称推测能力。
 
-> **立即停止，不进入 Blueprint，不到 Gate 1。**
+### Stage 1 — 读取 DetailFlow 与 metadata
 
-这样不会浪费用户时间。
+Stage 0 通过后：
 
-仓库已经提供完整启动提示词：
+1. 打开 `https://github.com/AJbeckliy/detail-flow`。
+2. 完整读取当前 `SKILL.md`。
+3. 读取 `SKILL.md` 引用的、8-screen ecommerce workflow 所需文件。
+4. 读取当前产品的 `product.md` 和 `manifest.yaml`。
 
-[`prompts/detailflow-session-bootstrap.md`](./prompts/detailflow-session-bootstrap.md)
+### Stage 2 — 真正检查原始证据
+
+必须至少做到：
+
+- 真正打开并检查一份权威原始文档；
+- 真正视觉检查一张真实产品图。
+
+二进制读取顺序：
+
+```text
+public_url
+→ source_url
+→ 完整 connector base64 → decode → 原件检查
+```
+
+任意必要能力最终失败：
+
+> **立即停止，不输出 Blueprint，不进入 Approval Gate 1。**
+
+完整规则见：[`docs/CHATGPT-USAGE.zh-CN.md`](./docs/CHATGPT-USAGE.zh-CN.md)
 
 ---
 
 ## 6. 最推荐：给 ChatGPT 发什么指令？
 
-新开 ChatGPT 会话后，替换 `<product-slug>`：
+不要只说“Use DetailFlow”，因为新会话未必知道 DetailFlow 是什么。
+
+推荐直接使用仓库里的 canonical prompt：
+
+[`prompts/detailflow-session-bootstrap.md`](./prompts/detailflow-session-bootstrap.md)
+
+其中最关键的开头是：
 
 ```text
-接下来请使用 DetailFlow 工作流，为产品 <product-slug> 制作英文海外市场电商产品详情页。
+Use the DetailFlow workflow to create an English overseas-market ecommerce product detail page for product:
 
-DetailFlow Skill：
+<product-slug>
+
+IMPORTANT:
+Do not assume you already know what "DetailFlow" means.
+
+DetailFlow is an external GitHub Skill/workflow stored at:
 https://github.com/AJbeckliy/detail-flow
 
-Product repository：
+Product source repository:
 https://github.com/licat233/product-assets
 
-在 Approval Gate 1 之前，先做 capability preflight：
+BEFORE producing any Blueprint or reaching Approval Gate 1, run this capability preflight in order.
 
-1. 确认当前会话具备图像生成能力。
-2. 从 GitHub 读取 products/<product-slug>/product.md。
-3. 从 GitHub 读取 products/<product-slug>/manifest.yaml。
-4. 对 PDF / 图片 / 视频等二进制文件，不要依赖 GitHub connector/base64；优先使用 manifest 中 assets.licat.xyz 的 public_url。
-5. 至少成功检查一份原始文档。
-6. 至少成功视觉检查一张真实产品图片。
+STAGE 0 — IMAGE GENERATION FIRST
 
-如果以上任意一项失败，请立即停止，不要先输出 Blueprint，也不要进入 Approval Gate 1，直接告诉我当前会话缺少什么能力。
+Confirm that this ChatGPT session has an actually invokable image-generation/editing capability required to create:
+- Visual Master
+- 1:3 continuity master when required
+- Screen 01–02
+- Screen 03–08
 
-如果 preflight 通过：
+Do not infer this from the model name.
 
-1. 读取并遵循 DetailFlow Skill，尤其是 ecommerce 8-screen product detail page 工作流和两个 approval gates。
-2. 阅读与当前 claim 相关的所有原始说明书 / Datasheet。
-3. 检查所有权威真实产品参考图。
-4. 严格区分：
-   - 用户明确确认的事实
-   - 权威文档支持的事实
-   - 图片中可以直接观察到的事实
-   - AI 合理推断
-   - 未知且不能擅自编造的信息
-5. 精确参数必须回到原始文档核对。
-6. 不得编造参数、认证状态、测试结果、奖项、折扣、合作品牌或其它没有证据支持的声明。
-7. 所有面向海外客户的可见商业文案默认使用英文。
-8. 第一阶段先输出完整 8-screen Detail Page Blueprint。
-9. 严格遵守 DetailFlow 的两个 approval gates。
-```
+If image generation/editing is unavailable:
+STOP IMMEDIATELY.
+Do not read the remaining product evidence.
+Do not produce the 8-screen Blueprint.
+Do not enter Approval Gate 1.
 
-### 简短版
+STAGE 1 — DETAILFLOW CONTRACT + PRODUCT METADATA
 
-```text
-Use DetailFlow for `<product-slug>` from `licat233/product-assets`.
-Run the capability preflight before Gate 1. Use GitHub for product.md/manifest and assets.licat.xyz public_url links for binary evidence. If document/image inspection or image generation is unavailable, stop before the blueprint. Otherwise follow both DetailFlow approval gates strictly.
+If Stage 0 passes:
+1. Open the DetailFlow repository and read the current SKILL.md completely.
+2. Read the files referenced by SKILL.md that are required for the ecommerce 8-screen workflow.
+3. Read products/<product-slug>/product.md and products/<product-slug>/manifest.yaml.
+
+STAGE 2 — BINARY EVIDENCE
+
+For every binary source:
+1. first try manifest public_url on assets.licat.xyz;
+2. if unavailable, try manifest source_url on raw.githubusercontent.com;
+3. if both fail and the connector provides the COMPLETE binary as base64, decode it only when the original file can then actually be opened and inspected.
+
+Base64 alone does NOT count as evidence inspection.
+
+Do not produce the Blueprint unless at least one authoritative original document and one authoritative real product image have actually been inspected.
 ```
 
 ---
@@ -311,27 +296,21 @@ Run the capability preflight before Gate 1. Use GitHub for product.md/manifest a
 
 ### manifest.yaml
 
-`manifest.yaml` 是机器索引，**不是需要用户维护的资料表**。
-
-通过：
+`manifest.yaml` 是自动生成的机器索引，不需要用户维护。
 
 ```bash
 bash scripts/sync-manifest.sh <product-slug>
 ```
 
-自动生成。
+它会记录：
 
-它会包含类似：
-
-```yaml
-documents:
-  - path: docs/datasheet.pdf
-    public_url: https://assets.licat.xyz/products/<slug>/docs/datasheet.pdf
-
-images:
-  - path: images/front-view.jpg
-    public_url: https://assets.licat.xyz/products/<slug>/images/front-view.jpg
-```
+- docs / images 实际文件清单
+- `source_url`
+- `public_url`
+- 媒体类型
+- evidence priority
+- claims policy
+- DetailFlow 默认参数
 
 如果目录和 manifest 不一致，应重新运行同步脚本，而不是人工改 YAML。
 
@@ -339,9 +318,9 @@ images:
 
 ## 8. DetailFlow 固定流程
 
+完整 Preflight 通过后：
+
 ```text
-Capability Preflight
-        ↓
 读取并核验输入资料
         ↓
 完整 8-screen Blueprint
@@ -350,15 +329,17 @@ Approval Gate 1
         ↓
 Text Master / Visual Master
         ↓
-先生成 Screen 01–02
+1:3 continuity master（需要时）
         ↓
-连续性 / 产品一致性 / 文案审查
+Screen 01–02
+        ↓
+两屏拼接预览 + Audit
         ↓
 Approval Gate 2
         ↓
-生成 Screen 03–08
+Screen 03–08
         ↓
-完整拼接与最终 Audit
+完整拼接 + Final Audit
 ```
 
 八屏是一张连续 ecommerce detail page 的八个切片，不是八张互不相关的海报。
@@ -383,7 +364,7 @@ static/                            # 浏览器 CSS / headers / robots / 404
 
 ## 10. 同事协作：轻量 Clone（推荐）
 
-这个仓库会逐渐包含大量 PDF、JPG、PNG、MP4 等二进制产品资料。为了避免同事每次都把所有历史产品资料下载到本地，**不建议直接使用普通 `git clone`**。
+仓库会逐渐包含大量 PDF、JPG、PNG、MP4 等二进制产品资料，因此不建议直接使用普通 `git clone`。
 
 推荐：
 
@@ -393,7 +374,7 @@ Partial Clone: --filter=blob:none
 Sparse Checkout: 只检出当前要处理的产品目录
 ```
 
-### 场景 A：只处理一款已有产品
+### 只处理一款已有产品
 
 ```bash
 git clone --filter=blob:none --sparse https://github.com/licat233/product-assets.git
@@ -404,8 +385,6 @@ git sparse-checkout set \
   templates \
   products/lcd-display-101-inch-70
 ```
-
-这样其它产品的大图片、PDF 和视频不会一开始就下载到本地。
 
 完成修改后：
 
@@ -418,7 +397,7 @@ git pull --rebase
 git push
 ```
 
-### 场景 B：新增一款产品
+### 新增一款产品
 
 ```bash
 git clone --filter=blob:none --sparse https://github.com/licat233/product-assets.git
@@ -427,18 +406,17 @@ cd product-assets
 git sparse-checkout set scripts templates
 
 bash scripts/new-product.sh <product-slug> "<Product Name>"
-
 git sparse-checkout add products/<product-slug>
 ```
 
-然后把真实资料放进：
+然后把资料放进：
 
 ```text
 products/<product-slug>/docs/
 products/<product-slug>/images/
 ```
 
-整理 / 确认 `product.md`，再执行：
+整理 / 确认 `product.md` 后：
 
 ```bash
 bash scripts/sync-manifest.sh <product-slug>
@@ -449,15 +427,13 @@ git pull --rebase
 git push
 ```
 
-### 后来需要处理第二款产品
-
-无需重新 clone：
+后来需要第二款产品：
 
 ```bash
 git sparse-checkout add products/<another-product-slug>
 ```
 
-如果以后确实需要完整仓库：
+需要完整仓库时：
 
 ```bash
 git sparse-checkout disable
