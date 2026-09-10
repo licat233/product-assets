@@ -22,7 +22,7 @@ This repository is a controlled product source-of-truth for product documents, p
 - Commit the resulting `manifest.yaml` changes together with the product files.
 - The manifest is derived from the actual directory contents plus product identity fields in `product.md`.
 - If the manifest and directory contents disagree, regenerate the manifest instead of hand-editing its file lists.
-- Every source document and image/reference media file should receive a stable `public_url` under `https://assets.licat.xyz/products/<slug>/...` so ChatGPT can retrieve binary evidence without relying on GitHub connector base64 output.
+- Every source document and image/reference media file should receive both a repository source URL and a stable `public_url` under `https://assets.licat.xyz/products/<slug>/...` when applicable.
 
 ## Evidence rules
 
@@ -43,14 +43,40 @@ This repository is a controlled product source-of-truth for product documents, p
 
 ## DetailFlow capability preflight
 
-Before a DetailFlow session reaches Approval Gate 1, the session should verify that it can:
+The preflight must stop as early as possible when the current ChatGPT session cannot complete DetailFlow.
 
-1. read `product.md` and `manifest.yaml`;
-2. inspect an original source document through an `assets.licat.xyz` `public_url`;
-3. visually inspect an authoritative product image through an `assets.licat.xyz` `public_url`;
-4. generate images in the current ChatGPT session.
+### Stage 0 — image generation first
 
-If any of these are unavailable, report the missing capability before producing the blueprint. Do not let the workflow reach Gate 1 and then discover that Visual Master or final image generation cannot continue.
+Before reading product evidence or producing a Blueprint, verify that the current session has an actually invokable image-generation/editing capability for the Visual Master and final slices.
+
+If it does not, stop immediately. Do not read the remaining product evidence, do not produce the Blueprint, and do not enter Approval Gate 1.
+
+### Stage 1 — Skill + metadata
+
+If Stage 0 passes:
+
+1. read the current DetailFlow `SKILL.md` and required referenced ecommerce workflow files;
+2. read the product `product.md`;
+3. read the product `manifest.yaml`.
+
+Do not substitute prior memory or a generic ecommerce workflow for the current DetailFlow repository contract.
+
+### Stage 2 — binary evidence fallbacks
+
+For PDFs, images, videos, drawings, brochures, and other binary evidence, try in this order:
+
+1. manifest `public_url` on `assets.licat.xyz`;
+2. manifest `source_url` on `raw.githubusercontent.com`;
+3. only if the GitHub connector provides the complete binary as base64 and the session can decode it back into the original file, restore the file and actually inspect it.
+
+Base64 alone is not evidence inspection. A filename, manifest entry, binary length, or undecoded payload is not proof of a claim.
+
+Before the Blueprint, the session must successfully:
+
+- inspect at least one authoritative original source document; and
+- visually inspect at least one authoritative real product image.
+
+If those checks still fail after the allowed fallbacks, stop before the Blueprint and report the missing capability. Do not let the workflow reach Gate 1 and fail later.
 
 ## Public publishing boundary
 
