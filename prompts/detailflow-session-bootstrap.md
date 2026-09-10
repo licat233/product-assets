@@ -58,37 +58,61 @@ For the requested product slug, the product package is under:
 
 ## Mandatory capability preflight — run BEFORE the Blueprint and Approval Gate 1
 
-Before doing any DetailFlow planning, verify that the current ChatGPT session can actually complete the workflow.
+The preflight is intentionally ordered to stop as early as possible when a session cannot complete DetailFlow.
 
-1. **DetailFlow Skill access** — successfully open `https://github.com/AJbeckliy/detail-flow`, read `SKILL.md`, and understand the ecommerce 8-screen execution contract and both approval gates.
-2. **Image-generation capability** — confirm the current session can actually generate/edit images required for the Visual Master and final slices. Do not infer this from the model name; verify that the capability is available in the current session.
-3. **Product metadata access** — read `products/<slug>/product.md` from GitHub.
-4. **Manifest access** — read `products/<slug>/manifest.yaml` from GitHub.
-5. **Original-document inspection** — for PDFs and other binary source documents, do not rely on GitHub connector/base64 when a manifest `public_url` exists. Open at least one authoritative source document through its `https://assets.licat.xyz/...` `public_url` and confirm the original document can actually be inspected.
-6. **Authoritative-image inspection** — open and visually inspect at least one real product image through its `https://assets.licat.xyz/...` `public_url`.
+### Stage 0 — image-generation capability first
 
-If **any** preflight item fails, STOP before producing the 8-screen Blueprint. Report exactly which capability is unavailable. Do not continue to Gate 1 and do not create a substitute workflow.
+Before reading product evidence, confirm that the current ChatGPT session has an **actually invokable image-generation/editing capability** for:
 
-The purpose of this preflight is to avoid wasting the user's time in a session that can plan the page but cannot verify evidence or generate the final images.
+- Visual Master
+- 1:3 continuity master when required
+- Screen 01–02
+- Screen 03–08
+
+Do not infer this from the model name or from general ChatGPT capabilities.
+
+If image generation/editing is unavailable, **STOP immediately**. Do not read the remaining product sources, do not produce the 8-screen Blueprint, and do not enter Approval Gate 1.
+
+### Stage 1 — DetailFlow contract and product metadata
+
+If Stage 0 passes:
+
+1. Open `https://github.com/AJbeckliy/detail-flow` and read the current `SKILL.md` completely.
+2. Read any files referenced by `SKILL.md` that are required for the ecommerce 8-screen workflow.
+3. Read `products/<slug>/product.md` from GitHub.
+4. Read `products/<slug>/manifest.yaml` from GitHub.
+
+### Stage 2 — binary evidence inspection with fallbacks
+
+For PDFs, images, videos, drawings, brochures, and other binary evidence, use this order:
+
+1. **First choice:** open the manifest `public_url` under `https://assets.licat.xyz/...`.
+2. **Second choice:** if `public_url` cannot actually be opened, try the manifest `source_url` under `https://raw.githubusercontent.com/...` as a direct HTTP source.
+3. **Third choice:** if the GitHub connector returns complete binary content encoded as base64 and the current session can decode it into the original file, it may decode and restore the file **only if it then actually inspects the restored PDF/image/video**.
+
+Base64 by itself is **not** successful evidence inspection. A filename, manifest entry, binary byte count, or undecoded base64 payload is not proof of a claim.
+
+The binary preflight passes only after the session can:
+
+- actually inspect at least one authoritative original document; and
+- actually visually inspect at least one authoritative real product image.
+
+If both direct URL routes fail and the connector payload cannot be restored and inspected, mark binary evidence access as unavailable and stop before the Blueprint.
 
 ## Evidence and source-reading rules
 
-After the preflight passes:
+After the full preflight passes:
 
-1. Read `products/<slug>/product.md`.
-2. Read `products/<slug>/manifest.yaml`.
-3. Use GitHub primarily for text metadata such as `product.md` and `manifest.yaml`.
-4. For PDFs, images, videos, drawings, brochures, and other binary evidence, prefer the manifest `public_url` values under `assets.licat.xyz` whenever available.
-5. Read the authoritative original documents relevant to every exact specification or technical claim used in the page.
-6. Inspect all authoritative real product images before locking the Visual Master.
-7. Separate evidence into:
+1. Read the authoritative original documents relevant to every exact specification or technical claim used in the page.
+2. Inspect all authoritative real product images before locking the Visual Master.
+3. Separate evidence into:
    - user-confirmed corrections / overrides
    - authoritative-document facts
    - directly observed image facts
    - reasonable creative inference
    - unknown / do-not-claim information
-8. Treat inaccessible, 404, or mismatched source files as unavailable evidence. Never guess their contents.
-9. Never invent exact technical parameters, certification status, awards, test results, discounts, medical/regulated claims, or brand partnerships.
+4. Treat inaccessible, 404, mismatched, undecoded, or uninspectable source files as unavailable evidence. Never guess their contents.
+5. Never invent exact technical parameters, certification status, awards, test results, discounts, medical/regulated claims, or brand partnerships.
 
 ## DetailFlow execution rules
 
@@ -112,42 +136,81 @@ Important expectations include:
 ## Recommended full prompt
 
 ```text
-Use the DetailFlow workflow to create an English overseas-market ecommerce product detail page for product `<product-slug>`.
+Use the DetailFlow workflow to create an English overseas-market ecommerce product detail page for product:
 
-IMPORTANT: Do not assume you already know what "DetailFlow" means.
-DetailFlow is an external GitHub Skill/workflow at:
+<product-slug>
+
+IMPORTANT:
+Do not assume you already know what "DetailFlow" means.
+
+DetailFlow is an external GitHub Skill/workflow stored at:
 https://github.com/AJbeckliy/detail-flow
 
 Product source repository:
 https://github.com/licat233/product-assets
 
-Before producing any Blueprint or reaching Approval Gate 1, run this capability preflight:
+BEFORE producing any Blueprint or reaching Approval Gate 1, run this capability preflight in order.
 
-1. Open the DetailFlow repository and read its current `SKILL.md` completely. Read any referenced files needed for the ecommerce 8-screen workflow. Use those actual repository rules as the execution contract; do not substitute a generic ecommerce workflow or prior memory.
-2. Confirm this ChatGPT session can actually generate/edit images required for the Visual Master and final detail-page slices.
-3. Read `products/<product-slug>/product.md` from GitHub.
-4. Read `products/<product-slug>/manifest.yaml` from GitHub.
-5. For PDFs, images, videos and other binary evidence, do not rely on GitHub connector/base64 when a manifest `public_url` exists. Use the `assets.licat.xyz` public_url values from the manifest.
-6. Successfully open and inspect at least one authoritative original source document.
-7. Successfully open and visually inspect at least one authoritative real product image.
+STAGE 0 — IMAGE GENERATION FIRST
 
-If ANY preflight item is unavailable, STOP before producing the 8-screen Blueprint. Tell me exactly which capability or source access is unavailable. Do not continue to Gate 1, do not invent a substitute workflow, and do not simulate image generation with text, code, or placeholders.
+Confirm that this ChatGPT session has an actually invokable image-generation/editing capability required to create:
+- Visual Master
+- 1:3 continuity master when required
+- Screen 01–02
+- Screen 03–08
 
-If the preflight passes:
+Do not infer this from the model name.
 
-1. Read the original manuals, datasheets, drawings, brochures and other authoritative sources relevant to the product claims and exact specifications.
-2. Inspect all authoritative real product reference images listed in the manifest.
-3. Separate all information into:
+If image generation/editing is unavailable:
+STOP IMMEDIATELY.
+Do not read the remaining product evidence.
+Do not produce the 8-screen Blueprint.
+Do not enter Approval Gate 1.
+
+STAGE 1 — DETAILFLOW CONTRACT + PRODUCT METADATA
+
+If Stage 0 passes:
+1. Open the DetailFlow repository and read the current SKILL.md completely.
+2. Read the files referenced by SKILL.md that are required for the ecommerce 8-screen workflow.
+3. Treat the actual current repository rules as the execution contract. Do not substitute prior memory, a generic ecommerce workflow, or your own interpretation.
+4. Read from GitHub:
+   - products/<product-slug>/product.md
+   - products/<product-slug>/manifest.yaml
+
+STAGE 2 — BINARY EVIDENCE
+
+For every PDF, image, video, drawing, brochure, or other binary source:
+
+1. First try the manifest public_url on assets.licat.xyz.
+2. If that cannot actually be opened, try the manifest source_url on raw.githubusercontent.com as a direct HTTP source.
+3. If both direct URL routes fail, and the GitHub connector provides the COMPLETE binary as base64 and the current session can decode it into the original file, you may decode it and restore the file.
+4. Base64 alone does NOT count as evidence inspection. The restored PDF/image/video must actually be opened and inspected.
+
+The binary preflight only passes when you have:
+- successfully opened and inspected at least one authoritative original document; and
+- successfully opened and visually inspected at least one authoritative real product image.
+
+If any required capability still fails after these allowed fallbacks:
+STOP BEFORE THE BLUEPRINT.
+Tell me exactly what failed.
+Do not simulate image generation, do not create placeholders, and do not promote product.md summaries into verified source facts.
+
+IF THE PREFLIGHT PASSES:
+
+1. Read the authoritative original source documents relevant to every exact claim.
+2. Inspect all authoritative real product reference images.
+3. Separate information into:
    - user-confirmed corrections / overrides
    - authoritative-document facts
    - directly observed image facts
    - reasonable creative inference
    - unknown / do-not-claim information
-4. Verify every exact technical value against the original source document rather than relying only on product.md.
-5. Do not invent technical specifications, certification status, test results, awards, discounts, brand partnerships, medical/regulated claims, or unsupported commercial claims.
-6. Then follow the CURRENT DetailFlow `SKILL.md` image-led ecommerce workflow strictly, including its complete 8-screen Blueprint, Approval Gate 1, Text/Visual Master stage, first-two-screen visual sample package, Approval Gate 2, Screens 03–08, and final concatenation audit.
+4. Verify exact technical values against original source evidence rather than relying only on product.md.
+5. Never invent unsupported specifications, certifications, test results, awards, discounts, partnerships, or regulated claims.
+6. Follow the CURRENT DetailFlow SKILL.md workflow strictly, including both approval gates.
 7. Use English visible commercial copy by default.
-8. Preserve product identity and treat all eight screens as sequential segments of one continuous long ecommerce detail page, not unrelated posters.
+8. Preserve the real product's geometry, proportions, ports, controls, markings, colors, and materials.
+9. Treat all eight screens as sequential sections of one continuous ecommerce long page, not eight unrelated posters.
 ```
 
 ## Short prompt
@@ -157,5 +220,9 @@ Use this only when you are confident the current ChatGPT session will actually o
 ```text
 Use DetailFlow for `<product-slug>` from `licat233/product-assets`.
 
-First open `https://github.com/AJbeckliy/detail-flow` and read its current `SKILL.md`; do not assume you already know DetailFlow. Run the full capability preflight before the Blueprint/Gate 1: verify image generation, GitHub product.md/manifest access, at least one original document through manifest `assets.licat.xyz` public_url, and at least one authoritative real product image through public_url. If anything fails, stop before the Blueprint. If all checks pass, follow the current DetailFlow 8-screen workflow and both approval gates strictly.
+Before anything else, verify that this session can actually invoke image generation/editing. If not, stop immediately before reading product evidence or producing the Blueprint.
+
+If image generation is available, read the current DetailFlow SKILL.md, then read product.md and manifest.yaml. For binary evidence use: manifest public_url → manifest source_url → complete connector base64 decoded back to the original file only when the restored file can actually be inspected. Base64 alone is not evidence review.
+
+Do not produce the Blueprint unless at least one authoritative source document and one authoritative real product image have actually been inspected. Then follow the current DetailFlow 8-screen workflow and both approval gates strictly.
 ```
