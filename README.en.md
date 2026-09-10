@@ -56,64 +56,120 @@ Cloudflare Pages generates:
 https://assets.licat.xyz/
 ```
 
-Each product page lists:
+Each product page lists source documents from `docs/` and authoritative visual references from `images/`.
 
-- source documents from `docs/`
-- authoritative visual references from `images/`
+The repository itself is public. The asset origin exists to provide stable direct binary URLs, not to change private data into public data.
 
-Stable binary URLs follow these patterns:
+## Binary evidence retrieval order
 
-```text
-https://assets.licat.xyz/products/<slug>/docs/<filename>
-https://assets.licat.xyz/products/<slug>/images/<filename>
-```
-
-The GitHub repository is already public. The asset origin provides a stable direct binary retrieval path so ChatGPT does not have to depend on GitHub connector/base64 handling for PDFs, images, or videos.
-
-Product metadata files (`product.md`, `manifest.yaml`) remain read from GitHub.
-
-## ChatGPT reading rule
+For PDFs, images, videos, drawings, brochures, and other binary sources, ChatGPT should try:
 
 ```text
-GitHub
-→ product.md / manifest.yaml / text metadata
+1. manifest public_url
+   → assets.licat.xyz
 
-assets.licat.xyz
-→ PDFs / datasheets / drawings / images / videos / binary evidence
+fail
+   ↓
+2. manifest source_url
+   → raw.githubusercontent.com
+
+fail
+   ↓
+3. complete GitHub connector base64
+   → decode to original file
+   → actually inspect restored file
 ```
 
-The manifest records both source URLs and stable `public_url` values.
+Base64 alone is **not** evidence inspection. A filename, manifest entry, payload size, or undecoded base64 string is not proof of a product claim.
 
 ## Mandatory DetailFlow capability preflight
 
-Before Approval Gate 1, a ChatGPT session must verify that it can:
+Do not assume a new ChatGPT session already knows what DetailFlow means.
 
-1. generate images in the current session;
-2. read `product.md`;
-3. read `manifest.yaml`;
-4. inspect at least one original document through an `assets.licat.xyz` `public_url`;
-5. visually inspect at least one authoritative product image through an `assets.licat.xyz` `public_url`.
+DetailFlow is an external Skill/workflow at:
 
-If any capability is unavailable, stop **before** the 8-screen blueprint. Do not reach Gate 1 and only then discover that Visual Master or final image generation cannot continue.
+`https://github.com/AJbeckliy/detail-flow`
+
+### Stage 0 — image generation first
+
+Before reading product evidence, verify that the current session has an actually invokable image-generation/editing capability for:
+
+- Visual Master
+- 1:3 continuity master when required
+- Screen 01–02
+- Screen 03–08
+
+If image generation/editing is unavailable, stop immediately. Do not read the remaining product evidence, do not produce the Blueprint, and do not enter Approval Gate 1.
+
+Do not infer capability from the model name.
+
+### Stage 1 — Skill + metadata
+
+If Stage 0 passes:
+
+1. read the current DetailFlow `SKILL.md` completely;
+2. read the referenced files required for the ecommerce 8-screen workflow;
+3. read the product `product.md`;
+4. read the product `manifest.yaml`.
+
+### Stage 2 — binary evidence
+
+Before the Blueprint, the session must actually:
+
+- inspect at least one authoritative original source document; and
+- visually inspect at least one authoritative real product image.
+
+Use the binary fallback order above. If all allowed routes fail, stop before the Blueprint.
 
 ## Recommended DetailFlow prompt
 
+Use the canonical prompt here:
+
+[`prompts/detailflow-session-bootstrap.md`](./prompts/detailflow-session-bootstrap.md)
+
+The critical opening is:
+
 ```text
-Use DetailFlow for `<product-slug>` from `licat233/product-assets`.
+Use the DetailFlow workflow to create an English overseas-market ecommerce product detail page for product:
 
-Before Approval Gate 1, run a capability preflight:
-- confirm this session can generate images;
-- read product.md and manifest.yaml from GitHub;
-- use manifest public_url links on assets.licat.xyz for binary documents and visual references;
-- verify that at least one original document can be inspected;
-- visually inspect at least one authoritative product image.
+<product-slug>
 
-If any of those capabilities are unavailable, stop before the blueprint and tell me immediately.
+IMPORTANT:
+Do not assume you already know what "DetailFlow" means.
 
-If the preflight passes, review the relevant original sources, create the English overseas-market 8-screen DetailFlow blueprint, and follow both approval gates strictly.
+DetailFlow is an external GitHub Skill/workflow stored at:
+https://github.com/AJbeckliy/detail-flow
+
+Product source repository:
+https://github.com/licat233/product-assets
+
+BEFORE producing any Blueprint or reaching Approval Gate 1, run this capability preflight in order.
+
+STAGE 0 — IMAGE GENERATION FIRST
+
+Confirm that this ChatGPT session has an actually invokable image-generation/editing capability.
+
+If image generation/editing is unavailable:
+STOP IMMEDIATELY.
+Do not read the remaining product evidence.
+Do not produce the 8-screen Blueprint.
+Do not enter Approval Gate 1.
+
+STAGE 1 — DETAILFLOW CONTRACT + PRODUCT METADATA
+
+Read the current DetailFlow SKILL.md and required referenced ecommerce workflow files, then read product.md and manifest.yaml.
+
+STAGE 2 — BINARY EVIDENCE
+
+Use:
+public_url → source_url → complete connector base64 decoded back to the original file only when the restored file can actually be inspected.
+
+Base64 alone does NOT count as evidence inspection.
+
+Do not produce the Blueprint unless at least one authoritative original document and one authoritative real product image have actually been inspected.
 ```
 
-See [`docs/CHATGPT-USAGE.md`](./docs/CHATGPT-USAGE.md) and [`prompts/detailflow-session-bootstrap.md`](./prompts/detailflow-session-bootstrap.md).
+See [`docs/CHATGPT-USAGE.md`](./docs/CHATGPT-USAGE.md) for the full rules.
 
 ## Lightweight clone for collaborators
 
@@ -128,8 +184,6 @@ git sparse-checkout set \
   templates \
   products/<product-slug>
 ```
-
-This keeps the repository history and structure while downloading only the files needed for the selected product.
 
 To add another product later:
 
