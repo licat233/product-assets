@@ -163,6 +163,8 @@ GitHub
 
 不同 ChatGPT 会话暴露的工具能力可能不同，所以必须在 Blueprint 前检查。
 
+**DetailFlow 版本固定：** ChatGPT 详情页制作只使用仓库 `AJbeckliy/detail-flow-V2-Ajie` 的 Commit `64c9cb12eb1d925faa01d38db47a4066d37df69b`。对应的 `SKILL.md` 和 `references/detail-page-patterns.md` 均使用不可变 Commit 链接；禁止自动跟随 `main` 或上游新版。
+
 ### Stage 0 — 先检查图像生成能力
 
 第一件事不是读 PDF，而是确认当前会话有**真正可调用的图像生成 / 编辑能力**，能完成：
@@ -187,7 +189,7 @@ GitHub
 
 Stage 0 通过后：
 
-1. 打开 `https://github.com/AJbeckliy/detail-flow`。
+1. 打开 `https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b`。
 2. 完整读取当前 `SKILL.md`。
 3. 读取 `SKILL.md` 引用的、8-screen ecommerce workflow 所需文件。
 4. 读取当前产品的 `product.md` 和 `manifest.yaml`。
@@ -234,7 +236,7 @@ IMPORTANT:
 Do not assume you already know what "DetailFlow" means.
 
 DetailFlow is an external GitHub Skill/workflow stored at:
-https://github.com/AJbeckliy/detail-flow
+https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b
 
 Product source repository:
 https://github.com/licat233/product-assets
