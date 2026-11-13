@@ -10,10 +10,10 @@ Do not assume a new ChatGPT session already knows what "DetailFlow" means.
 
 For ChatGPT product-detail-page work, use only this pinned historical snapshot:
 
-- Repository: `https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b-V2-Ajie`
+- Repository: `https://github.com/AJbeckliy/detail-flow-V2-Ajie`
 - Commit: `64c9cb12eb1d925faa01d38db47a4066d37df69b`
-- Skill: `https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md`
-- Required ecommerce reference: `https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`
+- Skill: `https://github.com/AJbeckliy/detail-flow-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md`
+- Required ecommerce reference: `https://github.com/AJbeckliy/detail-flow-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`
 
 Read these exact files at this exact commit. Do not use `main`, a latest branch, a floating repository URL, or a later commit. If the pinned commit or either required file cannot be read, stop and report the failure; never silently upgrade to another version.
 
