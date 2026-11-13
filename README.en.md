@@ -99,8 +99,8 @@ Before reading product evidence, verify that the current session has an actually
 
 - Visual Master
 - 1:3 continuity master when required
-- Screen 01–02
-- Screen 03–08
+- first 2–3 screens
+- remaining screens
 
 If image generation/editing is unavailable, stop immediately. Do not read the remaining product evidence, do not produce the Blueprint, and do not enter Approval Gate 1.
 
@@ -160,7 +160,7 @@ Do not enter Approval Gate 1.
 
 STAGE 1 — DETAILFLOW CONTRACT + PRODUCT METADATA
 
-Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md` and `references/detail-page-patterns.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`, then read product.md and manifest.yaml.
+Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md` and `references/detail-page-patterns.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`. Treat commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` as the only execution contract; do not read `main`, a latest branch, or any later commit. Then read product.md and manifest.yaml.
 
 STAGE 2 — BINARY EVIDENCE
 
