@@ -86,9 +86,12 @@ Base64 alone is **not** evidence inspection. A filename, manifest entry, payload
 
 Do not assume a new ChatGPT session already knows what DetailFlow means.
 
-DetailFlow is an external Skill/workflow at:
+**Pinned ChatGPT compatibility baseline:** use only repository `AJbeckliy/detail-flow-V2-Ajie` at commit `64c9cb12eb1d925faa01d38db47a4066d37df69b`.
 
-`https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b`
+- Skill: `https://github.com/AJbeckliy/detail-flow-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md`
+- Required ecommerce reference: `https://github.com/AJbeckliy/detail-flow-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`
+
+Do not use `main`, a latest branch, a floating URL, or a later commit. If the pinned files cannot be read, stop rather than silently upgrading.
 
 ### Stage 0 — image generation first
 
@@ -108,7 +111,7 @@ Do not infer capability from the model name.
 If Stage 0 passes:
 
 1. read the pinned DetailFlow `SKILL.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md` completely and the required reference at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`;
-2. read the referenced files required for the ecommerce 8-screen workflow;
+2. do not read `main`, a latest branch, or any later commit;
 3. read the product `product.md`;
 4. read the product `manifest.yaml`.
 
@@ -157,7 +160,7 @@ Do not enter Approval Gate 1.
 
 STAGE 1 — DETAILFLOW CONTRACT + PRODUCT METADATA
 
-Read the current DetailFlow SKILL.md and required referenced ecommerce workflow files, then read product.md and manifest.yaml.
+Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md` and `references/detail-page-patterns.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`, then read product.md and manifest.yaml.
 
 STAGE 2 — BINARY EVIDENCE
 
