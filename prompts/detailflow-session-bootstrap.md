@@ -9,10 +9,10 @@ Use this prompt when starting a new ChatGPT conversation for a product-detail-pa
 DetailFlow is an external workflow / Skill. For ChatGPT product-detail-page work, use only the following pinned historical snapshot:
 
 **ChatGPT compatibility pin (immutable):**
-- Repository: `https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b-V2-Ajie`
+- Repository: `https://github.com/AJbeckliy/detail-flow-V2-Ajie`
 - Commit: `64c9cb12eb1d925faa01d38db47a4066d37df69b`
-- `SKILL.md`: `https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md`
-- Required ecommerce reference: `https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`
+- `SKILL.md`: `https://github.com/AJbeckliy/detail-flow-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md`
+- Required ecommerce reference: `https://github.com/AJbeckliy/detail-flow-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`
 
 Always read these exact files at this exact commit. Do not use `main`, a latest branch, a floating repository URL, or a later commit. If this commit or either required file cannot be read, stop and report the failure; never silently upgrade to another version.
 
@@ -50,7 +50,7 @@ remaining screens
 full concatenation + final audit
 ```
 
-The execution contract in the pinned DetailFlow `SKILL.md` at commit `${sha}` takes precedence over this summary.
+The execution contract in the pinned DetailFlow `SKILL.md` at commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` takes precedence over this summary.
 
 ## Product source repository
 
@@ -83,8 +83,9 @@ If image generation/editing is unavailable, **STOP immediately**. Do not read th
 
 If Stage 0 passes:
 
-1. Open `https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b` and read the pinned `SKILL.md` completely.
-2. Read any files referenced by `SKILL.md` that are required for the ecommerce 8-screen workflow.
+1. Read the immutable `SKILL.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md` completely.
+2. Read the required immutable reference `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md` completely.
+3. Do not read `main`, a latest branch, or any later commit.
 3. Read `products/<slug>/product.md` from GitHub.
 4. Read `products/<slug>/manifest.yaml` from GitHub.
 
@@ -122,7 +123,7 @@ After the full preflight passes:
 
 ## DetailFlow execution rules
 
-Once the source review is complete, follow the **pinned `SKILL.md` at commit `${sha}`** strictly.
+Once the source review is complete, follow the **pinned `SKILL.md` at commit `64c9cb12eb1d925faa01d38db47a4066d37df69b`** strictly.
 
 Important expectations include:
 
@@ -176,9 +177,9 @@ Do not enter Approval Gate 1.
 STAGE 1 — DETAILFLOW CONTRACT + PRODUCT METADATA
 
 If Stage 0 passes:
-1. Open the DetailFlow repository and read the current SKILL.md completely.
-2. Read the files referenced by SKILL.md that are required for the ecommerce 8-screen workflow.
-3. Treat the actual pinned repository rules as the execution contract. Do not substitute prior memory, a generic ecommerce workflow, or your own interpretation.
+1. Read the immutable `SKILL.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md` completely.
+2. Read the required immutable reference `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md` completely.
+3. Treat commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` as the execution contract. Do not read `main`, a latest branch, or any later commit. Do not substitute prior memory, a generic ecommerce workflow, or your own interpretation.
 4. Read from GitHub:
    - products/<product-slug>/product.md
    - products/<product-slug>/manifest.yaml
@@ -230,5 +231,5 @@ Before anything else, verify that this session can actually invoke image generat
 
 If image generation is available, read the pinned DetailFlow `SKILL.md` and `references/detail-page-patterns.md` at commit `64c9cb12eb1d925faa01d38db47a4066d37df69b`, then read product.md and manifest.yaml. For binary evidence use: manifest public_url → manifest source_url → complete connector base64 decoded back to the original file only when the restored file can actually be inspected. Base64 alone is not evidence review.
 
-Do not produce the Blueprint unless at least one authoritative source document and one authoritative real product image have actually been inspected. Then follow the current DetailFlow 8-screen workflow and both approval gates strictly.
+Do not produce the Blueprint unless at least one authoritative source document and one authoritative real product image have actually been inspected. Then follow the pinned DetailFlow 8-screen workflow at commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` and both approval gates strictly.
 ```
