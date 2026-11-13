@@ -190,9 +190,10 @@ GitHub
 Stage 0 通过后：
 
 1. 打开 `https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b`。
-2. 完整读取当前 `SKILL.md`。
-3. 读取 `SKILL.md` 引用的、8-screen ecommerce workflow 所需文件。
-4. 读取当前产品的 `product.md` 和 `manifest.yaml`。
+2. 完整读取固定 Commit 的 `SKILL.md`：`https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md`。
+3. 读取同一 Commit 的 `references/detail-page-patterns.md`：`https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`。
+4. 禁止读取 `main`、最新分支或后续 Commit。
+5. 读取当前产品的 `product.md` 和 `manifest.yaml`。
 
 ### Stage 2 — 真正检查原始证据
 
