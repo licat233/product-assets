@@ -12,14 +12,14 @@
 
 DetailFlow 是一个外部 GitHub Skill / workflow：
 
-`https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b`
+`https://github.com/AJbeckliy/detail-flow-V2-Ajie`
 
 ChatGPT 使用的 DetailFlow 版本已固定，不跟随上游自动更新：
 
-- 仓库：`https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b-V2-Ajie`
+- 仓库：`https://github.com/AJbeckliy/detail-flow-V2-Ajie`
 - 固定 Commit：`64c9cb12eb1d925faa01d38db47a4066d37df69b`
-- Skill：`https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md`
-- 必需参考文件：`https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`
+- Skill：`https://github.com/AJbeckliy/detail-flow-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md`
+- 必需参考文件：`https://github.com/AJbeckliy/detail-flow-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`
 
 新会话必须从上述**准确 Commit**读取文件。禁止读取 `main`、最新分支或浮动链接。如果固定 Commit 或必需文件无法读取，立即报告并停止，不得悄悄切换到新版。
 
@@ -119,7 +119,7 @@ Stage 0
 当前会话能真正生成 / 编辑图片？
         ↓ PASS
 Stage 1
-读取固定 Commit 的 DetailFlow SKILL.md + 必要引用文件
+读取固定 Commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` 的 `SKILL.md` 与 `references/detail-page-patterns.md`
 读取 product.md + manifest.yaml
         ↓ PASS
 Stage 2
