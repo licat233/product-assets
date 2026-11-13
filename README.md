@@ -171,8 +171,8 @@ GitHub
 
 - Visual Master
 - 1:3 continuity master（需要时）
-- Screen 01–02
-- Screen 03–08
+- first 2–3 screens
+- remaining screens
 
 如果没有：
 
