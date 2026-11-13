@@ -18,13 +18,12 @@ Always read these exact files at this exact commit. Do not use `main`, a latest 
 
 Its job is to plan, generate, review, and iterate an image-led ecommerce product detail page as **8 sequential screens** that behave like one continuous long ecommerce page.
 
-Before using the word "DetailFlow" as an instruction, the session must first open the repository and read its actual Skill definition.
+Before using the word "DetailFlow" as an instruction, the session must first read the pinned Skill definition and required reference listed above.
 
 At minimum, read:
 
-- `SKILL.md`
-
-Also read any files referenced by `SKILL.md` that are required for the ecommerce 8-screen workflow. Do not substitute prior memory, a generic ecommerce workflow, or an invented interpretation of DetailFlow for the repository's actual rules.
+- `SKILL.md`: https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md
+- `references/detail-page-patterns.md`: https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md Do not substitute prior memory, a generic ecommerce workflow, or an invented interpretation of DetailFlow for the repository's actual rules.
 
 The standard DetailFlow image-led ecommerce workflow includes two normal approval gates:
 
@@ -86,8 +85,8 @@ If Stage 0 passes:
 1. Read the immutable `SKILL.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md` completely.
 2. Read the required immutable reference `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md` completely.
 3. Do not read `main`, a latest branch, or any later commit.
-3. Read `products/<slug>/product.md` from GitHub.
-4. Read `products/<slug>/manifest.yaml` from GitHub.
+4. Read `products/<slug>/product.md` from GitHub.
+5. Read `products/<slug>/manifest.yaml` from GitHub.
 
 ### Stage 2 — binary evidence inspection with fallbacks
 
