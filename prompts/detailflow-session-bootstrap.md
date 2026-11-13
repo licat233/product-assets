@@ -6,9 +6,15 @@ Use this prompt when starting a new ChatGPT conversation for a product-detail-pa
 
 **Do not assume the current ChatGPT session already knows what DetailFlow means.**
 
-DetailFlow is an external workflow / Skill stored in this GitHub repository:
+DetailFlow is an external workflow / Skill. For ChatGPT product-detail-page work, use only the following pinned historical snapshot:
 
-`https://github.com/AJbeckliy/detail-flow`
+**ChatGPT compatibility pin (immutable):**
+- Repository: `https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b-V2-Ajie`
+- Commit: `64c9cb12eb1d925faa01d38db47a4066d37df69b`
+- `SKILL.md`: `https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md`
+- Required ecommerce reference: `https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`
+
+Always read these exact files at this exact commit. Do not use `main`, a latest branch, a floating repository URL, or a later commit. If this commit or either required file cannot be read, stop and report the failure; never silently upgrade to another version.
 
 Its job is to plan, generate, review, and iterate an image-led ecommerce product detail page as **8 sequential screens** that behave like one continuous long ecommerce page.
 
@@ -33,18 +39,18 @@ Text Master + Visual Master
         ↓
 1:3 continuity master when appropriate
         ↓
-Screen 01–02
+first 2–3 screens
         ↓
-2-screen concatenated preview + audit
+2–3-screen concatenated preview + audit
         ↓
 Approval Gate 2
         ↓
-Screen 03–08
+remaining screens
         ↓
 full concatenation + final audit
 ```
 
-The exact execution contract in the current DetailFlow `SKILL.md` takes precedence over this summary.
+The execution contract in the pinned DetailFlow `SKILL.md` at commit `${sha}` takes precedence over this summary.
 
 ## Product source repository
 
@@ -66,8 +72,8 @@ Before reading product evidence, confirm that the current ChatGPT session has an
 
 - Visual Master
 - 1:3 continuity master when required
-- Screen 01–02
-- Screen 03–08
+- first 2–3 screens
+- remaining screens
 
 Do not infer this from the model name or from general ChatGPT capabilities.
 
@@ -77,7 +83,7 @@ If image generation/editing is unavailable, **STOP immediately**. Do not read th
 
 If Stage 0 passes:
 
-1. Open `https://github.com/AJbeckliy/detail-flow` and read the current `SKILL.md` completely.
+1. Open `https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b` and read the pinned `SKILL.md` completely.
 2. Read any files referenced by `SKILL.md` that are required for the ecommerce 8-screen workflow.
 3. Read `products/<slug>/product.md` from GitHub.
 4. Read `products/<slug>/manifest.yaml` from GitHub.
@@ -116,7 +122,7 @@ After the full preflight passes:
 
 ## DetailFlow execution rules
 
-Once the source review is complete, follow the **actual current `SKILL.md`** strictly.
+Once the source review is complete, follow the **pinned `SKILL.md` at commit `${sha}`** strictly.
 
 Important expectations include:
 
@@ -124,10 +130,10 @@ Important expectations include:
 - Stop at Approval Gate 1 and wait for user approval.
 - Establish the Text Master and Visual Master after Gate 1.
 - Use the 1:3 master as a continuity/hierarchy reference when the workflow calls for it; it is not a crop source or final deliverable.
-- Generate Screen 01–02 first.
-- Concatenate and inspect the first two screens before Gate 2.
+- Generate first 2–3 screens first.
+- Concatenate and inspect the first 2–3 screens before Gate 2.
 - Stop at Approval Gate 2 and wait for user approval.
-- Generate Screen 03–08 only after Gate 2.
+- Generate remaining screens only after Gate 2.
 - Run a final concatenated-page audit.
 - Keep the product geometry, controls, ports, markings, colors, materials, and proportions consistent.
 - Treat all eight screens as sequential parts of one long ecommerce detail page, not eight unrelated posters.
@@ -144,7 +150,7 @@ IMPORTANT:
 Do not assume you already know what "DetailFlow" means.
 
 DetailFlow is an external GitHub Skill/workflow stored at:
-https://github.com/AJbeckliy/detail-flow
+https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b
 
 Product source repository:
 https://github.com/licat233/product-assets
@@ -156,8 +162,8 @@ STAGE 0 — IMAGE GENERATION FIRST
 Confirm that this ChatGPT session has an actually invokable image-generation/editing capability required to create:
 - Visual Master
 - 1:3 continuity master when required
-- Screen 01–02
-- Screen 03–08
+- first 2–3 screens
+- remaining screens
 
 Do not infer this from the model name.
 
@@ -172,7 +178,7 @@ STAGE 1 — DETAILFLOW CONTRACT + PRODUCT METADATA
 If Stage 0 passes:
 1. Open the DetailFlow repository and read the current SKILL.md completely.
 2. Read the files referenced by SKILL.md that are required for the ecommerce 8-screen workflow.
-3. Treat the actual current repository rules as the execution contract. Do not substitute prior memory, a generic ecommerce workflow, or your own interpretation.
+3. Treat the actual pinned repository rules as the execution contract. Do not substitute prior memory, a generic ecommerce workflow, or your own interpretation.
 4. Read from GitHub:
    - products/<product-slug>/product.md
    - products/<product-slug>/manifest.yaml
@@ -207,7 +213,7 @@ IF THE PREFLIGHT PASSES:
    - unknown / do-not-claim information
 4. Verify exact technical values against original source evidence rather than relying only on product.md.
 5. Never invent unsupported specifications, certifications, test results, awards, discounts, partnerships, or regulated claims.
-6. Follow the CURRENT DetailFlow SKILL.md workflow strictly, including both approval gates.
+6. Follow the pinned DetailFlow `SKILL.md` at commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` strictly, including both approval gates.
 7. Use English visible commercial copy by default.
 8. Preserve the real product's geometry, proportions, ports, controls, markings, colors, and materials.
 9. Treat all eight screens as sequential sections of one continuous ecommerce long page, not eight unrelated posters.
@@ -222,7 +228,7 @@ Use DetailFlow for `<product-slug>` from `licat233/product-assets`.
 
 Before anything else, verify that this session can actually invoke image generation/editing. If not, stop immediately before reading product evidence or producing the Blueprint.
 
-If image generation is available, read the current DetailFlow SKILL.md, then read product.md and manifest.yaml. For binary evidence use: manifest public_url → manifest source_url → complete connector base64 decoded back to the original file only when the restored file can actually be inspected. Base64 alone is not evidence review.
+If image generation is available, read the pinned DetailFlow `SKILL.md` and `references/detail-page-patterns.md` at commit `64c9cb12eb1d925faa01d38db47a4066d37df69b`, then read product.md and manifest.yaml. For binary evidence use: manifest public_url → manifest source_url → complete connector base64 decoded back to the original file only when the restored file can actually be inspected. Base64 alone is not evidence review.
 
 Do not produce the Blueprint unless at least one authoritative source document and one authoritative real product image have actually been inspected. Then follow the current DetailFlow 8-screen workflow and both approval gates strictly.
 ```
