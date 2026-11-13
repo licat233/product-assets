@@ -43,7 +43,7 @@ This repository is a controlled product source-of-truth for product documents, p
 
 ## DetailFlow capability preflight
 
-**Pinned ChatGPT DetailFlow source:** use `AJbeckliy/detail-flow-V2-Ajie` at commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` only. Read the immutable `SKILL.md` (`https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md`) and `references/detail-page-patterns.md` (`https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`). Do not use `main`, a latest branch, a floating repository URL, or a later commit. If the pinned source is unavailable, stop and report it rather than silently upgrading.
+**Pinned ChatGPT DetailFlow source:** use `https://github.com/AJbeckliy/detail-flow-V2-Ajie` at commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` only. Read the immutable `SKILL.md` (`https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md`) and `references/detail-page-patterns.md` (`https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`). Do not use `main`, a latest branch, a floating repository URL, or a later commit. If the pinned source is unavailable, stop and report it rather than silently upgrading.
 
 The preflight must stop as early as possible when the current ChatGPT session cannot complete DetailFlow.
 
