@@ -163,14 +163,16 @@ GitHub
 
 不同 ChatGPT 会话暴露的工具能力可能不同，所以必须在 Blueprint 前检查。
 
+**DetailFlow 版本固定：** ChatGPT 详情页制作只使用仓库 `AJbeckliy/detail-flow-V2-Ajie` 的 Commit `64c9cb12eb1d925faa01d38db47a4066d37df69b`。对应的 `SKILL.md` 和 `references/detail-page-patterns.md` 均使用不可变 Commit 链接；禁止自动跟随 `main` 或上游新版。
+
 ### Stage 0 — 先检查图像生成能力
 
 第一件事不是读 PDF，而是确认当前会话有**真正可调用的图像生成 / 编辑能力**，能完成：
 
 - Visual Master
 - 1:3 continuity master（需要时）
-- Screen 01–02
-- Screen 03–08
+- first 2–3 screens
+- remaining screens
 
 如果没有：
 
@@ -187,10 +189,11 @@ GitHub
 
 Stage 0 通过后：
 
-1. 打开 `https://github.com/AJbeckliy/detail-flow`。
-2. 完整读取当前 `SKILL.md`。
-3. 读取 `SKILL.md` 引用的、8-screen ecommerce workflow 所需文件。
-4. 读取当前产品的 `product.md` 和 `manifest.yaml`。
+1. 打开 `https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b`。
+2. 完整读取固定 Commit 的 `SKILL.md`：`https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md`。
+3. 读取同一 Commit 的 `references/detail-page-patterns.md`：`https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`。
+4. 禁止读取 `main`、最新分支或后续 Commit。
+5. 读取当前产品的 `product.md` 和 `manifest.yaml`。
 
 ### Stage 2 — 真正检查原始证据
 
@@ -234,7 +237,7 @@ IMPORTANT:
 Do not assume you already know what "DetailFlow" means.
 
 DetailFlow is an external GitHub Skill/workflow stored at:
-https://github.com/AJbeckliy/detail-flow
+https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b
 
 Product source repository:
 https://github.com/licat233/product-assets
@@ -260,9 +263,10 @@ Do not enter Approval Gate 1.
 STAGE 1 — DETAILFLOW CONTRACT + PRODUCT METADATA
 
 If Stage 0 passes:
-1. Open the DetailFlow repository and read the current SKILL.md completely.
-2. Read the files referenced by SKILL.md that are required for the ecommerce 8-screen workflow.
-3. Read products/<product-slug>/product.md and products/<product-slug>/manifest.yaml.
+1. Read the immutable `SKILL.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md` completely.
+2. Read the required immutable reference `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md` completely.
+3. Do not read `main`, a latest branch, or any later commit.
+4. Read `products/<product-slug>/product.md` and `products/<product-slug>/manifest.yaml`.
 
 STAGE 2 — BINARY EVIDENCE
 

@@ -12,11 +12,18 @@
 
 DetailFlow 是一个外部 GitHub Skill / workflow：
 
-`https://github.com/AJbeckliy/detail-flow`
+`https://github.com/AJbeckliy/detail-flow-V2-Ajie`
 
-新会话必须先读取当前仓库里的 `SKILL.md`，以及其中引用的、完成 ecommerce 8-screen workflow 所需要的相关文件。
+ChatGPT 使用的 DetailFlow 版本已固定，不跟随上游自动更新：
 
-仓库里的当前规则优先于：
+- 仓库：`https://github.com/AJbeckliy/detail-flow-V2-Ajie`
+- 固定 Commit：`64c9cb12eb1d925faa01d38db47a4066d37df69b`
+- Skill：`https://github.com/AJbeckliy/detail-flow-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md`
+- 必需参考文件：`https://github.com/AJbeckliy/detail-flow-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`
+
+新会话必须从上述**准确 Commit**读取文件。禁止读取 `main`、最新分支或浮动链接。如果固定 Commit 或必需文件无法读取，立即报告并停止，不得悄悄切换到新版。
+
+固定 Commit 中的规则优先于：
 
 - ChatGPT 的旧记忆
 - 泛化的电商详情页经验
@@ -34,8 +41,8 @@ DetailFlow 是一个外部 GitHub Skill / workflow：
 
 - Visual Master
 - 1:3 continuity master（DetailFlow 需要时）
-- Screen 01–02
-- Screen 03–08
+- 前 2–3 屏
+- 其余屏
 
 如果没有：
 
@@ -112,7 +119,7 @@ Stage 0
 当前会话能真正生成 / 编辑图片？
         ↓ PASS
 Stage 1
-读取当前 DetailFlow SKILL.md + 必要引用文件
+读取固定 Commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` 的 `SKILL.md` 与 `references/detail-page-patterns.md`
 读取 product.md + manifest.yaml
         ↓ PASS
 Stage 2
@@ -143,7 +150,7 @@ IMPORTANT:
 Do not assume you already know what "DetailFlow" means.
 
 DetailFlow is an external GitHub Skill/workflow stored at:
-https://github.com/AJbeckliy/detail-flow
+https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b
 
 Product source repository:
 https://github.com/licat233/product-assets
@@ -155,8 +162,8 @@ STAGE 0 — IMAGE GENERATION FIRST
 Confirm that this ChatGPT session has an actually invokable image-generation/editing capability required to create:
 - Visual Master
 - 1:3 continuity master when required
-- Screen 01–02
-- Screen 03–08
+- 前 2–3 屏
+- 其余屏
 
 Do not infer this from the model name.
 
@@ -169,9 +176,9 @@ Do not enter Approval Gate 1.
 STAGE 1 — DETAILFLOW CONTRACT + PRODUCT METADATA
 
 If Stage 0 passes:
-1. Open the DetailFlow repository and read the current SKILL.md completely.
-2. Read the files referenced by SKILL.md that are required for the ecommerce 8-screen workflow.
-3. Treat the actual current repository rules as the execution contract. Do not substitute prior memory, a generic ecommerce workflow, or your own interpretation.
+1. Read the immutable `SKILL.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md` completely.
+2. Read the required immutable reference `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md` completely.
+3. Treat commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` as the execution contract. Do not read `main`, a latest branch, or any later commit. Do not substitute prior memory, a generic ecommerce workflow, or your own interpretation.
 4. Read from GitHub:
    - products/<product-slug>/product.md
    - products/<product-slug>/manifest.yaml
@@ -206,7 +213,7 @@ IF THE PREFLIGHT PASSES:
    - unknown / do-not-claim information
 4. Verify exact technical values against original source evidence rather than relying only on product.md.
 5. Never invent unsupported specifications, certifications, test results, awards, discounts, partnerships, or regulated claims.
-6. Follow the CURRENT DetailFlow SKILL.md workflow strictly, including both approval gates.
+6. Follow the pinned DetailFlow `SKILL.md` at commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` strictly, including both approval gates.
 7. Use English visible commercial copy by default.
 8. Preserve the real product's geometry, proportions, ports, controls, markings, colors, and materials.
 9. Treat all eight screens as sequential sections of one continuous ecommerce long page, not eight unrelated posters.
@@ -247,13 +254,13 @@ Text Master / Visual Master
         ↓
 1:3 continuity master（需要时）
         ↓
-Screen 01–02
+前 2–3 屏
         ↓
 两屏拼接预览 + Audit
         ↓
 Approval Gate 2
         ↓
-Screen 03–08
+其余屏
         ↓
 完整拼接 + Final Audit
 ```
@@ -284,4 +291,4 @@ Binary evidence unavailable
 
 ## 9. 一句话记忆
 
-> **先看当前会话有没有真正的图像生成工具；有了再读 DetailFlow 和产品 metadata；二进制原件按 public_url → source_url → 可还原的完整 base64 顺序尝试。只有真正打开并检查原件才算 PASS。**
+> **先确认当前会话有真正的图像生成工具；随后读取固定 Commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` 的 DetailFlow Skill 和产品 metadata；二进制原件按 public_url → source_url → 可还原的完整 base64 顺序尝试。只有真正打开并检查原件才算 PASS。**
