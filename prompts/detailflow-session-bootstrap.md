@@ -23,7 +23,9 @@ Before using the word "DetailFlow" as an instruction, the session must first rea
 At minimum, read:
 
 - `SKILL.md`: https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md
-- `references/detail-page-patterns.md`: https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md Do not substitute prior memory, a generic ecommerce workflow, or an invented interpretation of DetailFlow for the repository's actual rules.
+- `references/detail-page-patterns.md`: https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md
+
+Do not substitute prior memory, a generic ecommerce workflow, or an invented interpretation of DetailFlow for the repository's actual rules.
 
 The standard DetailFlow image-led ecommerce workflow includes two normal approval gates:
 
