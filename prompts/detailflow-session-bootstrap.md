@@ -1,33 +1,33 @@
-# DetailFlow Session Bootstrap
+# Product Detail Designer Session Bootstrap
 
 Use this prompt when starting a new ChatGPT conversation for a product-detail-page task.
 
-## What DetailFlow is
+## What Product Detail Designer is
 
-**Do not assume the current ChatGPT session already knows what DetailFlow means.**
+**Do not assume the current ChatGPT session already knows this Skill. Read the pinned SKILL.md first.**
 
-DetailFlow is an external workflow / Skill. For ChatGPT product-detail-page work, use only the following pinned historical snapshot:
+Product Detail Designer is our own brand-neutral, open-source Skill. For ChatGPT product-detail-page work, use only our own Product Detail Designer Skill at the pinned release below:
 
 **ChatGPT compatibility pin (immutable):**
-- Repository: `https://github.com/AJbeckliy/detail-flow-V2-Ajie`
-- Commit: `64c9cb12eb1d925faa01d38db47a4066d37df69b`
-- `SKILL.md`: `https://github.com/AJbeckliy/detail-flow-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md`
-- Required ecommerce reference: `https://github.com/AJbeckliy/detail-flow-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`
+- Repository: `https://github.com/licat233/product-detail-designer`
+- Commit: `v1.0.0`
+- `SKILL.md`: `https://github.com/licat233/product-detail-designer/blob/v1.0.0/SKILL.md`
+- Skill file: `https://github.com/licat233/product-detail-designer/blob/v1.0.0/SKILL.md`
 
-Always read these exact files at this exact commit. Do not use `main`, a latest branch, a floating repository URL, or a later commit. If this commit or either required file cannot be read, stop and report the failure; never silently upgrade to another version.
+Always read these exact files at this exact commit. Use the pinned release URL above rather than a floating branch URL. If this commit or either required file cannot be read, stop and report the failure; never silently upgrade to another version.
 
 Its job is to plan, generate, review, and iterate an image-led ecommerce product detail page as **8 sequential screens** that behave like one continuous long ecommerce page.
 
-Before using the word "DetailFlow" as an instruction, the session must first read the pinned Skill definition and required reference listed above.
+Before starting, read the pinned Product Detail Designer SKILL.md listed above.
 
 At minimum, read:
 
-- `SKILL.md`: https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md
-- `references/detail-page-patterns.md`: https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md
+- `SKILL.md`: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md
+- `SKILL.md`: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md
 
-Do not substitute prior memory, a generic ecommerce workflow, or an invented interpretation of DetailFlow for the repository's actual rules.
+Use the user's prompt as the task-specific production brief and Product Detail Designer v1.0.0 for general execution rules.
 
-The standard DetailFlow image-led ecommerce workflow includes two normal approval gates:
+The task-specific production prompt defines the approval gates. Do not add any gates beyond those it explicitly requests.
 
 ```text
 input / evidence analysis
@@ -51,7 +51,7 @@ remaining screens
 full concatenation + final audit
 ```
 
-The execution contract in the pinned DetailFlow `SKILL.md` at commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` takes precedence over this summary.
+The task-specific production prompt controls page structure, approval gates, and deliverables; Product Detail Designer v1.0.0 supplies general execution and quality rules.
 
 ## Product source repository
 
@@ -65,7 +65,7 @@ For the requested product slug, the product package is under:
 
 ## Mandatory capability preflight — run BEFORE the Blueprint and Approval Gate 1
 
-The preflight is intentionally ordered to stop as early as possible when a session cannot complete DetailFlow.
+The preflight is intentionally lightweight: verify image-generation capability, then read the Skill and required product evidence.
 
 ### Stage 0 — image-generation capability first
 
@@ -80,13 +80,13 @@ Do not infer this from the model name or from general ChatGPT capabilities.
 
 If image generation/editing is unavailable, **STOP immediately**. Do not read the remaining product sources, do not produce the 8-screen Blueprint, and do not enter Approval Gate 1.
 
-### Stage 1 — DetailFlow contract and product metadata
+### Stage 1 — Product Detail Designer Skill and product metadata
 
 If Stage 0 passes:
 
-1. Read the immutable `SKILL.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md` completely.
-2. Read the required immutable reference `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md` completely.
-3. Do not read `main`, a latest branch, or any later commit.
+1. Read the immutable `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
+2. Read the required immutable reference `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
+3. Use this pinned release rather than a floating branch URL.
 4. Read `products/<slug>/product.md` from GitHub.
 5. Read `products/<slug>/manifest.yaml` from GitHub.
 
@@ -122,9 +122,9 @@ After the full preflight passes:
 4. Treat inaccessible, 404, mismatched, undecoded, or uninspectable source files as unavailable evidence. Never guess their contents.
 5. Never invent exact technical parameters, certification status, awards, test results, discounts, medical/regulated claims, or brand partnerships.
 
-## DetailFlow execution rules
+## Product Detail Designer execution rules
 
-Once the source review is complete, follow the **pinned `SKILL.md` at commit `64c9cb12eb1d925faa01d38db47a4066d37df69b`** strictly.
+Once the source review is complete, follow Product Detail Designer v1.0.0 for general safeguards; keep the user's prompt authoritative for task-specific stages and approvals.
 
 Important expectations include:
 
@@ -144,15 +144,15 @@ Important expectations include:
 ## Recommended full prompt
 
 ```text
-Use the DetailFlow workflow to create an English overseas-market ecommerce product detail page for product:
+Use Product Detail Designer and the task-specific production prompt to create an English overseas-market ecommerce product detail page for product:
 
 <product-slug>
 
 IMPORTANT:
-Do not assume you already know what "DetailFlow" means.
+Do not assume you already know this Skill; read the pinned SKILL.md.
 
-DetailFlow is an external GitHub Skill/workflow stored at:
-https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b
+Product Detail Designer is our own open-source GitHub Skill, fixed at release v1.0.0:
+https://github.com/licat233/product-detail-designer/tree/v1.0.0
 
 Product source repository:
 https://github.com/licat233/product-assets
@@ -175,12 +175,12 @@ Do not read the remaining product evidence.
 Do not produce the 8-screen Blueprint.
 Do not enter Approval Gate 1.
 
-STAGE 1 — DETAILFLOW CONTRACT + PRODUCT METADATA
+STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
 
 If Stage 0 passes:
-1. Read the immutable `SKILL.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md` completely.
-2. Read the required immutable reference `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md` completely.
-3. Treat commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` as the execution contract. Do not read `main`, a latest branch, or any later commit. Do not substitute prior memory, a generic ecommerce workflow, or your own interpretation.
+1. Read the immutable `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
+2. Read the required immutable reference `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
+3. Treat release `v1.0.0` as the execution contract. Do not substitute prior memory or a generic workflow for the user's task-specific prompt and this Skill's general safeguards.
 4. Read from GitHub:
    - products/<product-slug>/product.md
    - products/<product-slug>/manifest.yaml
@@ -215,7 +215,7 @@ IF THE PREFLIGHT PASSES:
    - unknown / do-not-claim information
 4. Verify exact technical values against original source evidence rather than relying only on product.md.
 5. Never invent unsupported specifications, certifications, test results, awards, discounts, partnerships, or regulated claims.
-6. Follow the pinned DetailFlow `SKILL.md` at commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` strictly, including both approval gates.
+6. Follow the pinned Product Detail Designer `SKILL.md` at release `v1.0.0` strictly, including both approval gates.
 7. Use English visible commercial copy by default.
 8. Preserve the real product's geometry, proportions, ports, controls, markings, colors, and materials.
 9. Treat all eight screens as sequential sections of one continuous ecommerce long page, not eight unrelated posters.
@@ -226,11 +226,11 @@ IF THE PREFLIGHT PASSES:
 Use this only when you are confident the current ChatGPT session will actually open the linked Skill rather than relying on prior knowledge:
 
 ```text
-Use DetailFlow for `<product-slug>` from `licat233/product-assets`.
+Use Product Detail Designer for `<product-slug>` from `licat233/product-assets`.
 
 Before anything else, verify that this session can actually invoke image generation/editing. If not, stop immediately before reading product evidence or producing the Blueprint.
 
-If image generation is available, read the pinned DetailFlow `SKILL.md` and `references/detail-page-patterns.md` at commit `64c9cb12eb1d925faa01d38db47a4066d37df69b`, then read product.md and manifest.yaml. For binary evidence use: manifest public_url → manifest source_url → complete connector base64 decoded back to the original file only when the restored file can actually be inspected. Base64 alone is not evidence review.
+If image generation is available, read the pinned Product Detail Designer `SKILL.md` at release `v1.0.0`, then read product.md and manifest.yaml. For binary evidence use: manifest public_url → manifest source_url → complete connector base64 decoded back to the original file only when the restored file can actually be inspected. Base64 alone is not evidence review.
 
-Do not produce the Blueprint unless at least one authoritative source document and one authoritative real product image have actually been inspected. Then follow the pinned DetailFlow 8-screen workflow at commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` and both approval gates strictly.
+Do not produce the Blueprint unless at least one authoritative source document and one authoritative real product image have actually been inspected. Then follow the user's 8-screen production prompt and its approval gates; use Product Detail Designer v1.0.0 for general image-generation and quality rules.
 ```
