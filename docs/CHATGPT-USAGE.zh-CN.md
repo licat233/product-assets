@@ -11,8 +11,8 @@
 Product Detail Designer 是我们自建的、面向整个电商行业的通用开源 Skill。
 
 - 仓库：https://github.com/licat233/product-detail-designer
-- 固定版本：`v1.0.2`
-- 唯一必需文件：https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.2/SKILL.md
+- 固定版本：`v1.0.3`
+- 唯一必需文件：https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.3/SKILL.md
 
 新会话只需读取这个固定版本的 `SKILL.md`，不需要额外参考文件、本地安装或外部工具链。
 
@@ -97,9 +97,24 @@ GitHub
 
 ---
 
+## 连续长页面设计（强制规则）
+
+8 张正式图片必须是**同一张纵向电商详情页的相邻切片**，不是 8 张独立海报或 PPT。Screen / Slice 只是文件交付边界，不是买家可见的页面边界。
+
+- 先规划一张从上到下连续阅读的长页面，再切分为独立高清文件。
+- 每张 Slice 都要定义 `top_edge_anchor` 与 `bottom_edge_anchor`。前一张底部的背景、光线、纹理、空间和视觉动线，必须成为后一张顶部的衔接依据。
+- 背景自然延伸到图片边缘；上下拼接处不得出现背景重启、色温跳变、空间断层或无意义留白。
+- 不要让关键产品或道具跨越拼接边界，除非能可靠对齐其位置、比例和方向。
+- 每张图可以有不同内容和构图，但不能各自成为完整、自成一体的宣传海报；首尾也不要做成独立封面 / 封底。
+- 分别生成文件不等于分别设计。必须按同一个长页面规划生成，并将上一张的 `bottom_edge_anchor` 传递给下一张的 `top_edge_anchor`。
+
+除非用户明确要求，禁止添加页眉、页脚、导航栏、页码、Screen / Slice 标签、01–08 序号、重复 Logo / 产品标题栏、角标、装饰性边角、整屏边框、统一顶部 / 底部装饰条，以及“顶部标题 + 中间卡片 + 底部 Logo”的 PPT 式结构。信息卡片、参数表和真实步骤编号可以出现在内容内部，但不能把整张 Slice 包装成独立幻灯片。
+
+完成后必须按顺序拼接检查所有图片的上下边缘。若出现背景断层、光线跳变、空间不连续、明显页面边界或 PPT 感，返修相邻 Slice；不得用模糊、镜像补边、边框或裁切掩盖问题。
+
 ## 制作需求确认（Blueprint 之前必须完成）
 
-完成产品资料和图片的真实检查后、制作 Blueprint 之前，按照 Product Detail Designer v1.0.2 确认以下四项：
+完成产品资料和图片的真实检查后、制作 Blueprint 之前，按照 Product Detail Designer v1.0.3 确认以下四项：
 
 1. **输出语言**：最终图片中显示的文案语言。当前推荐提示词明确写了 English，因此使用该提示词时不必重复询问；如果用户另行指定其他语言，以用户指定为准。
 2. **图片尺寸 / 比例**：每屏最终图片的像素尺寸或宽高比例。若用户的具体制作提示词已经规定 9:21 或其他尺寸 / 比例，不要重复询问；否则必须确认。
@@ -143,7 +158,7 @@ Stage 0
 当前会话能真正生成 / 编辑图片？
         ↓ PASS
 Stage 1
-读取固定版本 `v1.0.2` 的 `SKILL.md`
+读取固定版本 `v1.0.3` 的 `SKILL.md`
 读取 product.md + manifest.yaml
         ↓ PASS
 Stage 2
@@ -176,8 +191,8 @@ Use Product Detail Designer and the task-specific production prompt to create an
 IMPORTANT:
 Do not assume you already know this Skill; read the pinned SKILL.md first.
 
-Product Detail Designer is our own open-source GitHub Skill, fixed at release v1.0.2:
-https://github.com/licat233/product-detail-designer/tree/v1.0.2
+Product Detail Designer is our own open-source GitHub Skill, fixed at release v1.0.3:
+https://github.com/licat233/product-detail-designer/tree/v1.0.3
 
 Product source repository:
 https://github.com/licat233/product-assets
@@ -203,7 +218,7 @@ Do not enter Approval Gate 1.
 STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
 
 If Stage 0 passes:
-1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.2/SKILL.md` completely.
+1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.3/SKILL.md` completely.
 2. Treat the user's production prompt as the task-specific source of truth; use the Skill for general safeguards.
 3. Read from GitHub:
    - products/<product-slug>/product.md
@@ -239,7 +254,7 @@ IF THE PREFLIGHT PASSES:
    - unknown / do-not-claim information
 4. Verify exact technical values against original source evidence rather than relying only on product.md.
 5. Never invent unsupported specifications, certifications, test results, awards, discounts, partnerships, or regulated claims.
-6. Follow the user's task-specific production prompt for stages and approval gates; use Product Detail Designer v1.0.2 for general safeguards.
+6. Follow the user's task-specific production prompt for stages and approval gates; use Product Detail Designer v1.0.3 for general safeguards.
 7. Use English visible commercial copy by default.
 8. Preserve the real product's geometry, proportions, ports, controls, markings, colors, and materials.
 9. Treat all eight screens as sequential sections of one continuous ecommerce long page, not eight unrelated posters.
@@ -317,4 +332,4 @@ Binary evidence unavailable
 
 ## 9. 一句话记忆
 
-> **先确认当前会话有真正的图像生成工具；随后读取固定版本 `v1.0.2` 的 Product Detail Designer Skill 和产品 metadata；二进制原件按 public_url → source_url → 可还原的完整 base64 顺序尝试。只有真正打开并检查原件才算 PASS。**
+> **先确认当前会话有真正的图像生成工具；随后读取固定版本 `v1.0.3` 的 Product Detail Designer Skill 和产品 metadata；二进制原件按 public_url → source_url → 可还原的完整 base64 顺序尝试。只有真正打开并检查原件才算 PASS。**
