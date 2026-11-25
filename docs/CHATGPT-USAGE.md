@@ -2,22 +2,19 @@
 
 [中文](./CHATGPT-USAGE.zh-CN.md)
 
-This document explains how a new ChatGPT session should verify that it can actually complete DetailFlow before reaching Approval Gate 1.
+This document explains how a new ChatGPT session should read Product Detail Designer, verify image-generation capability, and inspect product source materials.
 
 ## 1. Product Detail Designer is our own open-source Skill
 
-Do not assume a new ChatGPT session already knows this Skill. Read the pinned SKILL.md first.
+Product Detail Designer is a brand-neutral skill for ecommerce product-detail image creation.
 
-For ChatGPT product-detail-page work, use only this pinned historical snapshot:
+- Repository: https://github.com/licat233/product-detail-designer
+- Pinned release: `v1.0.0`
+- Only required file: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md
 
-- Repository: `https://github.com/licat233/product-detail-designer`
-- Commit: `v1.0.0`
-- Skill: `https://github.com/licat233/product-detail-designer/blob/v1.0.0/SKILL.md`
-- Skill file: `https://github.com/licat233/product-detail-designer/blob/v1.0.0/SKILL.md`
+A new session needs to read only this pinned `SKILL.md`. No additional reference files, local installation, or external toolchain are required.
 
-Read these exact files at this exact commit. Use the pinned release URL above rather than a floating branch URL. If the pinned release or either required file cannot be read, stop and report the failure; never silently upgrade to another version.
-
-The user's task-specific prompt takes precedence for page structure, approval gates, and deliverables; Product Detail Designer v1.0.0 supplies general execution and quality safeguards.
+**The user's production prompt is the task-specific source of truth.** It defines the page count, content structure, masters, approval gates, and deliverables. The Skill provides general product-identity, factual-accuracy, visual-consistency, image-generation, and quality-review rules; it must not add unrequested stages.
 
 ## 2. Stage 0 — image generation first
 
@@ -36,7 +33,7 @@ Do not infer capability from the model name.
 
 If Stage 0 passes:
 
-1. read the pinned Product Detail Designer `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` and the required `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md`;
+1. read the pinned Product Detail Designer `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md`;
 2. read `products/<product-slug>/product.md` from GitHub;
 3. read `products/<product-slug>/manifest.yaml` from GitHub.
 
@@ -65,7 +62,7 @@ Use Product Detail Designer and the task-specific production prompt to create an
 <product-slug>
 
 IMPORTANT:
-Do not assume you already know what "DetailFlow" means.
+Do not assume you already know this Skill; read the pinned SKILL.md first.
 
 Product Detail Designer is our own open-source GitHub Skill, fixed at release v1.0.0:
 https://github.com/licat233/product-detail-designer/tree/v1.0.0
@@ -91,13 +88,12 @@ Do not read the remaining product evidence.
 Do not produce the 8-screen Blueprint.
 Do not enter Approval Gate 1.
 
-STAGE 1 — DETAILFLOW CONTRACT + PRODUCT METADATA
+STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
 
 If Stage 0 passes:
-1. Read the immutable `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
-2. Read the required immutable reference `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
-3. Treat release `v1.0.0` as the execution contract. Do not substitute prior memory or a generic workflow for the user's task-specific prompt and this Skill's general safeguards.
-4. Read from GitHub:
+1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
+2. Treat the user's production prompt as the task-specific source of truth; use the Skill for general safeguards.
+3. Read from GitHub:
    - products/<product-slug>/product.md
    - products/<product-slug>/manifest.yaml
 
@@ -131,7 +127,7 @@ IF THE PREFLIGHT PASSES:
    - unknown / do-not-claim information
 4. Verify exact technical values against original source evidence rather than relying only on product.md.
 5. Never invent unsupported specifications, certifications, test results, awards, discounts, partnerships, or regulated claims.
-6. Follow the pinned Product Detail Designer `SKILL.md` at release `v1.0.0` strictly, including both approval gates.
+6. Follow the user's task-specific production prompt for stages and approval gates; use Product Detail Designer v1.0.0 for general safeguards.
 7. Use English visible commercial copy by default.
 8. Preserve the real product's geometry, proportions, ports, controls, markings, colors, and materials.
 9. Treat all eight screens as sequential sections of one continuous ecommerce long page, not eight unrelated posters.
