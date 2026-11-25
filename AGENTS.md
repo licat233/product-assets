@@ -43,9 +43,9 @@ This repository is a controlled product source-of-truth for product documents, p
 
 ## Product Detail Designer capability preflight
 
-**Pinned Skill:** Product Detail Designer v1.0.0 — https://github.com/licat233/product-detail-designer
+**Pinned Skill:** Product Detail Designer v1.0.1 — https://github.com/licat233/product-detail-designer
 
-Read only the pinned Skill file: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md
+Read only the pinned Skill file: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.1/SKILL.md
 
 The user's task-specific prompt controls page structure, approval gates, image ratio, and deliverables. Product Detail Designer supplies general product-identity, factual-accuracy, visual-consistency, and image-quality safeguards; do not add unrequested stages or dependencies.
 
@@ -59,7 +59,7 @@ If it does not, state the limitation and stop. Do not pretend to generate images
 
 If Stage 0 passes:
 
-1. Read the pinned Product Detail Designer `SKILL.md` at https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md.
+1. Read the pinned Product Detail Designer `SKILL.md` at https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.1/SKILL.md.
 2. Read the product `product.md`.
 3. Read the product `manifest.yaml`.
 
@@ -79,6 +79,11 @@ Before the Blueprint, the session must successfully:
 - visually inspect at least one authoritative real product image.
 
 If those checks still fail after the allowed fallbacks, stop before the Blueprint and report the missing capability. Do not let the workflow reach Gate 1 and fail later.
+
+
+### Stage 3 — Production Brief Confirmation
+
+After inspecting the product materials and before the Blueprint, confirm output language, per-screen dimensions / aspect ratio, ecommerce platform and placement, and sales region. Skip items already stated in the user's prompt or explicitly delegated. Ask for all missing items in one concise message. If platform placement is known but size is missing, recommend a working size and ask for confirmation. Proceed once all four items are confirmed or delegated; do not add another visual approval gate.
 
 ## Public publishing boundary
 

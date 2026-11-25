@@ -10,8 +10,8 @@ Product Detail Designer is our own brand-neutral, open-source Skill. For ChatGPT
 
 **Pinned Skill release (immutable):**
 - Repository: `https://github.com/licat233/product-detail-designer`
-- Version: `v1.0.0`
-- `SKILL.md`: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md
+- Version: `v1.0.1`
+- `SKILL.md`: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.1/SKILL.md
 
 Read this exact `SKILL.md` before production. It is the only required Skill file; no additional reference files or local dependencies are required.
 
@@ -19,12 +19,14 @@ Its job is to plan, generate, review, and iterate an image-led ecommerce product
 
 Before starting, read the pinned `SKILL.md` above. No other Skill reference files or dependencies are required.
 
-The user's task-specific prompt controls page structure, approval gates, image ratio, and deliverables. Product Detail Designer v1.0.0 supplies general product-identity, factual-accuracy, visual-consistency, image-generation, and quality-review rules; it must not add unrequested stages.
+The user's task-specific prompt controls page structure, approval gates, image ratio, and deliverables. Product Detail Designer v1.0.1 supplies general product-identity, factual-accuracy, visual-consistency, image-generation, and quality-review rules; it must not add unrequested stages.
 
 The task-specific production prompt defines the approval gates. Do not add any gates beyond those it explicitly requests.
 
 ```text
 input / evidence analysis
+        ↓
+Production Brief Confirmation
         ↓
 complete 8-screen Blueprint
         ↓
@@ -45,7 +47,7 @@ remaining screens
 full concatenation + final audit
 ```
 
-The task-specific production prompt controls page structure, approval gates, and deliverables; Product Detail Designer v1.0.0 supplies general execution and quality rules.
+The task-specific production prompt controls page structure, approval gates, and deliverables; Product Detail Designer v1.0.1 supplies general execution and quality rules.
 
 ## Product source repository
 
@@ -78,7 +80,7 @@ If image generation/editing is unavailable, **STOP immediately**. Do not read th
 
 If Stage 0 passes:
 
-1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
+1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.1/SKILL.md` completely.
 2. Read `products/<slug>/product.md` from GitHub.
 3. Read `products/<slug>/manifest.yaml` from GitHub.
 
@@ -114,9 +116,22 @@ After the full preflight passes:
 4. Treat inaccessible, 404, mismatched, undecoded, or uninspectable source files as unavailable evidence. Never guess their contents.
 5. Never invent exact technical parameters, certification status, awards, test results, discounts, medical/regulated claims, or brand partnerships.
 
+## Production brief confirmation (required before the Blueprint)
+
+After actually inspecting the product documents and images, but before creating the Blueprint, use Product Detail Designer v1.0.1 to confirm these four items:
+
+1. **Output language** — the language shown in the final images. The recommended prompt in this document explicitly requests English, so do not ask again when that prompt is used unless the user changes it.
+2. **Image dimensions / aspect ratio** — the pixel dimensions or ratio for each final screen. If the user's production prompt already specifies 9:21 or another size / ratio, do not ask again; otherwise confirm it.
+3. **Ecommerce platform / placement** — for example, Amazon product images, Amazon A+ Content, Shopify product-page media, or an Alibaba.com product detail page. Ask if missing.
+4. **Sales region / target market** — a specific country or region, or an explicit global-market scope. “Overseas market” alone is not a specific country or region; ask if missing.
+
+Combine all missing items into one concise message. If the platform placement is known but the image size is not, recommend a suitable size / ratio and ask for confirmation. If the user explicitly delegates a decision, choose and state the assumption. Do not present a design recommendation as an official platform requirement or invent platform specifications.
+
+Proceed to the Blueprint only after all four items are supplied or explicitly delegated. This is a production-parameter checkpoint, not an additional visual approval gate.
+
 ## Product Detail Designer execution rules
 
-Once the source review is complete, follow Product Detail Designer v1.0.0 for general safeguards; keep the user's prompt authoritative for task-specific stages and approvals.
+Once the source review is complete, follow Product Detail Designer v1.0.1 for general safeguards; keep the user's prompt authoritative for task-specific stages and approvals.
 
 Important expectations include:
 
@@ -143,8 +158,8 @@ Use Product Detail Designer and the task-specific production prompt to create an
 IMPORTANT:
 Do not assume you already know this Skill; read the pinned SKILL.md.
 
-Product Detail Designer is our own open-source GitHub Skill, fixed at release v1.0.0:
-https://github.com/licat233/product-detail-designer/tree/v1.0.0
+Product Detail Designer is our own open-source GitHub Skill, fixed at release v1.0.1:
+https://github.com/licat233/product-detail-designer/tree/v1.0.1
 
 Product source repository:
 https://github.com/licat233/product-assets
@@ -170,7 +185,7 @@ Do not enter Approval Gate 1.
 STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
 
 If Stage 0 passes:
-1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
+1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.1/SKILL.md` completely.
 2. Treat the user's production prompt as the task-specific source of truth; use the Skill for general safeguards.
 3. Read from GitHub:
    - products/<product-slug>/product.md
@@ -206,7 +221,7 @@ IF THE PREFLIGHT PASSES:
    - unknown / do-not-claim information
 4. Verify exact technical values against original source evidence rather than relying only on product.md.
 5. Never invent unsupported specifications, certifications, test results, awards, discounts, partnerships, or regulated claims.
-6. Follow the user's task-specific prompt for workflow stages and approval gates; use Product Detail Designer v1.0.0 for general product-identity, factual-accuracy, and image-quality safeguards.
+6. Follow the user's task-specific prompt for workflow stages and approval gates; use Product Detail Designer v1.0.1 for general product-identity, factual-accuracy, and image-quality safeguards.
 7. Use English visible commercial copy by default.
 8. Preserve the real product's geometry, proportions, ports, controls, markings, colors, and materials.
 9. Treat all eight screens as sequential sections of one continuous ecommerce long page, not eight unrelated posters.
@@ -221,7 +236,7 @@ Use Product Detail Designer for `<product-slug>` from `licat233/product-assets`.
 
 Before anything else, verify that this session can actually invoke image generation/editing. If not, stop immediately before reading product evidence or producing the Blueprint.
 
-If image generation is available, read the pinned Product Detail Designer `SKILL.md` at release `v1.0.0`, then read product.md and manifest.yaml. For binary evidence use: manifest public_url → manifest source_url → complete connector base64 decoded back to the original file only when the restored file can actually be inspected. Base64 alone is not evidence review.
+If image generation is available, read the pinned Product Detail Designer `SKILL.md` at release `v1.0.1`, then read product.md and manifest.yaml. For binary evidence use: manifest public_url → manifest source_url → complete connector base64 decoded back to the original file only when the restored file can actually be inspected. Base64 alone is not evidence review.
 
-Do not produce the Blueprint unless at least one authoritative source document and one authoritative real product image have actually been inspected. Then follow the user's 8-screen production prompt and its approval gates; use Product Detail Designer v1.0.0 for general image-generation and quality rules.
+Do not produce the Blueprint unless at least one authoritative source document and one authoritative real product image have actually been inspected. Then follow the user's 8-screen production prompt and its approval gates; use Product Detail Designer v1.0.1 for general image-generation and quality rules.
 ```
