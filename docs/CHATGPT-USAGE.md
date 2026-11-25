@@ -1,23 +1,23 @@
-# ChatGPT + DetailFlow Usage
+# ChatGPT + Product Detail Designer Usage
 
 [中文](./CHATGPT-USAGE.zh-CN.md)
 
 This document explains how a new ChatGPT session should verify that it can actually complete DetailFlow before reaching Approval Gate 1.
 
-## 1. DetailFlow is an external Skill
+## 1. Product Detail Designer is our own open-source Skill
 
-Do not assume a new ChatGPT session already knows what "DetailFlow" means.
+Do not assume a new ChatGPT session already knows this Skill. Read the pinned SKILL.md first.
 
 For ChatGPT product-detail-page work, use only this pinned historical snapshot:
 
-- Repository: `https://github.com/AJbeckliy/detail-flow-V2-Ajie`
-- Commit: `64c9cb12eb1d925faa01d38db47a4066d37df69b`
-- Skill: `https://github.com/AJbeckliy/detail-flow-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md`
-- Required ecommerce reference: `https://github.com/AJbeckliy/detail-flow-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`
+- Repository: `https://github.com/licat233/product-detail-designer`
+- Commit: `v1.0.0`
+- Skill: `https://github.com/licat233/product-detail-designer/blob/v1.0.0/SKILL.md`
+- Skill file: `https://github.com/licat233/product-detail-designer/blob/v1.0.0/SKILL.md`
 
-Read these exact files at this exact commit. Do not use `main`, a latest branch, a floating repository URL, or a later commit. If the pinned commit or either required file cannot be read, stop and report the failure; never silently upgrade to another version.
+Read these exact files at this exact commit. Use the pinned release URL above rather than a floating branch URL. If the pinned release or either required file cannot be read, stop and report the failure; never silently upgrade to another version.
 
-The pinned repository contract takes precedence over prior memory, a generic ecommerce workflow, or an invented interpretation of DetailFlow.
+The user's task-specific prompt takes precedence for page structure, approval gates, and deliverables; Product Detail Designer v1.0.0 supplies general execution and quality safeguards.
 
 ## 2. Stage 0 — image generation first
 
@@ -36,7 +36,7 @@ Do not infer capability from the model name.
 
 If Stage 0 passes:
 
-1. read the pinned DetailFlow `SKILL.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md` and the required `references/detail-page-patterns.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`;
+1. read the pinned Product Detail Designer `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` and the required `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md`;
 2. read `products/<product-slug>/product.md` from GitHub;
 3. read `products/<product-slug>/manifest.yaml` from GitHub.
 
@@ -60,15 +60,15 @@ A filename, manifest record, binary size, or undecoded base64 payload is not evi
 ## 5. Recommended full prompt
 
 ```text
-Use the DetailFlow workflow to create an English overseas-market ecommerce product detail page for product:
+Use Product Detail Designer and the task-specific production prompt to create an English overseas-market ecommerce product detail page for product:
 
 <product-slug>
 
 IMPORTANT:
 Do not assume you already know what "DetailFlow" means.
 
-DetailFlow is an external GitHub Skill/workflow stored at:
-https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b
+Product Detail Designer is our own open-source GitHub Skill, fixed at release v1.0.0:
+https://github.com/licat233/product-detail-designer/tree/v1.0.0
 
 Product source repository:
 https://github.com/licat233/product-assets
@@ -94,9 +94,9 @@ Do not enter Approval Gate 1.
 STAGE 1 — DETAILFLOW CONTRACT + PRODUCT METADATA
 
 If Stage 0 passes:
-1. Read the immutable `SKILL.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md` completely.
-2. Read the required immutable reference `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md` completely.
-3. Treat commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` as the execution contract. Do not read `main`, a latest branch, or any later commit. Do not substitute prior memory, a generic ecommerce workflow, or your own interpretation.
+1. Read the immutable `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
+2. Read the required immutable reference `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
+3. Treat release `v1.0.0` as the execution contract. Do not substitute prior memory or a generic workflow for the user's task-specific prompt and this Skill's general safeguards.
 4. Read from GitHub:
    - products/<product-slug>/product.md
    - products/<product-slug>/manifest.yaml
@@ -131,7 +131,7 @@ IF THE PREFLIGHT PASSES:
    - unknown / do-not-claim information
 4. Verify exact technical values against original source evidence rather than relying only on product.md.
 5. Never invent unsupported specifications, certifications, test results, awards, discounts, partnerships, or regulated claims.
-6. Follow the pinned DetailFlow `SKILL.md` at commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` strictly, including both approval gates.
+6. Follow the pinned Product Detail Designer `SKILL.md` at release `v1.0.0` strictly, including both approval gates.
 7. Use English visible commercial copy by default.
 8. Preserve the real product's geometry, proportions, ports, controls, markings, colors, and materials.
 9. Treat all eight screens as sequential sections of one continuous ecommerce long page, not eight unrelated posters.
@@ -153,7 +153,7 @@ Every product claim should belong to one of these groups:
 
 Exact technical values should be verified against the original manual, datasheet, drawing, or other authoritative source.
 
-## 7. DetailFlow workflow expectation
+## 7. Product Detail Designer workflow expectation
 
 After the full preflight passes:
 
