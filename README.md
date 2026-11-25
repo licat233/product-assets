@@ -2,7 +2,7 @@
 
 [English](./README.en.md) · [ChatGPT 使用说明](./docs/CHATGPT-USAGE.zh-CN.md) · [产品目录规范](./docs/PRODUCT-DIRECTORY-SPEC.md)
 
-这是一个面向 **ChatGPT / DetailFlow / Codex** 的产品资料仓库。
+这是一个面向 **ChatGPT / Product Detail Designer / Codex** 的产品资料仓库。
 
 目标很简单：把每款产品的说明书、规格资料、真实图片和结构化产品事实保存成一套长期可复用的 **Product Source of Truth**，让新的 ChatGPT 会话不需要反复重新上传同一套资料。
 
@@ -130,7 +130,7 @@ https://assets.licat.xyz/catalog.json
 
 ```text
 GitHub
-→ DetailFlow SKILL.md
+→ Product Detail Designer SKILL.md
 → product.md
 → manifest.yaml
 ```
@@ -159,41 +159,28 @@ GitHub
 
 ---
 
-## 5. DetailFlow 开始前必须做 Capability Preflight
+## 5. Product Detail Designer 使用前的轻量检查
 
-不同 ChatGPT 会话暴露的工具能力可能不同，所以必须在 Blueprint 前检查。
+不同 ChatGPT 会话暴露的图像生成能力可能不同，因此在开始前先确认当前会话能够实际生成或编辑图片。
 
-**DetailFlow 版本固定：** ChatGPT 详情页制作只使用仓库 `AJbeckliy/detail-flow-V2-Ajie` 的 Commit `64c9cb12eb1d925faa01d38db47a4066d37df69b`。对应的 `SKILL.md` 和 `references/detail-page-patterns.md` 均使用不可变 Commit 链接；禁止自动跟随 `main` 或上游新版。
+**固定 Skill 版本：**
+- 仓库：https://github.com/licat233/product-detail-designer
+- 版本：`v1.0.0`
+- 唯一必需文件：https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md
 
-### Stage 0 — 先检查图像生成能力
+### Stage 0 — 检查图像生成能力
 
-第一件事不是读 PDF，而是确认当前会话有**真正可调用的图像生成 / 编辑能力**，能完成：
+确认当前会话具备真正可调用的图像生成 / 编辑能力。若本次制作提示词要求 Visual Master、1:3 continuity master 或分批生成，也应确认能够完成对应的图像任务。
 
-- Visual Master
-- 1:3 continuity master（需要时）
-- first 2–3 screens
-- remaining screens
+如果没有图像生成能力，明确说明并停止；不要假装生成图片。
 
-如果没有：
+### Stage 1 — 读取 Skill 与产品 metadata
 
-```text
-立即停止
-→ 不读取剩余产品证据
-→ 不做 Blueprint
-→ 不进入 Approval Gate 1
-```
+1. 读取固定版本的 `SKILL.md`：https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md
+2. 读取当前产品的 `product.md`。
+3. 读取当前产品的 `manifest.yaml`。
 
-不要根据模型名称推测能力。
-
-### Stage 1 — 读取 DetailFlow 与 metadata
-
-Stage 0 通过后：
-
-1. 打开 `https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b`。
-2. 完整读取固定 Commit 的 `SKILL.md`：`https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md`。
-3. 读取同一 Commit 的 `references/detail-page-patterns.md`：`https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`。
-4. 禁止读取 `main`、最新分支或后续 Commit。
-5. 读取当前产品的 `product.md` 和 `manifest.yaml`。
+本次具体制作提示词定义页面结构、审批节点和交付物；Product Detail Designer 只提供通用的产品真实性、文案准确性、视觉一致性和图像质量规则。
 
 ### Stage 2 — 真正检查原始证据
 
@@ -220,7 +207,7 @@ public_url
 
 ## 6. 最推荐：给 ChatGPT 发什么指令？
 
-不要只说“Use DetailFlow”，因为新会话未必知道 DetailFlow 是什么。
+不要只说“Use Product Detail Designer”；新会话应先读取固定版本的 SKILL.md。
 
 推荐直接使用仓库里的 canonical prompt：
 
@@ -229,15 +216,15 @@ public_url
 其中最关键的开头是：
 
 ```text
-Use the DetailFlow workflow to create an English overseas-market ecommerce product detail page for product:
+Use Product Detail Designer and the task-specific production prompt to create an English overseas-market ecommerce product detail page for product:
 
 <product-slug>
 
 IMPORTANT:
-Do not assume you already know what "DetailFlow" means.
+Do not assume you already know this Skill; read the pinned SKILL.md first.
 
-DetailFlow is an external GitHub Skill/workflow stored at:
-https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b
+Product Detail Designer is our own open-source GitHub Skill, pinned to release v1.0.0:
+https://github.com/licat233/product-detail-designer/tree/v1.0.0
 
 Product source repository:
 https://github.com/licat233/product-assets
@@ -260,13 +247,11 @@ Do not read the remaining product evidence.
 Do not produce the 8-screen Blueprint.
 Do not enter Approval Gate 1.
 
-STAGE 1 — DETAILFLOW CONTRACT + PRODUCT METADATA
+STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
 
 If Stage 0 passes:
-1. Read the immutable `SKILL.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md` completely.
-2. Read the required immutable reference `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md` completely.
-3. Do not read `main`, a latest branch, or any later commit.
-4. Read `products/<product-slug>/product.md` and `products/<product-slug>/manifest.yaml`.
+1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
+2. Read `products/<product-slug>/product.md` and `products/<product-slug>/manifest.yaml`.
 
 STAGE 2 — BINARY EVIDENCE
 
@@ -296,7 +281,7 @@ Do not produce the Blueprint unless at least one authoritative original document
 - 应用场景
 - 合理创意推断
 - Unknown / Do not claim
-- DetailFlow claim seeds
+- Product Detail Designer claim seeds
 
 ### manifest.yaml
 
@@ -314,13 +299,13 @@ bash scripts/sync-manifest.sh <product-slug>
 - 媒体类型
 - evidence priority
 - claims policy
-- DetailFlow 默认参数
+- Product Detail Designer 默认参数
 
 如果目录和 manifest 不一致，应重新运行同步脚本，而不是人工改 YAML。
 
 ---
 
-## 8. DetailFlow 固定流程
+## 8. 产品详情页固定流程
 
 完整 Preflight 通过后：
 
@@ -356,7 +341,7 @@ Screen 03–08
 products/                          # 每款产品一个目录
 templates/                         # product.md / manifest 默认结构
 docs/                              # 使用规范和操作文档
-prompts/                           # ChatGPT / DetailFlow 提示词
+prompts/                           # ChatGPT / Product Detail Designer 提示词
 scripts/new-product.sh             # 自动创建产品目录
 scripts/sync-manifest.sh           # 自动同步 manifest；用户无需编辑 YAML
 scripts/generate-asset-browser.mjs # 生成 assets.licat.xyz 文件浏览器

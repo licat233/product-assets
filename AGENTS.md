@@ -41,27 +41,27 @@ This repository is a controlled product source-of-truth for product documents, p
 - Prefer semantic lowercase kebab-case filenames when practical.
 - Do not name an image after an unverified feature.
 
-## DetailFlow capability preflight
+## Product Detail Designer capability preflight
 
-**Pinned ChatGPT DetailFlow source:** use `https://github.com/AJbeckliy/detail-flow-V2-Ajie` at commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` only. Read the immutable `SKILL.md` (`https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md`) and `references/detail-page-patterns.md` (`https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`). Do not use `main`, a latest branch, a floating repository URL, or a later commit. If the pinned source is unavailable, stop and report it rather than silently upgrading.
+**Pinned Skill:** Product Detail Designer v1.0.0 — https://github.com/licat233/product-detail-designer
 
-The preflight must stop as early as possible when the current ChatGPT session cannot complete DetailFlow.
+Read only the pinned Skill file: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md
+
+The user's task-specific prompt controls page structure, approval gates, image ratio, and deliverables. Product Detail Designer supplies general product-identity, factual-accuracy, visual-consistency, and image-quality safeguards; do not add unrequested stages or dependencies.
 
 ### Stage 0 — image generation first
 
-Before reading product evidence or producing a Blueprint, verify that the current session has an actually invokable image-generation/editing capability for the Visual Master and final slices.
+Before reading product evidence or producing a Blueprint, verify that the current session has an actually invokable image-generation/editing capability for the outputs requested by the user's prompt.
 
-If it does not, stop immediately. Do not read the remaining product evidence, do not produce the Blueprint, and do not enter Approval Gate 1.
+If it does not, state the limitation and stop. Do not pretend to generate images.
 
 ### Stage 1 — Skill + metadata
 
 If Stage 0 passes:
 
-1. read the pinned DetailFlow `SKILL.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md` and the required reference `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`;
-2. read the product `product.md`;
-3. read the product `manifest.yaml`.
-
-Do not substitute prior memory or a generic ecommerce workflow for the pinned DetailFlow repository contract at commit `64c9cb12eb1d925faa01d38db47a4066d37df69b`.
+1. Read the pinned Product Detail Designer `SKILL.md` at https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md.
+2. Read the product `product.md`.
+3. Read the product `manifest.yaml`.
 
 ### Stage 2 — binary evidence fallbacks
 
