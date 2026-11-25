@@ -182,17 +182,6 @@ GitHub
 
 本次具体制作提示词定义页面结构、审批节点和交付物；Product Detail Designer 只提供通用的产品真实性、文案准确性、视觉一致性和图像质量规则。
 
-### Stage 3 — 确认制作需求（Blueprint 之前）
-
-产品素材检查完成后、制作 Blueprint 之前，确认四项信息：
-
-- 输出语言
-- 每屏图片尺寸 / 宽高比例
-- 电商平台及具体展示位置
-- 销售国家 / 地区
-
-如果用户的提示词已经明确写出某项（例如英文、9:21 竖版），不要重复询问。缺失的项目一次性问完；如果用户不知道尺寸，先结合已确认的平台展示位置给出建议并让用户确认。用户明确授权 AI 决定的项目，可以自行选择并说明假设。详见 [Product Detail Designer v1.0.1](https://github.com/licat233/product-detail-designer/releases/tag/v1.0.1)。
-
 ### Stage 2 — 真正检查原始证据
 
 必须至少做到：
@@ -214,6 +203,17 @@ public_url
 
 完整规则见：[`docs/CHATGPT-USAGE.zh-CN.md`](./docs/CHATGPT-USAGE.zh-CN.md)
 
+
+### Stage 3 — 确认制作需求（Blueprint 之前）
+
+产品素材检查完成后、制作 Blueprint 之前，确认四项信息：
+
+- 输出语言
+- 每屏图片尺寸 / 宽高比例
+- 电商平台及具体展示位置
+- 销售国家 / 地区
+
+如果用户的提示词已经明确写出某项（例如英文、9:21 竖版），不要重复询问。缺失的项目一次性问完；如果用户不知道尺寸，先结合已确认的平台展示位置给出建议并让用户确认。用户明确授权 AI 决定的项目，可以自行选择并说明假设。详见 [Product Detail Designer v1.0.1](https://github.com/licat233/product-detail-designer/releases/tag/v1.0.1)。
 ---
 
 ## 6. 最推荐：给 ChatGPT 发什么指令？
