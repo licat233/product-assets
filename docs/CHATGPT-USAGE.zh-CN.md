@@ -126,6 +126,9 @@ Stage 2
 至少真正检查一份权威原始文档
 至少真正视觉检查一张真实产品图
         ↓ PASS
+Production Brief Confirmation
+确认语言、尺寸、平台 / 展示位置、销售地区
+        ↓ PASS
 8-screen Blueprint
         ↓
 Approval Gate 1
