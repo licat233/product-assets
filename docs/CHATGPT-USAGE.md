@@ -9,8 +9,8 @@ This document explains how a new ChatGPT session should read Product Detail Desi
 Product Detail Designer is a brand-neutral skill for ecommerce product-detail image creation.
 
 - Repository: https://github.com/licat233/product-detail-designer
-- Pinned release: `v1.0.1`
-- Only required file: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.1/SKILL.md
+- Pinned release: `v1.0.2`
+- Only required file: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.2/SKILL.md
 
 A new session needs to read only this pinned `SKILL.md`. No additional reference files, local installation, or external toolchain are required.
 
@@ -33,7 +33,7 @@ Do not infer capability from the model name.
 
 If Stage 0 passes:
 
-1. read the pinned Product Detail Designer `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.1/SKILL.md`;
+1. read the pinned Product Detail Designer `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.2/SKILL.md`;
 2. read `products/<product-slug>/product.md` from GitHub;
 3. read `products/<product-slug>/manifest.yaml` from GitHub.
 
@@ -56,7 +56,7 @@ A filename, manifest record, binary size, or undecoded base64 payload is not evi
 
 ## Production brief confirmation (required before the Blueprint)
 
-After actually inspecting the product documents and images, but before creating the Blueprint, use Product Detail Designer v1.0.1 to confirm these four items:
+After actually inspecting the product documents and images, but before creating the Blueprint, use Product Detail Designer v1.0.2 to confirm these four items:
 
 1. **Output language** — the language shown in the final images. The recommended prompt in this document explicitly requests English, so do not ask again when that prompt is used unless the user changes it.
 2. **Image dimensions / aspect ratio** — the pixel dimensions or ratio for each final screen. If the user's production prompt already specifies 9:21 or another size / ratio, do not ask again; otherwise confirm it.
@@ -66,6 +66,30 @@ After actually inspecting the product documents and images, but before creating 
 Combine all missing items into one concise message. If the platform placement is known but the image size is not, recommend a suitable size / ratio and ask for confirmation. If the user explicitly delegates a decision, choose and state the assumption. Do not present a design recommendation as an official platform requirement or invent platform specifications.
 
 Proceed to the Blueprint only after all four items are supplied or explicitly delegated. This is a production-parameter checkpoint, not an additional visual approval gate.
+
+## Mandatory separation of product evidence and visual design
+
+**Content reference is not visual reference.** Product manuals, specification sheets, brochure PDFs, catalogs, and technical documents are factual sources by default, not ecommerce design templates.
+
+Classify each source by role:
+
+- **Product evidence:** extract verified specifications, functions, features, materials, applications, limitations, and approved claims.
+- **Product visual assets:** real product photos, pack shots, close-ups, installation photos, and application photos establish the product's actual appearance.
+- **Engineering drawings / diagrams:** use them to understand construction, dimensions, wiring, and operation. Redraw a clear explanatory diagram only when useful, preserving the engineering meaning and never inventing missing data.
+- **Visual-design references:** only brand guidelines, moodboards, sample pages, or design files explicitly designated by the user as style references may guide the visual design.
+
+Unless the user explicitly asks to reproduce, redesign, convert, or use a PDF as a layout/style template, do not:
+
+- Trace, recreate, recolor, retype, translate, or rearrange the PDF's page UI or layout.
+- Copy its page sequence, composition, title placement, text blocks, tables, icon grids, decorative elements, backgrounds, or information hierarchy.
+- Use a complete PDF page or screenshot as an image-generation design reference by default.
+- Convert each PDF page into a corresponding ecommerce detail screen.
+
+You may extract and reorganize verified facts, approved copy, individual product images, and useful technical information. Re-plan the content and visual design around the target buyer, purchase decision, and confirmed platform. The final work must be an independently conceived ecommerce detail page, not a restyled version of the brochure.
+
+If the only product photo is embedded in a PDF, use an individual extracted image only when its quality is sufficient. Never substitute a complete PDF page for a product photo. If the real product cannot be seen clearly, explain the limitation or request a proper image.
+
+**Acceptance test:** if the final images look like the source PDF with different colors, fonts, or rearranged blocks, or follow its page-by-page structure, the design fails and must be independently redesigned.
 
 ## 5. Recommended full prompt
 
@@ -77,8 +101,8 @@ Use Product Detail Designer and the task-specific production prompt to create an
 IMPORTANT:
 Do not assume you already know this Skill; read the pinned SKILL.md first.
 
-Product Detail Designer is our own open-source GitHub Skill, fixed at release v1.0.1:
-https://github.com/licat233/product-detail-designer/tree/v1.0.1
+Product Detail Designer is our own open-source GitHub Skill, fixed at release v1.0.2:
+https://github.com/licat233/product-detail-designer/tree/v1.0.2
 
 Product source repository:
 https://github.com/licat233/product-assets
@@ -104,7 +128,7 @@ Do not enter Approval Gate 1.
 STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
 
 If Stage 0 passes:
-1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.1/SKILL.md` completely.
+1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.2/SKILL.md` completely.
 2. Treat the user's production prompt as the task-specific source of truth; use the Skill for general safeguards.
 3. Read from GitHub:
    - products/<product-slug>/product.md
@@ -140,7 +164,7 @@ IF THE PREFLIGHT PASSES:
    - unknown / do-not-claim information
 4. Verify exact technical values against original source evidence rather than relying only on product.md.
 5. Never invent unsupported specifications, certifications, test results, awards, discounts, partnerships, or regulated claims.
-6. Follow the user's task-specific production prompt for stages and approval gates; use Product Detail Designer v1.0.1 for general safeguards.
+6. Follow the user's task-specific production prompt for stages and approval gates; use Product Detail Designer v1.0.2 for general safeguards.
 7. Use English visible commercial copy by default.
 8. Preserve the real product's geometry, proportions, ports, controls, markings, colors, and materials.
 9. Treat all eight screens as sequential sections of one continuous ecommerce long page, not eight unrelated posters.

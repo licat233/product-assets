@@ -43,9 +43,9 @@ This repository is a controlled product source-of-truth for product documents, p
 
 ## Product Detail Designer capability preflight
 
-**Pinned Skill:** Product Detail Designer v1.0.1 — https://github.com/licat233/product-detail-designer
+**Pinned Skill:** Product Detail Designer v1.0.2 — https://github.com/licat233/product-detail-designer
 
-Read only the pinned Skill file: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.1/SKILL.md
+Read only the pinned Skill file: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.2/SKILL.md
 
 The user's task-specific prompt controls page structure, approval gates, image ratio, and deliverables. Product Detail Designer supplies general product-identity, factual-accuracy, visual-consistency, and image-quality safeguards; do not add unrequested stages or dependencies.
 
@@ -59,7 +59,7 @@ If it does not, state the limitation and stop. Do not pretend to generate images
 
 If Stage 0 passes:
 
-1. Read the pinned Product Detail Designer `SKILL.md` at https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.1/SKILL.md.
+1. Read the pinned Product Detail Designer `SKILL.md` at https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.2/SKILL.md.
 2. Read the product `product.md`.
 3. Read the product `manifest.yaml`.
 
@@ -80,6 +80,12 @@ Before the Blueprint, the session must successfully:
 
 If those checks still fail after the allowed fallbacks, stop before the Blueprint and report the missing capability. Do not let the workflow reach Gate 1 and fail later.
 
+
+### Stage 4 — Separate product evidence from visual design
+
+Product PDFs, brochures, manuals, and specification sheets are factual sources by default, not visual templates. Extract verified facts and useful individual product images, but do not trace, recolor, rearrange, translate, or adapt the source document's page UI, layout, tables, icon grids, backgrounds, or page order. Use real product photos to preserve product appearance. Only follow a document's visual design when the user explicitly designates it as a style/layout reference or asks for a faithful redesign.
+
+The final ecommerce page must be independently conceived for the buyer, market, and platform. If it looks like a restyled PDF or follows the PDF page by page, reject and redesign it.
 
 ### Stage 3 — Production Brief Confirmation
 

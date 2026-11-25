@@ -88,8 +88,8 @@ Do not assume the current ChatGPT session can generate images. Verify that nativ
 
 **Pinned Skill release:**
 - Repository: https://github.com/licat233/product-detail-designer
-- Version: `v1.0.1`
-- Only required file: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.1/SKILL.md
+- Version: `v1.0.2`
+- Only required file: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.2/SKILL.md
 
 ### Stage 0 — image generation
 
@@ -99,7 +99,7 @@ If image generation is unavailable, state the limitation and stop. Do not preten
 
 ### Stage 1 — Skill + product metadata
 
-1. Read the pinned `SKILL.md` at https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.1/SKILL.md.
+1. Read the pinned `SKILL.md` at https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.2/SKILL.md.
 2. Read the product `product.md`.
 3. Read the product `manifest.yaml`.
 
@@ -124,7 +124,11 @@ After inspecting the product evidence and before producing the Blueprint, confir
 - Ecommerce platform and specific placement
 - Sales country / region
 
-Do not ask again for items already specified in the user's prompt (for example, English or a 9:21 vertical ratio). Ask for all missing items together. If the user does not know the size, recommend one based on the confirmed platform placement and ask for confirmation. If the user explicitly delegates a decision, choose and state the assumption. See [Product Detail Designer v1.0.1](https://github.com/licat233/product-detail-designer/releases/tag/v1.0.1).
+Do not ask again for items already specified in the user's prompt (for example, English or a 9:21 vertical ratio). Ask for all missing items together. If the user does not know the size, recommend one based on the confirmed platform placement and ask for confirmation. If the user explicitly delegates a decision, choose and state the assumption. See [Product Detail Designer v1.0.2](https://github.com/licat233/product-detail-designer/releases/tag/v1.0.2).
+## Product documents are not design templates
+
+Product PDFs, brochures, and specification sheets are factual sources by default. Unless the user explicitly requests a faithful redesign, do not copy their page UI, layout, icon grids, tables, backgrounds, or page order. Independently plan and design the ecommerce detail page for the buyer and platform. A result that merely recolors or retypes the source PDF fails review.
+
 ## Recommended Product Detail Designer prompt
 
 Use the canonical prompt here:
@@ -141,8 +145,8 @@ Use Product Detail Designer and the task-specific production prompt to create an
 IMPORTANT:
 Do not assume you already know this Skill; read the pinned SKILL.md first.
 
-Product Detail Designer is our own open-source GitHub Skill, pinned to release v1.0.1:
-https://github.com/licat233/product-detail-designer/tree/v1.0.1
+Product Detail Designer is our own open-source GitHub Skill, pinned to release v1.0.2:
+https://github.com/licat233/product-detail-designer/tree/v1.0.2
 
 Product source repository:
 https://github.com/licat233/product-assets
@@ -161,7 +165,7 @@ Do not enter Approval Gate 1.
 
 STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
 
-Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.1/SKILL.md`. Then read product.md and manifest.yaml. The user's prompt controls the task-specific workflow; the Skill supplies general safeguards.
+Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.2/SKILL.md`. Then read product.md and manifest.yaml. The user's prompt controls the task-specific workflow; the Skill supplies general safeguards.
 
 STAGE 2 — BINARY EVIDENCE
 
