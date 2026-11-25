@@ -26,6 +26,8 @@ The task-specific production prompt defines the approval gates. Do not add any g
 ```text
 input / evidence analysis
         ↓
+Production Brief Confirmation
+        ↓
 complete 8-screen Blueprint
         ↓
 Approval Gate 1
