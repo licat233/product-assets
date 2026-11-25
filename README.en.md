@@ -114,7 +114,7 @@ Before the Blueprint, the session must actually:
 
 Use the binary fallback order above. If all allowed routes fail, stop before the Blueprint.
 
-## Recommended DetailFlow prompt
+## Recommended Product Detail Designer prompt
 
 Use the canonical prompt here:
 
