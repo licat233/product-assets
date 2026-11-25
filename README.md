@@ -207,7 +207,7 @@ public_url
 
 ## 6. 最推荐：给 ChatGPT 发什么指令？
 
-不要只说“Use DetailFlow”，因为新会话未必知道 DetailFlow 是什么。
+不要只说“Use Product Detail Designer”；新会话应先读取固定版本的 SKILL.md。
 
 推荐直接使用仓库里的 canonical prompt：
 
@@ -281,7 +281,7 @@ Do not produce the Blueprint unless at least one authoritative original document
 - 应用场景
 - 合理创意推断
 - Unknown / Do not claim
-- DetailFlow claim seeds
+- Product Detail Designer claim seeds
 
 ### manifest.yaml
 
@@ -299,7 +299,7 @@ bash scripts/sync-manifest.sh <product-slug>
 - 媒体类型
 - evidence priority
 - claims policy
-- DetailFlow 默认参数
+- Product Detail Designer 默认参数
 
 如果目录和 manifest 不一致，应重新运行同步脚本，而不是人工改 YAML。
 
@@ -341,7 +341,7 @@ Screen 03–08
 products/                          # 每款产品一个目录
 templates/                         # product.md / manifest 默认结构
 docs/                              # 使用规范和操作文档
-prompts/                           # ChatGPT / DetailFlow 提示词
+prompts/                           # ChatGPT / Product Detail Designer 提示词
 scripts/new-product.sh             # 自动创建产品目录
 scripts/sync-manifest.sh           # 自动同步 manifest；用户无需编辑 YAML
 scripts/generate-asset-browser.mjs # 生成 assets.licat.xyz 文件浏览器
