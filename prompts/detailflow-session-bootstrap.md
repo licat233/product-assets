@@ -8,24 +8,18 @@ Use this prompt when starting a new ChatGPT conversation for a product-detail-pa
 
 Product Detail Designer is our own brand-neutral, open-source Skill. For ChatGPT product-detail-page work, use only our own Product Detail Designer Skill at the pinned release below:
 
-**ChatGPT compatibility pin (immutable):**
+**Pinned Skill release (immutable):**
 - Repository: `https://github.com/licat233/product-detail-designer`
-- Commit: `v1.0.0`
-- `SKILL.md`: `https://github.com/licat233/product-detail-designer/blob/v1.0.0/SKILL.md`
-- Skill file: `https://github.com/licat233/product-detail-designer/blob/v1.0.0/SKILL.md`
+- Version: `v1.0.0`
+- `SKILL.md`: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md
 
-Always read these exact files at this exact commit. Use the pinned release URL above rather than a floating branch URL. If this commit or either required file cannot be read, stop and report the failure; never silently upgrade to another version.
+Read this exact `SKILL.md` before production. It is the only required Skill file; no additional reference files or local dependencies are required.
 
 Its job is to plan, generate, review, and iterate an image-led ecommerce product detail page as **8 sequential screens** that behave like one continuous long ecommerce page.
 
-Before starting, read the pinned Product Detail Designer SKILL.md listed above.
+Before starting, read the pinned `SKILL.md` above. No other Skill reference files or dependencies are required.
 
-At minimum, read:
-
-- `SKILL.md`: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md
-- `SKILL.md`: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md
-
-Use the user's prompt as the task-specific production brief and Product Detail Designer v1.0.0 for general execution rules.
+The user's task-specific prompt controls page structure, approval gates, image ratio, and deliverables. Product Detail Designer v1.0.0 supplies general product-identity, factual-accuracy, visual-consistency, image-generation, and quality-review rules; it must not add unrequested stages.
 
 The task-specific production prompt defines the approval gates. Do not add any gates beyond those it explicitly requests.
 
@@ -215,7 +209,7 @@ IF THE PREFLIGHT PASSES:
    - unknown / do-not-claim information
 4. Verify exact technical values against original source evidence rather than relying only on product.md.
 5. Never invent unsupported specifications, certifications, test results, awards, discounts, partnerships, or regulated claims.
-6. Follow the pinned Product Detail Designer `SKILL.md` at release `v1.0.0` strictly, including both approval gates.
+6. Follow the user's task-specific prompt for workflow stages and approval gates; use Product Detail Designer v1.0.0 for general product-identity, factual-accuracy, and image-quality safeguards.
 7. Use English visible commercial copy by default.
 8. Preserve the real product's geometry, proportions, ports, controls, markings, colors, and materials.
 9. Treat all eight screens as sequential sections of one continuous ecommerce long page, not eight unrelated posters.
