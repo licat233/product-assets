@@ -150,7 +150,7 @@ Do not enter Approval Gate 1.
 
 STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
 
-Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md` and `references/detail-page-patterns.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`. Treat commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` as the only execution contract; do not read `main`, a latest branch, or any later commit. Then read product.md and manifest.yaml.
+Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md`. Then read product.md and manifest.yaml. The user's prompt controls the task-specific workflow; the Skill supplies general safeguards.
 
 STAGE 2 — BINARY EVIDENCE
 
