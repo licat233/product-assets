@@ -2,34 +2,21 @@
 
 这份文档解决一个最常见的问题：
 
-> 新开一个 ChatGPT 会话时，怎样先确认它真的具备完整执行 DetailFlow 的能力，再读取 `licat233/product-assets` 中的产品资料？
+> 新开一个 ChatGPT 会话时，怎样读取 Product Detail Designer 并检查图像生成能力，再读取 `licat233/product-assets` 中的产品资料？
 
 ---
 
 ## 1. Product Detail Designer 是独立开源 Skill
 
-**不要假设新会话已经知道这个 Skill。先读取固定版本的 SKILL.md。**
+Product Detail Designer 是我们自建的、面向整个电商行业的通用开源 Skill。
 
-Product Detail Designer 是我们自建的通用开源 GitHub Skill：
-
-`https://github.com/licat233/product-detail-designer`
-
-ChatGPT 使用自建的 Product Detail Designer Skill，固定使用 v1.0.0：
-
-- 仓库：`https://github.com/licat233/product-detail-designer`
+- 仓库：https://github.com/licat233/product-detail-designer
 - 固定版本：`v1.0.0`
-- Skill：`https://github.com/licat233/product-detail-designer/blob/v1.0.0/SKILL.md`
-- Skill 文件：`https://github.com/licat233/product-detail-designer/blob/v1.0.0/SKILL.md`
+- 唯一必需文件：https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md
 
-新会话必须从上述**准确 Commit**读取文件。禁止读取 `main`、最新分支或浮动链接。如果固定版本 或必需文件无法读取，立即报告并停止，不得悄悄切换到新版。
+新会话只需读取这个固定版本的 `SKILL.md`，不需要额外参考文件、本地安装或外部工具链。
 
-固定版本 中的规则优先于：
-
-- ChatGPT 的旧记忆
-- 泛化的电商详情页经验
-- 对 Skill 名称的自行理解
-
----
+**具体制作提示词是本次任务的权威规范**，负责定义页面数量、内容结构、母版、审批节点和交付物。Skill 负责通用的产品身份保护、事实准确性、视觉一致性、图像生成和质量审核；不得增加提示词没有要求的步骤。
 
 ## 2. Capability Preflight：先检查图像生成能力
 
@@ -147,7 +134,7 @@ Use Product Detail Designer and the task-specific production prompt to create an
 <product-slug>
 
 IMPORTANT:
-Do not assume you already know what "DetailFlow" means.
+Do not assume you already know this Skill; read the pinned SKILL.md first.
 
 Product Detail Designer is our own open-source GitHub Skill, fixed at release v1.0.0:
 https://github.com/licat233/product-detail-designer/tree/v1.0.0
@@ -173,13 +160,12 @@ Do not read the remaining product evidence.
 Do not produce the 8-screen Blueprint.
 Do not enter Approval Gate 1.
 
-STAGE 1 — DETAILFLOW CONTRACT + PRODUCT METADATA
+STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
 
 If Stage 0 passes:
-1. Read the immutable `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
-2. Read the required immutable reference `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
-3. Treat release `v1.0.0` as the execution contract. Do not substitute prior memory or a generic workflow for the user's task-specific prompt and this Skill's general safeguards.
-4. Read from GitHub:
+1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
+2. Treat the user's production prompt as the task-specific source of truth; use the Skill for general safeguards.
+3. Read from GitHub:
    - products/<product-slug>/product.md
    - products/<product-slug>/manifest.yaml
 
