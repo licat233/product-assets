@@ -1,4 +1,4 @@
-# ChatGPT + DetailFlow 使用指南
+# ChatGPT + Product Detail Designer 使用指南
 
 这份文档解决一个最常见的问题：
 
@@ -6,28 +6,28 @@
 
 ---
 
-## 1. DetailFlow 不是内置名词
+## 1. Product Detail Designer 是独立开源 Skill
 
-**不要假设新会话已经知道 DetailFlow 是什么。**
+**不要假设新会话已经知道这个 Skill。先读取固定版本的 SKILL.md。**
 
-DetailFlow 是一个外部 GitHub Skill / workflow：
+Product Detail Designer 是我们自建的通用开源 GitHub Skill：
 
-`https://github.com/AJbeckliy/detail-flow-V2-Ajie`
+`https://github.com/licat233/product-detail-designer`
 
-ChatGPT 使用的 DetailFlow 版本已固定，不跟随上游自动更新：
+ChatGPT 使用自建的 Product Detail Designer Skill，固定使用 v1.0.0：
 
-- 仓库：`https://github.com/AJbeckliy/detail-flow-V2-Ajie`
-- 固定 Commit：`64c9cb12eb1d925faa01d38db47a4066d37df69b`
-- Skill：`https://github.com/AJbeckliy/detail-flow-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md`
-- 必需参考文件：`https://github.com/AJbeckliy/detail-flow-V2-Ajie/blob/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md`
+- 仓库：`https://github.com/licat233/product-detail-designer`
+- 固定版本：`v1.0.0`
+- Skill：`https://github.com/licat233/product-detail-designer/blob/v1.0.0/SKILL.md`
+- Skill 文件：`https://github.com/licat233/product-detail-designer/blob/v1.0.0/SKILL.md`
 
-新会话必须从上述**准确 Commit**读取文件。禁止读取 `main`、最新分支或浮动链接。如果固定 Commit 或必需文件无法读取，立即报告并停止，不得悄悄切换到新版。
+新会话必须从上述**准确 Commit**读取文件。禁止读取 `main`、最新分支或浮动链接。如果固定版本 或必需文件无法读取，立即报告并停止，不得悄悄切换到新版。
 
-固定 Commit 中的规则优先于：
+固定版本 中的规则优先于：
 
 - ChatGPT 的旧记忆
 - 泛化的电商详情页经验
-- 对“DetailFlow”这个名字的自行理解
+- 对 Skill 名称的自行理解
 
 ---
 
@@ -40,7 +40,7 @@ ChatGPT 使用的 DetailFlow 版本已固定，不跟随上游自动更新：
 需要确认当前会话有真正可调用的 image generation / editing capability，可以完成：
 
 - Visual Master
-- 1:3 continuity master（DetailFlow 需要时）
+- 1:3 continuity master（仅当用户的具体提示词明确要求时）
 - 前 2–3 屏
 - 其余屏
 
@@ -65,7 +65,7 @@ ChatGPT 使用的 DetailFlow 版本已固定，不跟随上游自动更新：
 GitHub
 → product.md
 → manifest.yaml
-→ DetailFlow Skill 文本规则
+→ Product Detail Designer Skill 文本规则
 ```
 
 二进制证据则按 fallback 顺序读取。
@@ -119,7 +119,7 @@ Stage 0
 当前会话能真正生成 / 编辑图片？
         ↓ PASS
 Stage 1
-读取固定 Commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` 的 `SKILL.md` 与 `references/detail-page-patterns.md`
+读取固定版本 `v1.0.0` 的 `SKILL.md`
 读取 product.md + manifest.yaml
         ↓ PASS
 Stage 2
@@ -142,15 +142,15 @@ Approval Gate 1
 只需要替换 `<product-slug>`：
 
 ```text
-Use the DetailFlow workflow to create an English overseas-market ecommerce product detail page for product:
+Use Product Detail Designer and the task-specific production prompt to create an English overseas-market ecommerce product detail page for product:
 
 <product-slug>
 
 IMPORTANT:
 Do not assume you already know what "DetailFlow" means.
 
-DetailFlow is an external GitHub Skill/workflow stored at:
-https://github.com/AJbeckliy/detail-flow-V2-Ajie/tree/64c9cb12eb1d925faa01d38db47a4066d37df69b
+Product Detail Designer is our own open-source GitHub Skill, fixed at release v1.0.0:
+https://github.com/licat233/product-detail-designer/tree/v1.0.0
 
 Product source repository:
 https://github.com/licat233/product-assets
@@ -176,9 +176,9 @@ Do not enter Approval Gate 1.
 STAGE 1 — DETAILFLOW CONTRACT + PRODUCT METADATA
 
 If Stage 0 passes:
-1. Read the immutable `SKILL.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md` completely.
-2. Read the required immutable reference `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md` completely.
-3. Treat commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` as the execution contract. Do not read `main`, a latest branch, or any later commit. Do not substitute prior memory, a generic ecommerce workflow, or your own interpretation.
+1. Read the immutable `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
+2. Read the required immutable reference `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
+3. Treat release `v1.0.0` as the execution contract. Do not substitute prior memory or a generic workflow for the user's task-specific prompt and this Skill's general safeguards.
 4. Read from GitHub:
    - products/<product-slug>/product.md
    - products/<product-slug>/manifest.yaml
@@ -213,7 +213,7 @@ IF THE PREFLIGHT PASSES:
    - unknown / do-not-claim information
 4. Verify exact technical values against original source evidence rather than relying only on product.md.
 5. Never invent unsupported specifications, certifications, test results, awards, discounts, partnerships, or regulated claims.
-6. Follow the pinned DetailFlow `SKILL.md` at commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` strictly, including both approval gates.
+6. Follow the pinned Product Detail Designer `SKILL.md` at release `v1.0.0` strictly, including both approval gates.
 7. Use English visible commercial copy by default.
 8. Preserve the real product's geometry, proportions, ports, controls, markings, colors, and materials.
 9. Treat all eight screens as sequential sections of one continuous ecommerce long page, not eight unrelated posters.
@@ -239,7 +239,7 @@ IF THE PREFLIGHT PASSES:
 
 ---
 
-## 7. DetailFlow 固定流程
+## 7. 产品详情页固定流程
 
 完整 Preflight 通过后，才进入：
 
@@ -291,4 +291,4 @@ Binary evidence unavailable
 
 ## 9. 一句话记忆
 
-> **先确认当前会话有真正的图像生成工具；随后读取固定 Commit `64c9cb12eb1d925faa01d38db47a4066d37df69b` 的 DetailFlow Skill 和产品 metadata；二进制原件按 public_url → source_url → 可还原的完整 base64 顺序尝试。只有真正打开并检查原件才算 PASS。**
+> **先确认当前会话有真正的图像生成工具；随后读取固定版本 `v1.0.0` 的 Product Detail Designer Skill 和产品 metadata；二进制原件按 public_url → source_url → 可还原的完整 base64 顺序尝试。只有真正打开并检查原件才算 PASS。**
