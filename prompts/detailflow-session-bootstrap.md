@@ -78,11 +78,9 @@ If image generation/editing is unavailable, **STOP immediately**. Do not read th
 
 If Stage 0 passes:
 
-1. Read the immutable `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
-2. Read the required immutable reference `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
-3. Use this pinned release rather than a floating branch URL.
-4. Read `products/<slug>/product.md` from GitHub.
-5. Read `products/<slug>/manifest.yaml` from GitHub.
+1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
+2. Read `products/<slug>/product.md` from GitHub.
+3. Read `products/<slug>/manifest.yaml` from GitHub.
 
 ### Stage 2 — binary evidence inspection with fallbacks
 
@@ -172,10 +170,9 @@ Do not enter Approval Gate 1.
 STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
 
 If Stage 0 passes:
-1. Read the immutable `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
-2. Read the required immutable reference `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
-3. Treat release `v1.0.0` as the execution contract. Do not substitute prior memory or a generic workflow for the user's task-specific prompt and this Skill's general safeguards.
-4. Read from GitHub:
+1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
+2. Treat the user's production prompt as the task-specific source of truth; use the Skill for general safeguards.
+3. Read from GitHub:
    - products/<product-slug>/product.md
    - products/<product-slug>/manifest.yaml
 
