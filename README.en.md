@@ -105,6 +105,16 @@ If image generation is unavailable, state the limitation and stop. Do not preten
 
 The user's production prompt defines the page structure, approval gates, and deliverables. Product Detail Designer provides only general product-identity, factual-accuracy, visual-consistency, and image-quality safeguards.
 
+### Stage 2 — binary evidence
+
+Before the Blueprint, the session must actually:
+
+- inspect at least one authoritative original source document; and
+- visually inspect at least one authoritative real product image.
+
+Use the binary fallback order above. If all allowed routes fail, stop before the Blueprint.
+
+
 ### Stage 3 — confirm the production brief (before the Blueprint)
 
 After inspecting the product evidence and before producing the Blueprint, confirm:
@@ -115,16 +125,6 @@ After inspecting the product evidence and before producing the Blueprint, confir
 - Sales country / region
 
 Do not ask again for items already specified in the user's prompt (for example, English or a 9:21 vertical ratio). Ask for all missing items together. If the user does not know the size, recommend one based on the confirmed platform placement and ask for confirmation. If the user explicitly delegates a decision, choose and state the assumption. See [Product Detail Designer v1.0.1](https://github.com/licat233/product-detail-designer/releases/tag/v1.0.1).
-
-### Stage 2 — binary evidence
-
-Before the Blueprint, the session must actually:
-
-- inspect at least one authoritative original source document; and
-- visually inspect at least one authoritative real product image.
-
-Use the binary fallback order above. If all allowed routes fail, stop before the Blueprint.
-
 ## Recommended Product Detail Designer prompt
 
 Use the canonical prompt here:
