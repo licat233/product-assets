@@ -250,10 +250,8 @@ Do not enter Approval Gate 1.
 STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
 
 If Stage 0 passes:
-1. Read the immutable `SKILL.md` at `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/SKILL.md` completely.
-2. Read the required immutable reference `https://raw.githubusercontent.com/AJbeckliy/detail-flow-V2-Ajie/64c9cb12eb1d925faa01d38db47a4066d37df69b/references/detail-page-patterns.md` completely.
-3. Do not read `main`, a latest branch, or any later commit.
-4. Read `products/<product-slug>/product.md` and `products/<product-slug>/manifest.yaml`.
+1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.0/SKILL.md` completely.
+2. Read `products/<product-slug>/product.md` and `products/<product-slug>/manifest.yaml`.
 
 STAGE 2 — BINARY EVIDENCE
 
