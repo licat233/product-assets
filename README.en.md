@@ -88,8 +88,8 @@ Do not assume the current ChatGPT session can generate images. Verify that nativ
 
 **Pinned Skill release:**
 - Repository: https://github.com/licat233/product-detail-designer
-- Version: `v1.0.3`
-- Only required file: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.3/SKILL.md
+- Version: `v1.0.4`
+- Only required file: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.4/SKILL.md
 
 ### Stage 0 — image generation
 
@@ -99,7 +99,7 @@ If image generation is unavailable, state the limitation and stop. Do not preten
 
 ### Stage 1 — Skill + product metadata
 
-1. Read the pinned `SKILL.md` at https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.3/SKILL.md.
+1. Read the pinned `SKILL.md` at https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.4/SKILL.md.
 2. Read the product `product.md`.
 3. Read the product `manifest.yaml`.
 
@@ -124,10 +124,10 @@ After inspecting the product evidence and before producing the Blueprint, confir
 - Ecommerce platform and specific placement
 - Sales country / region
 
-Do not ask again for items already specified in the user's prompt (for example, English or a 9:21 vertical ratio). Ask for all missing items together. If the user does not know the size, recommend one based on the confirmed platform placement and ask for confirmation. If the user explicitly delegates a decision, choose and state the assumption. See [Product Detail Designer v1.0.3](https://github.com/licat233/product-detail-designer/releases/tag/v1.0.3).
-## One continuous page, not a slide deck
+Do not ask again for items already specified in the user's prompt (for example, English or a 9:21 vertical ratio). Ask for all missing items together. If the user does not know the size, recommend one based on the confirmed platform placement and ask for confirmation. If the user explicitly delegates a decision, choose and state the assumption. See [Product Detail Designer v1.0.4](https://github.com/licat233/product-detail-designer/releases/tag/v1.0.4).
+## Page first, not stitched slides
 
-Multiple detail images are adjacent slices of one vertical page and must join naturally. Do not add headers, footers, page numbers, 01–08 labels, repeated logo/title bars, decorative corners, full-image borders, or standalone PowerPoint-style frames. Separate file generation does not mean independent design; inspect every adjacent top/bottom join.
+Design one complete vertical page before splitting it into image files. The primary title appears only in the first image. Intermediate images do not restart the product introduction. No image gets a footer, repeated logo, or contact bar; at most one CTA may appear at the actual end of the complete page. Content may continue across file boundaries, and later images must continue the previous image rather than restart.
 
 ## Product documents are not design templates
 
@@ -149,8 +149,8 @@ Use Product Detail Designer and the task-specific production prompt to create an
 IMPORTANT:
 Do not assume you already know this Skill; read the pinned SKILL.md first.
 
-Product Detail Designer is our own open-source GitHub Skill, pinned to release v1.0.3:
-https://github.com/licat233/product-detail-designer/tree/v1.0.3
+Product Detail Designer is our own open-source GitHub Skill, pinned to release v1.0.4:
+https://github.com/licat233/product-detail-designer/tree/v1.0.4
 
 Product source repository:
 https://github.com/licat233/product-assets
@@ -169,7 +169,7 @@ Do not enter Approval Gate 1.
 
 STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
 
-Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.3/SKILL.md`. Then read product.md and manifest.yaml. The user's prompt controls the task-specific workflow; the Skill supplies general safeguards.
+Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.4/SKILL.md`. Then read product.md and manifest.yaml. The user's prompt controls the task-specific workflow; the Skill supplies general safeguards.
 
 STAGE 2 — BINARY EVIDENCE
 
