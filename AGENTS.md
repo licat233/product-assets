@@ -43,9 +43,9 @@ This repository is a controlled product source-of-truth for product documents, p
 
 ## Product Detail Designer capability preflight
 
-**Pinned Skill:** Product Detail Designer v1.0.3 — https://github.com/licat233/product-detail-designer
+**Pinned Skill:** Product Detail Designer v1.0.4 — https://github.com/licat233/product-detail-designer
 
-Read only the pinned Skill file: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.3/SKILL.md
+Read only the pinned Skill file: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.4/SKILL.md
 
 The user's task-specific prompt controls page structure, approval gates, image ratio, and deliverables. Product Detail Designer supplies general product-identity, factual-accuracy, visual-consistency, and image-quality safeguards; do not add unrequested stages or dependencies.
 
@@ -59,7 +59,7 @@ If it does not, state the limitation and stop. Do not pretend to generate images
 
 If Stage 0 passes:
 
-1. Read the pinned Product Detail Designer `SKILL.md` at https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.3/SKILL.md.
+1. Read the pinned Product Detail Designer `SKILL.md` at https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.4/SKILL.md.
 2. Read the product `product.md`.
 3. Read the product `manifest.yaml`.
 
@@ -87,20 +87,20 @@ Product PDFs, brochures, manuals, and specification sheets are factual sources b
 
 The final ecommerce page must be independently conceived for the buyer, market, and platform. If it looks like a restyled PDF or follows the PDF page by page, reject and redesign it.
 
-## Continuous long-page composition (mandatory)
+## Page first, slices second (mandatory)
 
-The eight final images must be **adjacent slices of one vertical ecommerce detail page**, not eight independent posters or PowerPoint slides. Screen / Slice is a file-delivery boundary only, not a buyer-visible page boundary.
+**Design one complete vertical ecommerce page first, then divide it into separate image files. The page is the design unit; each image is only a delivery slice.** Never design independent canvases and try to stitch them together with matching backgrounds or typography.
 
-- Plan one continuous top-to-bottom page first, then generate its separate high-resolution files.
-- Define `top_edge_anchor` and `bottom_edge_anchor` for every slice. The previous slice's bottom background, lighting, texture, spatial depth, and visual direction must inform the next slice's top edge.
-- Extend backgrounds naturally to image edges. Joins must not show a restarted background, color-temperature jump, spatial break, or meaningless empty gap.
-- Do not let key products or props cross a seam unless their position, scale, and direction can be aligned reliably.
-- Each image may have different content and composition, but must not become a self-contained promotional poster. Do not make separate cover/back-cover slides.
-- Separate file generation does not mean independent design. Carry each slice's `bottom_edge_anchor` forward as the next slice's `top_edge_anchor`.
+- The complete page has one primary title / H1, shown only in the first image.
+- Intermediate images must not restart with a product-introduction title, standalone hero, page masthead, or title bar.
+- No image may contain a website footer, contact-information bar, repeated logo, repeated product-name bar, copyright strip, or decorative sign-off.
+- If needed, one final CTA may appear only at the actual end of the complete page. Never repeat it at the bottom of each image.
+- Content modules may cross image boundaries; a file boundary is not a content-section boundary.
+- An intermediate image may enter partway through an ongoing scene or content module and leave before that module is complete. It does not need to be independently complete or self-contained.
+- Generate later images sequentially as continuations of the previous image's content and visual state. Prefer image extension / outpainting from the previous bottom edge; if unsupported, use that bottom edge as the concrete reference for the next image's top. Do not restart from a blank canvas.
+- Inspect the concatenated preview. Repeated titles/footers, repeated heroes, standalone-poster layouts, or a PowerPoint rhythm where every image starts over and ends independently are failures and must be repaired.
 
-Unless explicitly requested, prohibit headers, footers, navigation bars, page numbers, Screen / Slice labels, 01–08 numbers, repeated logos/product title bars, corner badges, decorative corner elements, full-image borders, repeated top/bottom bars, and the PowerPoint pattern of “title at top + cards in the middle + logo at bottom.” Information cards, specification tables, and real instructional step numbers may appear within the content, but must not frame the entire slice as an independent slide.
-
-Concatenate all images in order and inspect every top/bottom join. Repair background breaks, lighting jumps, spatial discontinuities, visible page boundaries, or slide-like styling. Never hide a failed join with blur, mirrored padding, borders, or arbitrary cropping.
+## Separate product evidence from visual design
 
 ### Stage 3 — Production Brief Confirmation
 
