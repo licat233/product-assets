@@ -67,8 +67,6 @@ A filename, manifest record, binary size, or undecoded base64 payload is not evi
 - Generate later images sequentially as continuations of the previous image's content and visual state. Prefer image extension / outpainting from the previous bottom edge; if unsupported, use that bottom edge as the concrete reference for the next image's top. Do not restart from a blank canvas.
 - Inspect the concatenated preview. Repeated titles/footers, repeated heroes, standalone-poster layouts, or a PowerPoint rhythm where every image starts over and ends independently are failures and must be repaired.
 
-## Separate product evidence from visual design
-
 ## Production brief confirmation (required before the Blueprint)
 
 After actually inspecting the product documents and images, but before creating the Blueprint, use Product Detail Designer v1.0.4 to confirm these four items:
