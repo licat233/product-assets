@@ -120,7 +120,7 @@ Use the binary fallback order above. If all allowed routes fail, stop before the
 After inspecting the product evidence and before producing the Blueprint, confirm:
 
 - Output language
-- Image dimensions / aspect ratio for each screen
+- Image dimensions / aspect ratio for each image
 - Ecommerce platform and specific placement
 - Sales country / region
 
