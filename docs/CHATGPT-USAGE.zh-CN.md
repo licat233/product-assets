@@ -36,7 +36,7 @@ Product Detail Designer 是我们自建的、面向整个电商行业的通用�
 ```text
 立即停止
 → 不读取剩余产品证据
-→ 不做 8-screen Blueprint
+→ 不做 8-slice Page Blueprint
 → 不进入 Approval Gate 1
 ```
 
@@ -115,7 +115,7 @@ GitHub
 完成产品资料和图片的真实检查后、制作 Blueprint 之前，按照 Product Detail Designer v1.0.4 确认以下四项：
 
 1. **输出语言**：最终图片中显示的文案语言。当前推荐提示词明确写了 English，因此使用该提示词时不必重复询问；如果用户另行指定其他语言，以用户指定为准。
-2. **图片尺寸 / 比例**：每屏最终图片的像素尺寸或宽高比例。若用户的具体制作提示词已经规定 9:21 或其他尺寸 / 比例，不要重复询问；否则必须确认。
+2. **图片尺寸 / 比例**：每张图片最终图片的像素尺寸或宽高比例。若用户的具体制作提示词已经规定 9:21 或其他尺寸 / 比例，不要重复询问；否则必须确认。
 3. **电商平台 / 展示位置**：例如 Amazon 商品图片、Amazon A+ Content、Shopify 产品页、Alibaba.com 详情页等。未指定时必须询问。
 4. **销售地区 / 目标市场**：具体国家或地区，或明确说明全球市场。“海外市场”本身不等于具体国家或地区；未明确时必须询问。
 
@@ -166,7 +166,7 @@ Stage 2
 Production Brief Confirmation
 确认语言、尺寸、平台 / 展示位置、销售地区
         ↓ PASS
-8-screen Blueprint
+8-slice Page Blueprint
         ↓
 Approval Gate 1
 ```
@@ -210,7 +210,7 @@ Do not infer this from the model name.
 If image generation/editing is unavailable:
 STOP IMMEDIATELY.
 Do not read the remaining product evidence.
-Do not produce the 8-screen Blueprint.
+Do not produce the 8-slice Page Blueprint.
 Do not enter Approval Gate 1.
 
 STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
@@ -255,7 +255,7 @@ IF THE PREFLIGHT PASSES:
 6. Follow the user's task-specific production prompt for stages and approval gates; use Product Detail Designer v1.0.4 for general safeguards.
 7. Use English visible commercial copy by default.
 8. Preserve the real product's geometry, proportions, ports, controls, markings, colors, and materials.
-9. Treat all eight screens as sequential sections of one continuous ecommerce long page, not eight unrelated posters.
+9. Treat all eight image slices as sequential sections of one continuous ecommerce long page, not eight unrelated posters.
 ```
 
 仓库里的 canonical prompt：
@@ -285,7 +285,7 @@ IF THE PREFLIGHT PASSES:
 ```text
 读取并核验输入资料
         ↓
-完整 8-screen Blueprint
+完整 8-slice Page Blueprint
         ↓
 Approval Gate 1
         ↓
@@ -304,7 +304,7 @@ Approval Gate 2
 完整拼接 + Final Audit
 ```
 
-八屏是一张连续 ecommerce detail page 的八个片段，不是八张互不相关的海报。
+八张图片切片是一张连续 ecommerce detail page 的八个片段，不是八张互不相关的海报。
 
 ---
 
