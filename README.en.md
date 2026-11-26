@@ -164,7 +164,7 @@ Confirm that this ChatGPT session has an actually invokable image-generation/edi
 If image generation/editing is unavailable:
 STOP IMMEDIATELY.
 Do not read the remaining product evidence.
-Do not produce the 8-screen Blueprint.
+Do not produce the 8-slice Page Blueprint.
 Do not enter Approval Gate 1.
 
 STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
