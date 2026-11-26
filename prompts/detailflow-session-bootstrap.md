@@ -10,8 +10,8 @@ Product Detail Designer is our own brand-neutral, open-source Skill. For ChatGPT
 
 **Pinned Skill release (immutable):**
 - Repository: `https://github.com/licat233/product-detail-designer`
-- Version: `v1.0.4`
-- `SKILL.md`: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.4/SKILL.md
+- Version: `v1.0.5`
+- `SKILL.md`: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.5/SKILL.md
 
 Read this exact `SKILL.md` before production. It is the only required Skill file; no additional reference files or local dependencies are required.
 
@@ -19,7 +19,7 @@ Its job is to plan, generate, review, and iterate an image-led ecommerce product
 
 Before starting, read the pinned `SKILL.md` above. No other Skill reference files or dependencies are required.
 
-The user's task-specific prompt controls page structure, approval gates, image ratio, and deliverables. Product Detail Designer v1.0.4 supplies general product-identity, factual-accuracy, visual-consistency, image-generation, and quality-review rules; it must not add unrequested stages.
+The user's task-specific prompt controls page structure, approval gates, image ratio, and deliverables. Product Detail Designer v1.0.5 supplies general product-identity, factual-accuracy, visual-consistency, image-generation, and quality-review rules; it must not add unrequested stages.
 
 The task-specific production prompt defines the approval gates. Do not add any gates beyond those it explicitly requests.
 
@@ -47,7 +47,7 @@ remaining slices
 full concatenation + final audit
 ```
 
-The task-specific production prompt controls page structure, approval gates, and deliverables; Product Detail Designer v1.0.4 supplies general execution and quality rules.
+The task-specific production prompt controls page structure, approval gates, and deliverables; Product Detail Designer v1.0.5 supplies general execution and quality rules.
 
 ## Product source repository
 
@@ -80,7 +80,7 @@ If image generation/editing is unavailable, **STOP immediately**. Do not read th
 
 If Stage 0 passes:
 
-1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.4/SKILL.md` completely.
+1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.5/SKILL.md` completely.
 2. Read `products/<slug>/product.md` from GitHub.
 3. Read `products/<slug>/manifest.yaml` from GitHub.
 
@@ -153,9 +153,25 @@ If the only product photo is embedded in a PDF, use an individual extracted imag
 - Generate later images sequentially as continuations of the previous image's content and visual state. Prefer image extension / outpainting from the previous bottom edge; if unsupported, use that bottom edge as the concrete reference for the next image's top. Do not restart from a blank canvas.
 - Inspect the concatenated preview. Repeated titles/footers, repeated heroes, standalone-poster layouts, or a PowerPoint rhythm where every image starts over and ends independently are failures and must be repaired.
 
+## Open-ended slice edges (mandatory)
+
+The v1.0.4 page-first rule removed repeated titles and footers, but a slice can still look finished without either. **Every non-final slice must remain visually open at its bottom edge.** Only the final image may conclude the page.
+
+- Slice 01: opening top, open bottom.
+- Slices 02–07: continuation top, open bottom.
+- Slice 08 (or whichever is the actual final slice): continuation top, closed bottom.
+- Define `top_edge_mode`, `bottom_edge_mode`, `continuity_carrier`, and `next_slice_handoff` for every slice.
+- In every non-final slice, keep the bottom 10–15% as a continuation zone. Keep all critical copy and specifications above it.
+- At least one concrete non-text visual carrier (such as a shelf/track, cable, surface, perspective line, diagram path, light strip, or architectural plane) must reach or pass through the bottom edge and visibly continue into the next slice. Matching colors alone do not count.
+- No visual ending at the bottom of an intermediate slice: no large blank margin, fade-to-blank, vignette, darkening, completed card/grid row, centered final composition, divider, decorative end band, summary, or CTA.
+- Do not cut through important product geometry or text to fake continuity. Continue the surrounding scene or a secondary visual carrier.
+- Generate **one image at a time**. Never batch-generate Slices 03–08. After each image, inspect its bottom edge; if it looks finished, regenerate it before using it as the reference for the next slice.
+- Generate the next slice using both the actual previous image and the next slice's planned handoff. The next image must continue the previous carrier and scene.
+- If the image tool cannot preserve an open edge, use a supported continuous-canvas/extension workflow or report the limitation. Do not pass a sequence of separately closed images as a continuous page.
+
 ## Production brief confirmation (required before the Blueprint)
 
-After actually inspecting the product documents and images, but before creating the Blueprint, use Product Detail Designer v1.0.4 to confirm these four items:
+After actually inspecting the product documents and images, but before creating the Blueprint, use Product Detail Designer v1.0.5 to confirm these four items:
 
 1. **Output language** — the language shown in the final images. The recommended prompt in this document explicitly requests English, so do not ask again when that prompt is used unless the user changes it.
 2. **Image dimensions / aspect ratio** — the pixel dimensions or ratio for each final image. If the user's production prompt already specifies 9:21 or another size / ratio, do not ask again; otherwise confirm it.
@@ -168,7 +184,7 @@ Proceed to the Blueprint only after all four items are supplied or explicitly de
 
 ## Product Detail Designer execution rules
 
-Once the source review is complete, follow Product Detail Designer v1.0.4 for general safeguards; keep the user's prompt authoritative for task-specific stages and approvals.
+Once the source review is complete, follow Product Detail Designer v1.0.5 for general safeguards; keep the user's prompt authoritative for task-specific stages and approvals.
 
 Important expectations include:
 
@@ -195,8 +211,8 @@ Use Product Detail Designer and the task-specific production prompt to create an
 IMPORTANT:
 Do not assume you already know this Skill; read the pinned SKILL.md.
 
-Product Detail Designer is our own open-source GitHub Skill, fixed at release v1.0.4:
-https://github.com/licat233/product-detail-designer/tree/v1.0.4
+Product Detail Designer is our own open-source GitHub Skill, fixed at release v1.0.5:
+https://github.com/licat233/product-detail-designer/tree/v1.0.5
 
 Product source repository:
 https://github.com/licat233/product-assets
@@ -222,7 +238,7 @@ Do not enter Approval Gate 1.
 STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
 
 If Stage 0 passes:
-1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.4/SKILL.md` completely.
+1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.5/SKILL.md` completely.
 2. Treat the user's production prompt as the task-specific source of truth; use the Skill for general safeguards.
 3. Read from GitHub:
    - products/<product-slug>/product.md
@@ -258,7 +274,7 @@ IF THE PREFLIGHT PASSES:
    - unknown / do-not-claim information
 4. Verify exact technical values against original source evidence rather than relying only on product.md.
 5. Never invent unsupported specifications, certifications, test results, awards, discounts, partnerships, or regulated claims.
-6. Follow the user's task-specific prompt for workflow stages and approval gates; use Product Detail Designer v1.0.4 for general product-identity, factual-accuracy, and image-quality safeguards.
+6. Follow the user's task-specific prompt for workflow stages and approval gates; use Product Detail Designer v1.0.5 for general product-identity, factual-accuracy, and image-quality safeguards.
 7. Use English visible commercial copy by default.
 8. Preserve the real product's geometry, proportions, ports, controls, markings, colors, and materials.
 9. Treat all eight image slices as sequential sections of one continuous ecommerce long page, not eight unrelated posters.
@@ -273,7 +289,7 @@ Use Product Detail Designer for `<product-slug>` from `licat233/product-assets`.
 
 Before anything else, verify that this session can actually invoke image generation/editing. If not, stop immediately before reading product evidence or producing the Blueprint.
 
-If image generation is available, read the pinned Product Detail Designer `SKILL.md` at release `v1.0.4`, then read product.md and manifest.yaml. For binary evidence use: manifest public_url → manifest source_url → complete connector base64 decoded back to the original file only when the restored file can actually be inspected. Base64 alone is not evidence review.
+If image generation is available, read the pinned Product Detail Designer `SKILL.md` at release `v1.0.5`, then read product.md and manifest.yaml. For binary evidence use: manifest public_url → manifest source_url → complete connector base64 decoded back to the original file only when the restored file can actually be inspected. Base64 alone is not evidence review.
 
-Do not produce the Blueprint unless at least one authoritative source document and one authoritative real product image have actually been inspected. Then follow the user's 8-slice page-first production prompt and its approval gates; use Product Detail Designer v1.0.4 for general image-generation and quality rules.
+Do not produce the Blueprint unless at least one authoritative source document and one authoritative real product image have actually been inspected. Then follow the user's 8-slice page-first production prompt and its approval gates; use Product Detail Designer v1.0.5 for general image-generation and quality rules.
 ```
