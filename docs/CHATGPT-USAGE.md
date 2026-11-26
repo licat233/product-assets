@@ -72,7 +72,7 @@ A filename, manifest record, binary size, or undecoded base64 payload is not evi
 After actually inspecting the product documents and images, but before creating the Blueprint, use Product Detail Designer v1.0.4 to confirm these four items:
 
 1. **Output language** — the language shown in the final images. The recommended prompt in this document explicitly requests English, so do not ask again when that prompt is used unless the user changes it.
-2. **Image dimensions / aspect ratio** — the pixel dimensions or ratio for each final screen. If the user's production prompt already specifies 9:21 or another size / ratio, do not ask again; otherwise confirm it.
+2. **Image dimensions / aspect ratio** — the pixel dimensions or ratio for each final image. If the user's production prompt already specifies 9:21 or another size / ratio, do not ask again; otherwise confirm it.
 3. **Ecommerce platform / placement** — for example, Amazon product images, Amazon A+ Content, Shopify product-page media, or an Alibaba.com product detail page. Ask if missing.
 4. **Sales region / target market** — a specific country or region, or an explicit global-market scope. “Overseas market” alone is not a specific country or region; ask if missing.
 
