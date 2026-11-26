@@ -10,16 +10,16 @@ Product Detail Designer is our own brand-neutral, open-source Skill. For ChatGPT
 
 **Pinned Skill release (immutable):**
 - Repository: `https://github.com/licat233/product-detail-designer`
-- Version: `v1.0.3`
-- `SKILL.md`: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.3/SKILL.md
+- Version: `v1.0.4`
+- `SKILL.md`: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.4/SKILL.md
 
 Read this exact `SKILL.md` before production. It is the only required Skill file; no additional reference files or local dependencies are required.
 
-Its job is to plan, generate, review, and iterate an image-led ecommerce product detail page as **8 sequential screens** that behave like one continuous long ecommerce page.
+Its job is to plan, generate, review, and iterate an image-led ecommerce product detail page as **8 sequential image slices** that behave like one continuous long ecommerce page.
 
 Before starting, read the pinned `SKILL.md` above. No other Skill reference files or dependencies are required.
 
-The user's task-specific prompt controls page structure, approval gates, image ratio, and deliverables. Product Detail Designer v1.0.3 supplies general product-identity, factual-accuracy, visual-consistency, image-generation, and quality-review rules; it must not add unrequested stages.
+The user's task-specific prompt controls page structure, approval gates, image ratio, and deliverables. Product Detail Designer v1.0.4 supplies general product-identity, factual-accuracy, visual-consistency, image-generation, and quality-review rules; it must not add unrequested stages.
 
 The task-specific production prompt defines the approval gates. Do not add any gates beyond those it explicitly requests.
 
@@ -28,7 +28,7 @@ input / evidence analysis
         ↓
 Production Brief Confirmation
         ↓
-complete 8-screen Blueprint
+complete 8-slice Page Blueprint
         ↓
 Approval Gate 1
         ↓
@@ -36,18 +36,18 @@ Text Master + Visual Master
         ↓
 1:3 continuity master when appropriate
         ↓
-first 2–3 screens
+first 2–3 slices
         ↓
 2–3-screen concatenated preview + audit
         ↓
 Approval Gate 2
         ↓
-remaining screens
+remaining slices
         ↓
 full concatenation + final audit
 ```
 
-The task-specific production prompt controls page structure, approval gates, and deliverables; Product Detail Designer v1.0.3 supplies general execution and quality rules.
+The task-specific production prompt controls page structure, approval gates, and deliverables; Product Detail Designer v1.0.4 supplies general execution and quality rules.
 
 ## Product source repository
 
@@ -69,18 +69,18 @@ Before reading product evidence, confirm that the current ChatGPT session has an
 
 - Visual Master
 - 1:3 continuity master when required
-- first 2–3 screens
-- remaining screens
+- first 2–3 slices
+- remaining slices
 
 Do not infer this from the model name or from general ChatGPT capabilities.
 
-If image generation/editing is unavailable, **STOP immediately**. Do not read the remaining product sources, do not produce the 8-screen Blueprint, and do not enter Approval Gate 1.
+If image generation/editing is unavailable, **STOP immediately**. Do not read the remaining product sources, do not produce the 8-slice Page Blueprint, and do not enter Approval Gate 1.
 
 ### Stage 1 — Product Detail Designer Skill and product metadata
 
 If Stage 0 passes:
 
-1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.3/SKILL.md` completely.
+1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.4/SKILL.md` completely.
 2. Read `products/<slug>/product.md` from GitHub.
 3. Read `products/<slug>/manifest.yaml` from GitHub.
 
@@ -140,27 +140,25 @@ If the only product photo is embedded in a PDF, use an individual extracted imag
 
 **Acceptance test:** if the final images look like the source PDF with different colors, fonts, or rearranged blocks, or follow its page-by-page structure, the design fails and must be independently redesigned.
 
-## Continuous long-page composition (mandatory)
+## Page first, slices second (mandatory)
 
-The eight final images must be **adjacent slices of one vertical ecommerce detail page**, not eight independent posters or PowerPoint slides. Screen / Slice is a file-delivery boundary only, not a buyer-visible page boundary.
+**Design one complete vertical ecommerce page first, then divide it into separate image files. The page is the design unit; each image is only a delivery slice.** Never design independent canvases and try to stitch them together with matching backgrounds or typography.
 
-- Plan one continuous top-to-bottom page first, then generate its separate high-resolution files.
-- Define `top_edge_anchor` and `bottom_edge_anchor` for every slice. The previous slice's bottom background, lighting, texture, spatial depth, and visual direction must inform the next slice's top edge.
-- Extend backgrounds naturally to image edges. Joins must not show a restarted background, color-temperature jump, spatial break, or meaningless empty gap.
-- Do not let key products or props cross a seam unless their position, scale, and direction can be aligned reliably.
-- Each image may have different content and composition, but must not become a self-contained promotional poster. Do not make separate cover/back-cover slides.
-- Separate file generation does not mean independent design. Carry each slice's `bottom_edge_anchor` forward as the next slice's `top_edge_anchor`.
-
-Unless explicitly requested, prohibit headers, footers, navigation bars, page numbers, Screen / Slice labels, 01–08 numbers, repeated logos/product title bars, corner badges, decorative corner elements, full-image borders, repeated top/bottom bars, and the PowerPoint pattern of “title at top + cards in the middle + logo at bottom.” Information cards, specification tables, and real instructional step numbers may appear within the content, but must not frame the entire slice as an independent slide.
-
-Concatenate all images in order and inspect every top/bottom join. Repair background breaks, lighting jumps, spatial discontinuities, visible page boundaries, or slide-like styling. Never hide a failed join with blur, mirrored padding, borders, or arbitrary cropping.
+- The complete page has one primary title / H1, shown only in the first image.
+- Intermediate images must not restart with a product-introduction title, standalone hero, page masthead, or title bar.
+- No image may contain a website footer, contact-information bar, repeated logo, repeated product-name bar, copyright strip, or decorative sign-off.
+- If needed, one final CTA may appear only at the actual end of the complete page. Never repeat it at the bottom of each image.
+- Content modules may cross image boundaries; a file boundary is not a content-section boundary.
+- An intermediate image may enter partway through an ongoing scene or content module and leave before that module is complete. It does not need to be independently complete or self-contained.
+- Generate later images sequentially as continuations of the previous image's content and visual state. Prefer image extension / outpainting from the previous bottom edge; if unsupported, use that bottom edge as the concrete reference for the next image's top. Do not restart from a blank canvas.
+- Inspect the concatenated preview. Repeated titles/footers, repeated heroes, standalone-poster layouts, or a PowerPoint rhythm where every image starts over and ends independently are failures and must be repaired.
 
 ## Production brief confirmation (required before the Blueprint)
 
-After actually inspecting the product documents and images, but before creating the Blueprint, use Product Detail Designer v1.0.3 to confirm these four items:
+After actually inspecting the product documents and images, but before creating the Blueprint, use Product Detail Designer v1.0.4 to confirm these four items:
 
 1. **Output language** — the language shown in the final images. The recommended prompt in this document explicitly requests English, so do not ask again when that prompt is used unless the user changes it.
-2. **Image dimensions / aspect ratio** — the pixel dimensions or ratio for each final screen. If the user's production prompt already specifies 9:21 or another size / ratio, do not ask again; otherwise confirm it.
+2. **Image dimensions / aspect ratio** — the pixel dimensions or ratio for each final image. If the user's production prompt already specifies 9:21 or another size / ratio, do not ask again; otherwise confirm it.
 3. **Ecommerce platform / placement** — for example, Amazon product images, Amazon A+ Content, Shopify product-page media, or an Alibaba.com product detail page. Ask if missing.
 4. **Sales region / target market** — a specific country or region, or an explicit global-market scope. “Overseas market” alone is not a specific country or region; ask if missing.
 
@@ -170,21 +168,21 @@ Proceed to the Blueprint only after all four items are supplied or explicitly de
 
 ## Product Detail Designer execution rules
 
-Once the source review is complete, follow Product Detail Designer v1.0.3 for general safeguards; keep the user's prompt authoritative for task-specific stages and approvals.
+Once the source review is complete, follow Product Detail Designer v1.0.4 for general safeguards; keep the user's prompt authoritative for task-specific stages and approvals.
 
 Important expectations include:
 
-- Produce the complete 8-screen Blueprint before final image generation.
+- Produce the complete 8-slice Page Blueprint before final image generation.
 - Stop at Approval Gate 1 and wait for user approval.
 - Establish the Text Master and Visual Master after Gate 1.
 - Use the 1:3 master as a continuity/hierarchy reference when the workflow calls for it; it is not a crop source or final deliverable.
-- Generate first 2–3 screens first.
-- Concatenate and inspect the first 2–3 screens before Gate 2.
+- Generate first 2–3 slices first.
+- Concatenate and inspect the first 2–3 slices before Gate 2.
 - Stop at Approval Gate 2 and wait for user approval.
-- Generate remaining screens only after Gate 2.
+- Generate remaining slices only after Gate 2.
 - Run a final concatenated-page audit.
 - Keep the product geometry, controls, ports, markings, colors, materials, and proportions consistent.
-- Treat all eight screens as sequential parts of one long ecommerce detail page, not eight unrelated posters.
+- Treat all eight image slices as sequential parts of one long ecommerce detail page, not eight unrelated posters.
 - Use English visible commercial copy by default for overseas-market outputs unless the user says otherwise.
 
 ## Recommended full prompt
@@ -197,8 +195,8 @@ Use Product Detail Designer and the task-specific production prompt to create an
 IMPORTANT:
 Do not assume you already know this Skill; read the pinned SKILL.md.
 
-Product Detail Designer is our own open-source GitHub Skill, fixed at release v1.0.3:
-https://github.com/licat233/product-detail-designer/tree/v1.0.3
+Product Detail Designer is our own open-source GitHub Skill, fixed at release v1.0.4:
+https://github.com/licat233/product-detail-designer/tree/v1.0.4
 
 Product source repository:
 https://github.com/licat233/product-assets
@@ -210,21 +208,21 @@ STAGE 0 — IMAGE GENERATION FIRST
 Confirm that this ChatGPT session has an actually invokable image-generation/editing capability required to create:
 - Visual Master
 - 1:3 continuity master when required
-- first 2–3 screens
-- remaining screens
+- first 2–3 slices
+- remaining slices
 
 Do not infer this from the model name.
 
 If image generation/editing is unavailable:
 STOP IMMEDIATELY.
 Do not read the remaining product evidence.
-Do not produce the 8-screen Blueprint.
+Do not produce the 8-slice Page Blueprint.
 Do not enter Approval Gate 1.
 
 STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
 
 If Stage 0 passes:
-1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.3/SKILL.md` completely.
+1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.4/SKILL.md` completely.
 2. Treat the user's production prompt as the task-specific source of truth; use the Skill for general safeguards.
 3. Read from GitHub:
    - products/<product-slug>/product.md
@@ -260,10 +258,10 @@ IF THE PREFLIGHT PASSES:
    - unknown / do-not-claim information
 4. Verify exact technical values against original source evidence rather than relying only on product.md.
 5. Never invent unsupported specifications, certifications, test results, awards, discounts, partnerships, or regulated claims.
-6. Follow the user's task-specific prompt for workflow stages and approval gates; use Product Detail Designer v1.0.3 for general product-identity, factual-accuracy, and image-quality safeguards.
+6. Follow the user's task-specific prompt for workflow stages and approval gates; use Product Detail Designer v1.0.4 for general product-identity, factual-accuracy, and image-quality safeguards.
 7. Use English visible commercial copy by default.
 8. Preserve the real product's geometry, proportions, ports, controls, markings, colors, and materials.
-9. Treat all eight screens as sequential sections of one continuous ecommerce long page, not eight unrelated posters.
+9. Treat all eight image slices as sequential sections of one continuous ecommerce long page, not eight unrelated posters.
 ```
 
 ## Short prompt
@@ -275,7 +273,7 @@ Use Product Detail Designer for `<product-slug>` from `licat233/product-assets`.
 
 Before anything else, verify that this session can actually invoke image generation/editing. If not, stop immediately before reading product evidence or producing the Blueprint.
 
-If image generation is available, read the pinned Product Detail Designer `SKILL.md` at release `v1.0.3`, then read product.md and manifest.yaml. For binary evidence use: manifest public_url → manifest source_url → complete connector base64 decoded back to the original file only when the restored file can actually be inspected. Base64 alone is not evidence review.
+If image generation is available, read the pinned Product Detail Designer `SKILL.md` at release `v1.0.4`, then read product.md and manifest.yaml. For binary evidence use: manifest public_url → manifest source_url → complete connector base64 decoded back to the original file only when the restored file can actually be inspected. Base64 alone is not evidence review.
 
-Do not produce the Blueprint unless at least one authoritative source document and one authoritative real product image have actually been inspected. Then follow the user's 8-screen production prompt and its approval gates; use Product Detail Designer v1.0.3 for general image-generation and quality rules.
+Do not produce the Blueprint unless at least one authoritative source document and one authoritative real product image have actually been inspected. Then follow the user's 8-slice page-first production prompt and its approval gates; use Product Detail Designer v1.0.4 for general image-generation and quality rules.
 ```
