@@ -102,7 +102,7 @@ The final ecommerce page must be independently conceived for the buyer, market, 
 
 ### Stage 3 — Production Brief Confirmation
 
-After inspecting the product materials and before the Blueprint, confirm output language, per-screen dimensions / aspect ratio, ecommerce platform and placement, and sales region. Skip items already stated in the user's prompt or explicitly delegated. Ask for all missing items in one concise message. If platform placement is known but size is missing, recommend a working size and ask for confirmation. Proceed once all four items are confirmed or delegated; do not add another visual approval gate.
+After inspecting the product materials and before the Blueprint, confirm output language, per-image dimensions / aspect ratio, ecommerce platform and placement, and sales region. Skip items already stated in the user's prompt or explicitly delegated. Ask for all missing items in one concise message. If platform placement is known but size is missing, recommend a working size and ask for confirmation. Proceed once all four items are confirmed or delegated; do not add another visual approval gate.
 
 ## Public publishing boundary
 
