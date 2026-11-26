@@ -209,7 +209,7 @@ public_url
 产品素材检查完成后、制作 Blueprint 之前，确认四项信息：
 
 - 输出语言
-- 每屏图片尺寸 / 宽高比例
+- 每张图片图片尺寸 / 宽高比例
 - 电商平台及具体展示位置
 - 销售国家 / 地区
 
@@ -255,7 +255,7 @@ STAGE 0 — IMAGE GENERATION FIRST
 Confirm that this ChatGPT session has an actually invokable image-generation/editing capability required to create:
 - Visual Master
 - 1:3 continuity master when required
-- Screen 01–02
+- Slice 01–02
 - Screen 03–08
 
 Do not infer this from the model name.
@@ -263,7 +263,7 @@ Do not infer this from the model name.
 If image generation/editing is unavailable:
 STOP IMMEDIATELY.
 Do not read the remaining product evidence.
-Do not produce the 8-screen Blueprint.
+Do not produce the 8-slice Page Blueprint.
 Do not enter Approval Gate 1.
 
 STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
@@ -331,7 +331,7 @@ bash scripts/sync-manifest.sh <product-slug>
 ```text
 读取并核验输入资料
         ↓
-完整 8-screen Blueprint
+完整 8-slice Page Blueprint
         ↓
 Approval Gate 1
         ↓
@@ -339,7 +339,7 @@ Text Master / Visual Master
         ↓
 1:3 continuity master（需要时）
         ↓
-Screen 01–02
+Slice 01–02
         ↓
 两屏拼接预览 + Audit
         ↓
@@ -350,7 +350,7 @@ Screen 03–08
 完整拼接 + Final Audit
 ```
 
-八屏是一张连续 ecommerce detail page 的八个切片，不是八张互不相关的海报。
+八张图片切片是一张连续 ecommerce detail page 的八个切片，不是八张互不相关的海报。
 
 ---
 
