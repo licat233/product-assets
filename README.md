@@ -165,8 +165,8 @@ GitHub
 
 **固定 Skill 版本：**
 - 仓库：https://github.com/licat233/product-detail-designer
-- 版本：`v1.0.4`
-- 唯一必需文件：https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.4/SKILL.md
+- 版本：`v1.0.5`
+- 唯一必需文件：https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.5/SKILL.md
 
 ### Stage 0 — 检查图像生成能力
 
@@ -176,7 +176,7 @@ GitHub
 
 ### Stage 1 — 读取 Skill 与产品 metadata
 
-1. 读取固定版本的 `SKILL.md`：https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.4/SKILL.md
+1. 读取固定版本的 `SKILL.md`：https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.5/SKILL.md
 2. 读取当前产品的 `product.md`。
 3. 读取当前产品的 `manifest.yaml`。
 
@@ -213,7 +213,7 @@ public_url
 - 电商平台及具体展示位置
 - 销售国家 / 地区
 
-如果用户的提示词已经明确写出某项（例如英文、9:21 竖版），不要重复询问。缺失的项目一次性问完；如果用户不知道尺寸，先结合已确认的平台展示位置给出建议并让用户确认。用户明确授权 AI 决定的项目，可以自行选择并说明假设。详见 [Product Detail Designer v1.0.4](https://github.com/licat233/product-detail-designer/releases/tag/v1.0.4)。
+如果用户的提示词已经明确写出某项（例如英文、9:21 竖版），不要重复询问。缺失的项目一次性问完；如果用户不知道尺寸，先结合已确认的平台展示位置给出建议并让用户确认。用户明确授权 AI 决定的项目，可以自行选择并说明假设。详见 [Product Detail Designer v1.0.5](https://github.com/licat233/product-detail-designer/releases/tag/v1.0.5)。
 ## Page-first，不是 PPT 拼接
 
 先设计一张完整的纵向详情页，再分成图片文件。主标题只在第一张出现；中间图片不重新介绍产品；任何图片都不添加 Footer、重复 Logo 或联系信息底栏；CTA 最多在整张页面末尾出现一次。内容模块可以跨越图片边界，后续图片必须延续前一张，而不是重新开始。
@@ -242,8 +242,8 @@ Use Product Detail Designer and the task-specific production prompt to create an
 IMPORTANT:
 Do not assume you already know this Skill; read the pinned SKILL.md first.
 
-Product Detail Designer is our own open-source GitHub Skill, pinned to release v1.0.4:
-https://github.com/licat233/product-detail-designer/tree/v1.0.4
+Product Detail Designer is our own open-source GitHub Skill, pinned to release v1.0.5:
+https://github.com/licat233/product-detail-designer/tree/v1.0.5
 
 Product source repository:
 https://github.com/licat233/product-assets
@@ -269,7 +269,7 @@ Do not enter Approval Gate 1.
 STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
 
 If Stage 0 passes:
-1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.4/SKILL.md` completely.
+1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.5/SKILL.md` completely.
 2. Read `products/<product-slug>/product.md` and `products/<product-slug>/manifest.yaml`.
 
 STAGE 2 — BINARY EVIDENCE

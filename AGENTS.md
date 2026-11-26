@@ -43,9 +43,9 @@ This repository is a controlled product source-of-truth for product documents, p
 
 ## Product Detail Designer capability preflight
 
-**Pinned Skill:** Product Detail Designer v1.0.4 — https://github.com/licat233/product-detail-designer
+**Pinned Skill:** Product Detail Designer v1.0.5 — https://github.com/licat233/product-detail-designer
 
-Read only the pinned Skill file: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.4/SKILL.md
+Read only the pinned Skill file: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.5/SKILL.md
 
 The user's task-specific prompt controls page structure, approval gates, image ratio, and deliverables. Product Detail Designer supplies general product-identity, factual-accuracy, visual-consistency, and image-quality safeguards; do not add unrequested stages or dependencies.
 
@@ -59,7 +59,7 @@ If it does not, state the limitation and stop. Do not pretend to generate images
 
 If Stage 0 passes:
 
-1. Read the pinned Product Detail Designer `SKILL.md` at https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.4/SKILL.md.
+1. Read the pinned Product Detail Designer `SKILL.md` at https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.5/SKILL.md.
 2. Read the product `product.md`.
 3. Read the product `manifest.yaml`.
 
@@ -103,6 +103,22 @@ The final ecommerce page must be independently conceived for the buyer, market, 
 ### Stage 3 — Production Brief Confirmation
 
 After inspecting the product materials and before the Blueprint, confirm output language, per-image dimensions / aspect ratio, ecommerce platform and placement, and sales region. Skip items already stated in the user's prompt or explicitly delegated. Ask for all missing items in one concise message. If platform placement is known but size is missing, recommend a working size and ask for confirmation. Proceed once all four items are confirmed or delegated; do not add another visual approval gate.
+
+## Open-ended slice edges (mandatory)
+
+The v1.0.4 page-first rule removed repeated titles and footers, but a slice can still look finished without either. **Every non-final slice must remain visually open at its bottom edge.** Only the final image may conclude the page.
+
+- Slice 01: opening top, open bottom.
+- Slices 02–07: continuation top, open bottom.
+- Slice 08 (or whichever is the actual final slice): continuation top, closed bottom.
+- Define `top_edge_mode`, `bottom_edge_mode`, `continuity_carrier`, and `next_slice_handoff` for every slice.
+- In every non-final slice, keep the bottom 10–15% as a continuation zone. Keep all critical copy and specifications above it.
+- At least one concrete non-text visual carrier (such as a shelf/track, cable, surface, perspective line, diagram path, light strip, or architectural plane) must reach or pass through the bottom edge and visibly continue into the next slice. Matching colors alone do not count.
+- No visual ending at the bottom of an intermediate slice: no large blank margin, fade-to-blank, vignette, darkening, completed card/grid row, centered final composition, divider, decorative end band, summary, or CTA.
+- Do not cut through important product geometry or text to fake continuity. Continue the surrounding scene or a secondary visual carrier.
+- Generate **one image at a time**. Never batch-generate Slices 03–08. After each image, inspect its bottom edge; if it looks finished, regenerate it before using it as the reference for the next slice.
+- Generate the next slice using both the actual previous image and the next slice's planned handoff. The next image must continue the previous carrier and scene.
+- If the image tool cannot preserve an open edge, use a supported continuous-canvas/extension workflow or report the limitation. Do not pass a sequence of separately closed images as a continuous page.
 
 ## Public publishing boundary
 

@@ -11,8 +11,8 @@
 Product Detail Designer 是我们自建的、面向整个电商行业的通用开源 Skill。
 
 - 仓库：https://github.com/licat233/product-detail-designer
-- 固定版本：`v1.0.4`
-- 唯一必需文件：https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.4/SKILL.md
+- 固定版本：`v1.0.5`
+- 唯一必需文件：https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.5/SKILL.md
 
 新会话只需读取这个固定版本的 `SKILL.md`，不需要额外参考文件、本地安装或外部工具链。
 
@@ -110,9 +110,25 @@ GitHub
 - 后续图片必须按顺序延续上一张的内容与视觉状态。优先使用图像扩展 / Outpainting 从上一张底部向下延伸；不支持时，必须以上一张的底边作为下一张顶部的具体参考，不能从空白画布重新设计。
 - 检查图片拼接预览：若出现重复 Title / Footer、重复 Hero、独立海报结构或每张图都从头开始、各自结束的 PPT 节奏，必须返修。
 
+## Open-ended Slice（开放式切片，强制规则）
+
+v1.0.4 解决了重复标题和 Footer，但没有完全解决中间图片的视觉收尾问题。**每一张非最终图片，底部都必须保持开放，不能在视觉上结束。** 只有整张详情页的最后一张图片允许真正收尾。
+
+- Slice 01：顶部是页面开场，底部开放。
+- Slice 02–07：顶部承接上一张，底部继续开放。
+- Slice 08（或实际最后一张）：顶部承接上一张，底部才允许收尾。
+- 每张切片必须定义 `top_edge_mode`、`bottom_edge_mode`、`continuity_carrier` 和 `next_slice_handoff`。
+- 每张非最终图片底部 10–15% 是视觉延续区，不是收尾区。标题、正文、参数和重要标签不得进入该区域。
+- 至少一个明确的非文字视觉元素必须抵达或穿过图片下边缘，并在下一张继续，例如货架/导轨、线缆、承托表面、透视线、示意图路径、光带或建筑空间结构。仅仅背景颜色相同不算连续元素。
+- 中间图片底部禁止出现任何视觉终点：大面积留白、渐隐、暗角、整体变暗、完整卡片/网格、居中且完整的终结构图、分割线、装饰底栏、总结或 CTA。
+- 不得为了制造连续感而切断重要产品结构或文字；应延续周围环境或次要视觉元素。
+- **每次只生成一张图片**，禁止一次批量生成 Slice 03–08。每张生成后先检查底边；如果看起来已经结束，必须先返修，再将其作为下一张的参考。
+- 生成下一张时，同时提供上一张实际生成的图片和下一张的计划交接说明。下一张必须接续上一张底边的视觉元素与场景。
+- 如果图像工具无法可靠保持开放式底边，应采用工具支持的连续画布/扩图流程，或如实说明限制。不得把一组各自收尾的图片冒充连续详情页。
+
 ## 制作需求确认（Blueprint 之前必须完成）
 
-完成产品资料和图片的真实检查后、制作 Blueprint 之前，按照 Product Detail Designer v1.0.4 确认以下四项：
+完成产品资料和图片的真实检查后、制作 Blueprint 之前，按照 Product Detail Designer v1.0.5 确认以下四项：
 
 1. **输出语言**：最终图片中显示的文案语言。当前推荐提示词明确写了 English，因此使用该提示词时不必重复询问；如果用户另行指定其他语言，以用户指定为准。
 2. **图片尺寸 / 比例**：每张图片最终图片的像素尺寸或宽高比例。若用户的具体制作提示词已经规定 9:21 或其他尺寸 / 比例，不要重复询问；否则必须确认。
@@ -156,7 +172,7 @@ Stage 0
 当前会话能真正生成 / 编辑图片？
         ↓ PASS
 Stage 1
-读取固定版本 `v1.0.4` 的 `SKILL.md`
+读取固定版本 `v1.0.5` 的 `SKILL.md`
 读取 product.md + manifest.yaml
         ↓ PASS
 Stage 2
@@ -189,8 +205,8 @@ Use Product Detail Designer and the task-specific production prompt to create an
 IMPORTANT:
 Do not assume you already know this Skill; read the pinned SKILL.md first.
 
-Product Detail Designer is our own open-source GitHub Skill, fixed at release v1.0.4:
-https://github.com/licat233/product-detail-designer/tree/v1.0.4
+Product Detail Designer is our own open-source GitHub Skill, fixed at release v1.0.5:
+https://github.com/licat233/product-detail-designer/tree/v1.0.5
 
 Product source repository:
 https://github.com/licat233/product-assets
@@ -216,7 +232,7 @@ Do not enter Approval Gate 1.
 STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
 
 If Stage 0 passes:
-1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.4/SKILL.md` completely.
+1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.5/SKILL.md` completely.
 2. Treat the user's production prompt as the task-specific source of truth; use the Skill for general safeguards.
 3. Read from GitHub:
    - products/<product-slug>/product.md
@@ -252,7 +268,7 @@ IF THE PREFLIGHT PASSES:
    - unknown / do-not-claim information
 4. Verify exact technical values against original source evidence rather than relying only on product.md.
 5. Never invent unsupported specifications, certifications, test results, awards, discounts, partnerships, or regulated claims.
-6. Follow the user's task-specific production prompt for stages and approval gates; use Product Detail Designer v1.0.4 for general safeguards.
+6. Follow the user's task-specific production prompt for stages and approval gates; use Product Detail Designer v1.0.5 for general safeguards.
 7. Use English visible commercial copy by default.
 8. Preserve the real product's geometry, proportions, ports, controls, markings, colors, and materials.
 9. Treat all eight image slices as sequential sections of one continuous ecommerce long page, not eight unrelated posters.
@@ -330,4 +346,4 @@ Binary evidence unavailable
 
 ## 9. 一句话记忆
 
-> **先确认当前会话有真正的图像生成工具；随后读取固定版本 `v1.0.4` 的 Product Detail Designer Skill 和产品 metadata；二进制原件按 public_url → source_url → 可还原的完整 base64 顺序尝试。只有真正打开并检查原件才算 PASS。**
+> **先确认当前会话有真正的图像生成工具；随后读取固定版本 `v1.0.5` 的 Product Detail Designer Skill 和产品 metadata；二进制原件按 public_url → source_url → 可还原的完整 base64 顺序尝试。只有真正打开并检查原件才算 PASS。**
