@@ -227,7 +227,7 @@ Generate remaining slices
 Full concatenation + final audit
 ```
 
-The eight screens should behave as sequential slices of one continuous ecommerce detail page, not eight unrelated posters.
+The eight image slices should behave as one continuous ecommerce detail page, not eight unrelated posters.
 
 ## 8. When binary evidence still cannot be inspected
 
