@@ -22,8 +22,8 @@ Before reading product evidence, verify that the current session has an actually
 
 - Visual Master
 - 1:3 continuity master when required
-- first 2–3 screens
-- remaining screens
+- first 2–3 slices
+- remaining slices
 
 If image generation/editing is unavailable, stop immediately. Do not read the remaining product evidence, do not produce the Blueprint, and do not enter Approval Gate 1.
 
@@ -127,15 +127,15 @@ STAGE 0 — IMAGE GENERATION FIRST
 Confirm that this ChatGPT session has an actually invokable image-generation/editing capability required to create:
 - Visual Master
 - 1:3 continuity master when required
-- first 2–3 screens
-- remaining screens
+- first 2–3 slices
+- remaining slices
 
 Do not infer this from the model name.
 
 If image generation/editing is unavailable:
 STOP IMMEDIATELY.
 Do not read the remaining product evidence.
-Do not produce the 8-screen Blueprint.
+Do not produce the 8-slice Page Blueprint.
 Do not enter Approval Gate 1.
 
 STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
@@ -180,7 +180,7 @@ IF THE PREFLIGHT PASSES:
 6. Follow the user's task-specific production prompt for stages and approval gates; use Product Detail Designer v1.0.4 for general safeguards.
 7. Use English visible commercial copy by default.
 8. Preserve the real product's geometry, proportions, ports, controls, markings, colors, and materials.
-9. Treat all eight screens as sequential sections of one continuous ecommerce long page, not eight unrelated posters.
+9. Treat all eight image slices as sequential sections of one continuous ecommerce long page, not eight unrelated posters.
 ```
 
 Canonical prompt:
@@ -208,7 +208,7 @@ Source review
     ↓
 Evidence classification
     ↓
-Complete 8-screen Blueprint
+Complete 8-slice Page Blueprint
     ↓
 Approval Gate 1
     ↓
@@ -216,13 +216,13 @@ Text Master / Visual Master
     ↓
 1:3 continuity master when required
     ↓
-Generate first 2–3 screens
+Generate first 2–3 slices
     ↓
 Two-screen concatenated preview + audit
     ↓
 Approval Gate 2
     ↓
-Generate remaining screens
+Generate remaining slices
     ↓
 Full concatenation + final audit
 ```
