@@ -196,7 +196,7 @@ When an image fails, replace the product depiction with the original photo or a 
 - If needed, one final CTA may appear only at the actual end of the complete page. Never repeat it at the bottom of each image.
 - Content modules may cross image boundaries; a file boundary is not a content-section boundary.
 - An intermediate image may enter partway through an ongoing scene or content module and leave before that module is complete. It does not need to be independently complete or self-contained.
-- Generate later images sequentially as continuations of the previous image's content and visual state. Prefer image extension / outpainting from the previous bottom edge; if unsupported, use that bottom edge as the concrete reference for the next image's top. Do not restart from a blank canvas.
+- Generate later images sequentially as continuations of the previous image's content and visual state. Select canvas extension, reference continuation, or tonal continuity according to the image tool's actual capability and the page scene. Do not assume reference support means canvas extension is available, and do not restart from a blank canvas.
 - Inspect the concatenated preview. Repeated titles/footers, repeated heroes, standalone-poster layouts, or a PowerPoint rhythm where every image starts over and ends independently are failures and must be repaired.
 
 ## Slice continuity — capability-aware (mandatory)
@@ -321,7 +321,7 @@ Do not simulate image generation, do not create placeholders, and do not promote
 IF THE PREFLIGHT PASSES:
 
 1. Read the authoritative original source documents relevant to every exact claim.
-2. Inspect all authoritative real product reference images.
+2. Inspect all authoritative original product reference images.
 3. Establish the internal Product Identity Lock: map original identity-anchor assets, critical visible markers, forbidden changes, and unknown/unseen details before creating product-bearing visuals.
 4. Separate information into:
    - user-confirmed corrections / overrides
@@ -329,8 +329,8 @@ IF THE PREFLIGHT PASSES:
    - directly observed image facts
    - reasonable creative inference
    - unknown / do-not-claim information
-4. Verify exact technical values against original source evidence rather than relying only on product.md.
-5. Never invent unsupported specifications, certifications, test results, awards, discounts, partnerships, or regulated claims.
+5. Verify exact technical values against original source evidence rather than relying only on product.md.
+6. Never invent unsupported specifications, certifications, test results, awards, discounts, partnerships, or regulated claims.
 7. Follow the user's task-specific prompt for workflow stages and approval gates; use Product Detail Designer v1.0.6 for general product-identity, factual-accuracy, and image-quality safeguards.
 8. Use English visible commercial copy by default.
 9. Preserve the real product's geometry, proportions, ports, controls, markings, colors, and materials. Apply the P0 appearance gate to every product-bearing slice.
@@ -348,5 +348,5 @@ Before anything else, verify that this session can actually invoke image generat
 
 If image generation is available, read the pinned Product Detail Designer `SKILL.md` at release `v1.0.6`, then read product.md and manifest.yaml. For binary evidence use: manifest public_url → manifest source_url → complete connector base64 decoded back to the original file only when the restored file can actually be inspected. Base64 alone is not evidence review.
 
-Do not produce the Blueprint unless at least one authoritative source document and one authoritative real product image have actually been inspected. Establish the Product Identity Lock from original product photos before planning product-bearing slices. Then follow the user's 8-slice page-first production prompt and its approval gates; use Product Detail Designer v1.0.6 for general image-generation and quality rules.
+Do not produce the Blueprint unless at least one authoritative source document and one authoritative real product image have actually been inspected. Establish the Product Identity Lock from original product photos before planning product-bearing slices. Every product-bearing slice must use its original identity anchor; the previous slice is only a page-continuity reference. If the tool cannot preserve the product accurately, use the original photo or explain the limitation rather than presenting a drifted redraw as the real product. Then follow the user's 8-slice page-first production prompt and its approval gates; use Product Detail Designer v1.0.6 for general image-generation and quality rules.
 ```
