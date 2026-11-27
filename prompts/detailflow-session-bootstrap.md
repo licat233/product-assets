@@ -8,7 +8,7 @@ Use this prompt when starting a new ChatGPT conversation for a product-detail-pa
 
 Product Detail Designer is our own brand-neutral, open-source Skill. For ChatGPT product-detail-page work, use only our own Product Detail Designer Skill at the pinned release below:
 
-**Pinned Skill release (immutable):**
+**Version-pinned Skill release:**
 - Repository: `https://github.com/licat233/product-detail-designer`
 - Version: `v1.0.6`
 - `SKILL.md`: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.6/SKILL.md
