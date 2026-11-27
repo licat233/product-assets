@@ -8,10 +8,10 @@ Use this prompt when starting a new ChatGPT conversation for a product-detail-pa
 
 Product Detail Designer is our own brand-neutral, open-source Skill. For ChatGPT product-detail-page work, use only our own Product Detail Designer Skill at the pinned release below:
 
-**Pinned Skill release (immutable):**
+**Version-pinned Skill release:**
 - Repository: `https://github.com/licat233/product-detail-designer`
-- Version: `v1.0.5`
-- `SKILL.md`: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.5/SKILL.md
+- Version: `v1.0.6`
+- `SKILL.md`: https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.6/SKILL.md
 
 Read this exact `SKILL.md` before production. It is the only required Skill file; no additional reference files or local dependencies are required.
 
@@ -19,7 +19,7 @@ Its job is to plan, generate, review, and iterate an image-led ecommerce product
 
 Before starting, read the pinned `SKILL.md` above. No other Skill reference files or dependencies are required.
 
-The user's task-specific prompt controls page structure, approval gates, image ratio, and deliverables. Product Detail Designer v1.0.5 supplies general product-identity, factual-accuracy, visual-consistency, image-generation, and quality-review rules; it must not add unrequested stages.
+The user's task-specific prompt controls page structure, approval gates, image ratio, and deliverables. Product Detail Designer v1.0.6 supplies general product-identity, factual-accuracy, visual-consistency, image-generation, and quality-review rules; it must not add unrequested stages.
 
 The task-specific production prompt defines the approval gates. Do not add any gates beyond those it explicitly requests.
 
@@ -47,7 +47,7 @@ remaining slices
 full concatenation + final audit
 ```
 
-The task-specific production prompt controls page structure, approval gates, and deliverables; Product Detail Designer v1.0.5 supplies general execution and quality rules.
+The task-specific production prompt controls page structure, approval gates, and deliverables; Product Detail Designer v1.0.6 supplies general execution and quality rules.
 
 ## Product source repository
 
@@ -80,7 +80,7 @@ If image generation/editing is unavailable, **STOP immediately**. Do not read th
 
 If Stage 0 passes:
 
-1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.5/SKILL.md` completely.
+1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.6/SKILL.md` completely.
 2. Read `products/<slug>/product.md` from GitHub.
 3. Read `products/<slug>/manifest.yaml` from GitHub.
 
@@ -113,7 +113,7 @@ After the full preflight passes:
    - directly observed image facts
    - reasonable creative inference
    - unknown / do-not-claim information
-4. Treat inaccessible, 404, mismatched, undecoded, or uninspectable source files as unavailable evidence. Never guess their contents.
+5. Treat inaccessible, 404, mismatched, undecoded, or uninspectable source files as unavailable evidence. Never guess their contents.
 5. Never invent exact technical parameters, certification status, awards, test results, discounts, medical/regulated claims, or brand partnerships.
 
 ## Mandatory separation of product evidence and visual design
@@ -140,6 +140,52 @@ If the only product photo is embedded in a PDF, use an individual extracted imag
 
 **Acceptance test:** if the final images look like the source PDF with different colors, fonts, or rearranged blocks, or follow its page-by-page structure, the design fails and must be independently redesigned.
 
+## Product Identity Lock — P0 hard gate
+
+**Product appearance integrity is a non-negotiable P0 acceptance gate.** A visually attractive image that changes the real product is a failed result.
+
+Before the Blueprint, establish an internal identity record from the original evidence (do not ask the user to fill in a form):
+
+- Exact product/model/variant.
+- `identity_anchor_assets`: filenames or asset IDs of original, unedited product photographs and, only when explicitly confirmed as current and exact, approved original CAD/product renders.
+- `identity_markers`: silhouette, proportions, component count and arrangement, distinctive geometry, ports/connectors, fasteners, labels/markings/logo, color, material/finish, and assembly relationships.
+- `unknown_or_unseen`: angles, hidden structures, parts, and details not established by the evidence.
+- `forbidden_changes`: all identity markers that must not be added, removed, duplicated, reshaped, recolored, relocated, or replaced.
+
+Use user-confirmed corrections and designated authoritative original product assets as the source of truth. Original product photos establish visible appearance; genuine close-ups clarify details; engineering drawings establish only the geometry and relationships they actually document. Never infer an unseen side, hidden component, or missing detail. If model/variant identity is ambiguous or sources conflict, ask one concise question rather than combining them.
+
+Keep reference roles separate:
+
+1. **Original product identity anchors** establish the real product's appearance and must be used for every slice that depicts the product. Original photos are preferred; a CAD/product render is an anchor only when the user confirms it is current and exact.
+2. **The previous accepted slice** establishes page continuity only (background, scene, lighting, perspective, composition, and content handoff). It is never a substitute for the original product photo and must not override product geometry, color, construction, markings, or component count.
+3. **Visual Master / 1:3 continuity master / style references** guide page-level visual design only. A generated product depiction inside any of these is not an authoritative product reference.
+
+If the image tool accepts only one image reference, prioritize the original product identity anchor and carry page continuity through a written handoff. Product identity outranks page continuity.
+
+For each product-bearing slice, select an internal depiction mode:
+
+- `original-photo`: safest default; use the actual product photograph, with only non-destructive crop and uniform scaling.
+- `source-photo-composite`: use the original product photo/cutout as the foreground and design the surrounding scene separately. Claim pixel preservation only if the actual tool supports masking/layers and the original product pixels remain intact in the inspected output.
+- `constrained-edit`: only edit from a genuine source photo when the same evidenced view and critical geometry can be preserved; reference-based redraw is not automatically accurate.
+- `evidence-based-diagram`: explain documented construction from an authoritative drawing without pretending it is a photorealistic product photo.
+- `no-product-depiction`: use copy, typography, or application context when the supplied evidence cannot support an accurate product image.
+
+Prefer the original photo whenever it communicates the point. Do not freely redraw, redesign, recolor, reshape, warp, stretch, or invent the product. Do not request a new camera angle or close-up unless a genuine reference for that view exists. If reliable compositing or product preservation is unavailable, use the original photo directly or explain which real photo is missing; never present an AI-redrawn approximation as the actual product.
+
+### P0 appearance verification and recovery
+
+Compare every generated product depiction side by side with its original identity anchor(s), not just with the previous generated slice. Check the actual identity markers. A model's own statement that it preserved the product is not proof.
+
+P0 result must be `PASS / FAIL / UNVERIFIED`:
+
+- **Critical — automatic fail:** wrong model/variant, changed functional structure, missing/extra/duplicated/merged component, changed connector/port/assembly, or invented/removed identity-defining part.
+- **Major — fail:** visibly changed silhouette, proportions, component placement/spacing, color, material/finish, logo, label, or model marking.
+- **Minor — review:** background, props, lighting outside the product, or composition issues that do not alter or conceal an identity marker. If a critical feature cannot be checked, it is UNVERIFIED—not a pass.
+
+Any Critical or Major mismatch, or any unverified critical marker, rejects the image. No visual-design score can override a P0 failure.
+
+When an image fails, replace the product depiction with the original photo or a verified source-photo composite. If reliable repair is unavailable, revert to `original-photo` or `no-product-depiction`; do not keep asking the model to redraw the same inaccurate geometry. Never pass a failed or unverified product depiction forward as the next slice's continuity reference. Continue only from the last accepted slice. If the evidence itself is insufficient, request the specific missing real photo or drawing.
+
 ## Page first, slices second (mandatory)
 
 **Design one complete vertical ecommerce page first, then divide it into separate image files. The page is the design unit; each image is only a delivery slice.** Never design independent canvases and try to stitch them together with matching backgrounds or typography.
@@ -150,28 +196,38 @@ If the only product photo is embedded in a PDF, use an individual extracted imag
 - If needed, one final CTA may appear only at the actual end of the complete page. Never repeat it at the bottom of each image.
 - Content modules may cross image boundaries; a file boundary is not a content-section boundary.
 - An intermediate image may enter partway through an ongoing scene or content module and leave before that module is complete. It does not need to be independently complete or self-contained.
-- Generate later images sequentially as continuations of the previous image's content and visual state. Prefer image extension / outpainting from the previous bottom edge; if unsupported, use that bottom edge as the concrete reference for the next image's top. Do not restart from a blank canvas.
+- Generate later images sequentially as continuations of the previous image's content and visual state. Select canvas extension, reference continuation, or tonal continuity according to the image tool's actual capability and the page scene. Do not assume reference support means canvas extension is available, and do not restart from a blank canvas.
 - Inspect the concatenated preview. Repeated titles/footers, repeated heroes, standalone-poster layouts, or a PowerPoint rhythm where every image starts over and ends independently are failures and must be repaired.
 
-## Open-ended slice edges (mandatory)
+## Slice continuity — capability-aware (mandatory)
 
-The v1.0.4 page-first rule removed repeated titles and footers, but a slice can still look finished without either. **Every non-final slice must remain visually open at its bottom edge.** Only the final image may conclude the page.
+Every image must continue the same ecommerce page rather than read as a separately completed poster or slide. A file boundary is a delivery boundary, not a reason to restart or conclude the page.
 
-- Slice 01: opening top, open bottom.
-- Slices 02–07: continuation top, open bottom.
-- Slice 08 (or whichever is the actual final slice): continuation top, closed bottom.
-- Define `top_edge_mode`, `bottom_edge_mode`, `continuity_carrier`, and `next_slice_handoff` for every slice.
-- In every non-final slice, keep the bottom 10–15% as a continuation zone. Keep all critical copy and specifications above it.
-- At least one concrete non-text visual carrier (such as a shelf/track, cable, surface, perspective line, diagram path, light strip, or architectural plane) must reach or pass through the bottom edge and visibly continue into the next slice. Matching colors alone do not count.
-- No visual ending at the bottom of an intermediate slice: no large blank margin, fade-to-blank, vignette, darkening, completed card/grid row, centered final composition, divider, decorative end band, summary, or CTA.
-- Do not cut through important product geometry or text to fake continuity. Continue the surrounding scene or a secondary visual carrier.
-- Generate **one image at a time**. Never batch-generate Slices 03–08. After each image, inspect its bottom edge; if it looks finished, regenerate it before using it as the reference for the next slice.
-- Generate the next slice using both the actual previous image and the next slice's planned handoff. The next image must continue the previous carrier and scene.
-- If the image tool cannot preserve an open edge, use a supported continuous-canvas/extension workflow or report the limitation. Do not pass a sequence of separately closed images as a continuous page.
+For each slice, define internally:
+
+- `slice_entry_state` and `slice_exit_state`.
+- `top_edge_anchor` and `bottom_edge_anchor`: observable scene, background, surface, object position, lighting, perspective, and content state.
+- `continuity_intent`: how the next slice should continue the page, or why a natural scene transition is appropriate.
+- `next_slice_handoff`: the concrete visual and content state the next slice should pick up.
+- `top_edge_mode`: `opening` for Slice 01; `continuation` for later slices.
+- `bottom_edge_mode`: `open` for non-final slices; `closed` only for the final slice.
+- `continuity_strategy`: `canvas-extension`, `reference-continuation`, or `tonal-continuity`.
+
+Do not force every non-final image to contain a physical object crossing its bottom edge. Do not reserve a mandatory 10–15% strip, add artificial cables/rails/surfaces, or distort a useful composition merely to satisfy a mechanical seam rule. A visual carrier may help when it naturally belongs to the scene, but it is optional.
+
+Choose the continuity strategy according to the image tool's actual capability:
+
+1. **Canvas extension:** use only when the tool explicitly supports extending the existing canvas/outpainting while preserving the original area. Do not infer this capability from ordinary image-reference support.
+2. **Reference continuation:** use when the tool can reference the previous accepted image but has no verified canvas-extension operation. Describe the actual handoff and preserve the scene as closely as the tool allows. This does not guarantee pixel-perfect joins.
+3. **Tonal continuity:** use when the page naturally moves to a different scene or forcing the prior scene to continue would look artificial. Preserve a coherent palette, lighting, material language, depth, and buyer journey; do not create an unrelated poster.
+
+If the user explicitly requires pixel-level continuity and the available tool cannot reliably provide it, explain the limitation before proceeding. Never describe reference continuation as pixel-preserving outpainting or guarantee a seamless join without verification. Do not use tonal continuity to excuse unrelated slides.
+
+Generate one slice at a time. Inspect the actual result before using it as the reference for the next slice. If the bottom edge reads as a page ending or the handoff is inconsistent, repair it before continuing. Do not batch-generate the remaining slices.
 
 ## Production brief confirmation (required before the Blueprint)
 
-After actually inspecting the product documents and images, but before creating the Blueprint, use Product Detail Designer v1.0.5 to confirm these four items:
+After actually inspecting the product documents and images, but before creating the Blueprint, use Product Detail Designer v1.0.6 to confirm these four items:
 
 1. **Output language** — the language shown in the final images. The recommended prompt in this document explicitly requests English, so do not ask again when that prompt is used unless the user changes it.
 2. **Image dimensions / aspect ratio** — the pixel dimensions or ratio for each final image. If the user's production prompt already specifies 9:21 or another size / ratio, do not ask again; otherwise confirm it.
@@ -184,7 +240,7 @@ Proceed to the Blueprint only after all four items are supplied or explicitly de
 
 ## Product Detail Designer execution rules
 
-Once the source review is complete, follow Product Detail Designer v1.0.5 for general safeguards; keep the user's prompt authoritative for task-specific stages and approvals.
+Once the source review is complete, follow Product Detail Designer v1.0.6 for general safeguards; keep the user's prompt authoritative for task-specific stages and approvals.
 
 Important expectations include:
 
@@ -197,7 +253,7 @@ Important expectations include:
 - Stop at Approval Gate 2 and wait for user approval.
 - Generate remaining slices only after Gate 2.
 - Run a final concatenated-page audit.
-- Keep the product geometry, controls, ports, markings, colors, materials, and proportions consistent.
+- Enforce the P0 Product Identity Lock: original product photos are the identity anchors for every product-bearing slice; previous slices guide page continuity only. Any Critical/Major drift or unverified critical feature blocks delivery.
 - Treat all eight image slices as sequential parts of one long ecommerce detail page, not eight unrelated posters.
 - Use English visible commercial copy by default for overseas-market outputs unless the user says otherwise.
 
@@ -211,8 +267,8 @@ Use Product Detail Designer and the task-specific production prompt to create an
 IMPORTANT:
 Do not assume you already know this Skill; read the pinned SKILL.md.
 
-Product Detail Designer is our own open-source GitHub Skill, fixed at release v1.0.5:
-https://github.com/licat233/product-detail-designer/tree/v1.0.5
+Product Detail Designer is our own open-source GitHub Skill, fixed at release v1.0.6:
+https://github.com/licat233/product-detail-designer/tree/v1.0.6
 
 Product source repository:
 https://github.com/licat233/product-assets
@@ -238,7 +294,7 @@ Do not enter Approval Gate 1.
 STAGE 1 — PRODUCT DETAIL DESIGNER SKILL + PRODUCT METADATA
 
 If Stage 0 passes:
-1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.5/SKILL.md` completely.
+1. Read the pinned `SKILL.md` at `https://raw.githubusercontent.com/licat233/product-detail-designer/v1.0.6/SKILL.md` completely.
 2. Treat the user's production prompt as the task-specific source of truth; use the Skill for general safeguards.
 3. Read from GitHub:
    - products/<product-slug>/product.md
@@ -265,19 +321,20 @@ Do not simulate image generation, do not create placeholders, and do not promote
 IF THE PREFLIGHT PASSES:
 
 1. Read the authoritative original source documents relevant to every exact claim.
-2. Inspect all authoritative real product reference images.
-3. Separate information into:
+2. Inspect all authoritative original product reference images.
+3. Establish the internal Product Identity Lock: map original identity-anchor assets, critical visible markers, forbidden changes, and unknown/unseen details before creating product-bearing visuals.
+4. Separate information into:
    - user-confirmed corrections / overrides
    - authoritative-document facts
    - directly observed image facts
    - reasonable creative inference
    - unknown / do-not-claim information
-4. Verify exact technical values against original source evidence rather than relying only on product.md.
-5. Never invent unsupported specifications, certifications, test results, awards, discounts, partnerships, or regulated claims.
-6. Follow the user's task-specific prompt for workflow stages and approval gates; use Product Detail Designer v1.0.5 for general product-identity, factual-accuracy, and image-quality safeguards.
-7. Use English visible commercial copy by default.
-8. Preserve the real product's geometry, proportions, ports, controls, markings, colors, and materials.
-9. Treat all eight image slices as sequential sections of one continuous ecommerce long page, not eight unrelated posters.
+5. Verify exact technical values against original source evidence rather than relying only on product.md.
+6. Never invent unsupported specifications, certifications, test results, awards, discounts, partnerships, or regulated claims.
+7. Follow the user's task-specific prompt for workflow stages and approval gates; use Product Detail Designer v1.0.6 for general product-identity, factual-accuracy, and image-quality safeguards.
+8. Use English visible commercial copy by default.
+9. Preserve the real product's geometry, proportions, ports, controls, markings, colors, and materials. Apply the P0 appearance gate to every product-bearing slice.
+10. Treat all eight image slices as sequential sections of one continuous ecommerce long page, not eight unrelated posters.
 ```
 
 ## Short prompt
@@ -289,7 +346,7 @@ Use Product Detail Designer for `<product-slug>` from `licat233/product-assets`.
 
 Before anything else, verify that this session can actually invoke image generation/editing. If not, stop immediately before reading product evidence or producing the Blueprint.
 
-If image generation is available, read the pinned Product Detail Designer `SKILL.md` at release `v1.0.5`, then read product.md and manifest.yaml. For binary evidence use: manifest public_url → manifest source_url → complete connector base64 decoded back to the original file only when the restored file can actually be inspected. Base64 alone is not evidence review.
+If image generation is available, read the pinned Product Detail Designer `SKILL.md` at release `v1.0.6`, then read product.md and manifest.yaml. For binary evidence use: manifest public_url → manifest source_url → complete connector base64 decoded back to the original file only when the restored file can actually be inspected. Base64 alone is not evidence review.
 
-Do not produce the Blueprint unless at least one authoritative source document and one authoritative real product image have actually been inspected. Then follow the user's 8-slice page-first production prompt and its approval gates; use Product Detail Designer v1.0.5 for general image-generation and quality rules.
+Do not produce the Blueprint unless at least one authoritative source document and one authoritative real product image have actually been inspected. Establish the Product Identity Lock from original product photos before planning product-bearing slices. Every product-bearing slice must use its original identity anchor; the previous slice is only a page-continuity reference. If the tool cannot preserve the product accurately, use the original photo or explain the limitation rather than presenting a drifted redraw as the real product. Then follow the user's 8-slice page-first production prompt and its approval gates; use Product Detail Designer v1.0.6 for general image-generation and quality rules.
 ```
