@@ -147,7 +147,7 @@ If the only product photo is embedded in a PDF, use an individual extracted imag
 Before the Blueprint, establish an internal identity record from the original evidence (do not ask the user to fill in a form):
 
 - Exact product/model/variant.
-- `identity_anchor_assets`: filenames or asset IDs of the original, unedited product photographs.
+- `identity_anchor_assets`: filenames or asset IDs of original, unedited product photographs and, only when explicitly confirmed as current and exact, approved original CAD/product renders.
 - `identity_markers`: silhouette, proportions, component count and arrangement, distinctive geometry, ports/connectors, fasteners, labels/markings/logo, color, material/finish, and assembly relationships.
 - `unknown_or_unseen`: angles, hidden structures, parts, and details not established by the evidence.
 - `forbidden_changes`: all identity markers that must not be added, removed, duplicated, reshaped, recolored, relocated, or replaced.
@@ -156,9 +156,9 @@ Use user-confirmed corrections and designated authoritative original product ass
 
 Keep reference roles separate:
 
-1. **Original product identity anchors** establish the real product's appearance and must be used for every slice that depicts the product.
+1. **Original product identity anchors** establish the real product's appearance and must be used for every slice that depicts the product. Original photos are preferred; a CAD/product render is an anchor only when the user confirms it is current and exact.
 2. **The previous accepted slice** establishes page continuity only (background, scene, lighting, perspective, composition, and content handoff). It is never a substitute for the original product photo and must not override product geometry, color, construction, markings, or component count.
-3. **Visual Master / style references** guide page-level visual design only. A generated product depiction inside a Visual Master is not an authoritative product reference.
+3. **Visual Master / 1:3 continuity master / style references** guide page-level visual design only. A generated product depiction inside any of these is not an authoritative product reference.
 
 If the image tool accepts only one image reference, prioritize the original product identity anchor and carry page continuity through a written handoff. Product identity outranks page continuity.
 
